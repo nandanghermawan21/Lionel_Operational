@@ -1,4 +1,4 @@
-package com.lionel.operational.ui.home;
+package com.lionel.operational.ui.console;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.lionel.operational.databinding.FragmentHomeBinding;
 
-public class HomeFragment extends Fragment {
+public class ConsoleCreateFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        ConsoleCreateViewModel homeViewModel =
+                new ViewModelProvider(this).get(ConsoleCreateViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

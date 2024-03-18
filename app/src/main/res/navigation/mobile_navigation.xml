@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_acceptance"
-        android:name="com.lionel.operational.ui.home.HomeFragment"
+        android:name="com.lionel.operational.ui.console.ConsoleCreateFragment"
         android:label="@string/menu_acceptance"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_console"
-        android:name="com.lionel.operational.ui.gallery.GalleryFragment"
+        android:name="com.lionel.operational.ui.acceptance.AcceptanceFragment"
         android:label="@string/menu_create_console"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_way_bill"
-        android:name="com.lionel.operational.ui.slideshow.SlideshowFragment"
+        android:name="com.lionel.operational.ui.PaySlip.PaySlipFragment"
         android:label="@string/menu_create_way_bill"
         tools:layout="@layout/fragment_slideshow" />
 

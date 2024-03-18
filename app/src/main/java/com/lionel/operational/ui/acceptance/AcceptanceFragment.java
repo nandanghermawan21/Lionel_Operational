@@ -1,4 +1,4 @@
-package com.lionel.operational.ui.gallery;
+package com.lionel.operational.ui.acceptance;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.lionel.operational.databinding.FragmentGalleryBinding;
 
-public class GalleryFragment extends Fragment {
+public class AcceptanceFragment extends Fragment {
 
     private FragmentGalleryBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+        AcceptanceViewModel galleryViewModel =
+                new ViewModelProvider(this).get(AcceptanceViewModel.class);
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
