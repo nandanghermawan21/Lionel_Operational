@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_acceptance"
+            android:icon="@drawable/ic_menu_acceptance"
+            android:title="@string/menu_acceptance" />
+        <item
+            android:id="@+id/nav_console"
+            android:icon="@drawable/ic_menu_console"
+            android:title="@string/menu_create_console" />
+        <item
+            android:id="@+id/nav_way_bill"
+            android:icon="@drawable/ic_menu_way_bill"
+            android:title="@string/menu_create_way_bill" />
+        <item
+            android:id="@+id/nav_stob"
+            android:icon="@drawable/ic_menu_stob"
+            android:title="@string/menu_create_stob" />
+    </group>
+</menu>

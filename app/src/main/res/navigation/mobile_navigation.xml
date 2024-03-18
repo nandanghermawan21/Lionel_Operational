@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_acceptance">
+
+    <fragment
+        android:id="@+id/nav_acceptance"
+        android:name="com.lionel.operational.ui.home.HomeFragment"
+        android:label="@string/menu_acceptance"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_console"
+        android:name="com.lionel.operational.ui.gallery.GalleryFragment"
+        android:label="@string/menu_create_console"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_way_bill"
+        android:name="com.lionel.operational.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_create_way_bill"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_stob"
+        android:name="com.lionel.operational.ui.stob.CreateFragment"
+        android:label="@string/menu_create_stob"
+        tools:layout="@layout/fragment_stob_create" />
+</navigation>

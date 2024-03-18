@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Lionel Operational</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">User Name</string>
+    <string name="nav_header_subtitle">Lionel Express</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_acceptance">Acceptance</string>
+    <string name="menu_create_console">Create Console</string>
+    <string name="menu_create_way_bill">Create Way Bill</string>
+    <string name="menu_create_stob">Create STOB</string>
+</resources>
