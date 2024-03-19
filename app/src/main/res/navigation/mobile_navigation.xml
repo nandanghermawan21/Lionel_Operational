@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/nav_acceptance"
-        android:name="com.lionel.operational.ui.console.ConsoleCreateFragment"
+        android:name="com.lionel.operational.ui.acceptance.AcceptanceFragment"
         android:label="@string/menu_acceptance"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_acceptance" />
 
     <fragment
         android:id="@+id/nav_console"
-        android:name="com.lionel.operational.ui.acceptance.AcceptanceFragment"
+        android:name="com.lionel.operational.ui.console.ConsoleCreateFragment"
         android:label="@string/menu_create_console"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_way_bill"

@@ -10,22 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.lionel.operational.databinding.FragmentGalleryBinding;
+import com.lionel.operational.databinding.FragmentAcceptanceBinding;
 
 public class AcceptanceFragment extends Fragment {
 
-    private FragmentGalleryBinding binding;
+    private FragmentAcceptanceBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         AcceptanceViewModel galleryViewModel =
                 new ViewModelProvider(this).get(AcceptanceViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentAcceptanceBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textGallery;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

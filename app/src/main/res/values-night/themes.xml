@@ -12,5 +12,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/white</item>
+        <item name="android:imageButtonStyle">@style/ImageViewWithTint</item>
+    </style>
+
+    <style name="ImageViewWithTint" parent="Widget.AppCompat.ImageButton">
+        <item name="android:tint">@color/white</item>
     </style>
 </resources>
