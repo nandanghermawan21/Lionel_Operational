@@ -12,4 +12,9 @@
     <string name="menu_create_console">Create Console</string>
     <string name="menu_create_way_bill">Create Way Bill</string>
     <string name="menu_create_stob">Create STOB</string>
+    <string name="gross_weight">Gross Weight</string>
+    <string name="SttNumber">STT Number</string>
+    <string name="length">Length</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
 </resources>

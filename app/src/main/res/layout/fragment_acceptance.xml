@@ -18,10 +18,11 @@
             android:id="@+id/imageViewSearchIcon"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_menu_acceptance"
+            android:src="@drawable/ic_icon_scanner"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:background="@color/white"
+            android:padding="8dp"
             app:tint="@color/black" />
 
         <!-- Text Field -->
@@ -30,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="Search"
+            android:hint="@string/SttNumber"
             app:hintEnabled="true"
             app:hintAnimationEnabled="true">
 
@@ -55,7 +56,7 @@
             android:id="@+id/textInputGW"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="GW"
+            android:hint="@string/gross_weight"
             app:hintEnabled="true"
             app:hintAnimationEnabled="true">
 
@@ -71,7 +72,7 @@
             android:id="@+id/textInputLength"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Length"
+            android:hint="@string/length"
             app:hintEnabled="true"
             app:hintAnimationEnabled="true">
 
@@ -87,7 +88,7 @@
             android:id="@+id/textInputWidth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Width"
+            android:hint="@string/width"
             app:hintEnabled="true"
             app:hintAnimationEnabled="true">
 
@@ -103,7 +104,7 @@
             android:id="@+id/textInputHeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Height"
+            android:hint="@string/height"
             app:hintEnabled="true"
             app:hintAnimationEnabled="true">
 
