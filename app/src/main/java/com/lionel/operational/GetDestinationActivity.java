@@ -1,6 +1,7 @@
 package com.lionel.operational;
 
 import static com.lionel.operational.model.Constant.BASE_URL;
+import static com.lionel.operational.model.Constant.DESTINATION_KEY;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -88,7 +89,14 @@ public class GetDestinationActivity extends AppCompatActivity {
                         destinations = response.body().getData();
                         adapter = new DestinationRecaicleViewAdapter(destinations);
                         recyclerView.setAdapter(adapter);
-                        //tulis di log berapa jumlah data ayng diterima
+                        adapter.setOnItemClickListener(new DestinationRecaicleViewAdapter.OnItemDestinationClickListener() {
+                            @Override
+                            public void onItemClick(DestinationModel item) {
+                                selectedDestination = item;
+                                setResult(RESULT_OK, getIntent().putExtra(DESTINATION_KEY, selectedDestination.toJson()));
+                                finish();
+                            }
+                        });
                         Log.e("GET_DESTINATION", "onResponse: "+ destinations.size());
                     } else {
                         Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();

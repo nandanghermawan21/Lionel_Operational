@@ -1,43 +1,46 @@
 package com.lionel.operational.ui.console;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.lionel.operational.model.DestinationModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConsoleCreateViewModel extends ViewModel {
-    private List<String> sttItems;
-    private List<String> destinationItems;
+    private MutableLiveData<DestinationModel> destinationModel;
+    private MutableLiveData<String> consoleCodeErrorMessage;
+    private MutableLiveData<String> destinationErrorMessage;
 
-    public List<String> getSttItems() {
-        if (sttItems == null) {
-            initDataSttList();
-        }
-        return sttItems;
+    public ConsoleCreateViewModel() {
+        destinationModel = new MutableLiveData<>();
+        consoleCodeErrorMessage = new MutableLiveData<>();
+        destinationErrorMessage = new MutableLiveData<>();
     }
 
-    private void initDataSttList() {
-        // Isi dataList dengan data yang diinginkan
-        sttItems = new ArrayList<>();
-        sttItems.add("Item 1");
-        sttItems.add("Item 2");
-        sttItems.add("Item 3");
-        // Tambahkan data lainnya sesuai kebutuhan
+    public LiveData<DestinationModel> getDestinationModel() {
+        return destinationModel;
     }
 
-    public List<String> getDestinationItems() {
-        if (destinationItems == null) {
-            initDataSttList();
-        }
-        return destinationItems;
+    public void setDestinationModel(DestinationModel destinationModel) {
+          this.destinationModel.setValue(destinationModel);
     }
 
-    private void initDataDepartmentList() {
-        // Isi dataList dengan data yang diinginkan
-        destinationItems = new ArrayList<>();
-        destinationItems.add("Item 1");
-        destinationItems.add("Item 2");
-        destinationItems.add("Item 3");
-        // Tambahkan data lainnya sesuai kebutuhan
+    public MutableLiveData<String> getConsoleCodeErrorMessage() {
+        return consoleCodeErrorMessage;
+    }
+
+    public void setConsoleCodeErrorMessage(String consoleCodeErrorMessage) {
+        this.consoleCodeErrorMessage.setValue(consoleCodeErrorMessage);
+    }
+
+    public MutableLiveData<String> getDestinationErrorMessage() {
+        return destinationErrorMessage;
+    }
+
+    public void setDestinationErrorMessage(String destinationErrorMessage) {
+           this.destinationErrorMessage.setValue(destinationErrorMessage);
     }
 }

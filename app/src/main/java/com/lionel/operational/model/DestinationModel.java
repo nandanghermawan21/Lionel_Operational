@@ -1,4 +1,5 @@
 package com.lionel.operational.model;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class DestinationModel {
 
     public void setBranchId(String branchId) {
         this.branchId = branchId;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }

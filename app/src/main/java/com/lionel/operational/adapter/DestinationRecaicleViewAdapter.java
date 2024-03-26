@@ -18,6 +18,15 @@ public class DestinationRecaicleViewAdapter extends RecyclerView.Adapter<Destina
 
     private List<DestinationModel> itemList;
     private List<DestinationModel> filteredList;
+    private OnItemDestinationClickListener listener;
+
+    public interface OnItemDestinationClickListener {
+        void onItemClick(DestinationModel position);
+    }
+
+    public void setOnItemClickListener(OnItemDestinationClickListener listener) {
+        this.listener = listener;
+    }
 
     public DestinationRecaicleViewAdapter(List<DestinationModel> itemList) {
         this.itemList = itemList;
@@ -35,6 +44,11 @@ public class DestinationRecaicleViewAdapter extends RecyclerView.Adapter<Destina
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DestinationModel item = filteredList.get(position);
         holder.destinationMame.setText(item.getId());
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override

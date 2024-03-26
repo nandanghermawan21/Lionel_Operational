@@ -1,36 +1,51 @@
 package com.lionel.operational.ui.console;
 
-import static com.lionel.operational.model.Constant.REQUEST_CODE;
-
-import android.app.Dialog;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
-import com.lionel.operational.LoginActivity;
-import com.lionel.operational.MainActivity;
 import com.lionel.operational.R;
-import com.lionel.operational.ui.PaySlip.PaySlipFragment;
+import com.lionel.operational.model.DestinationModel;
 
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class ConsoleCreateFragment extends Fragment {
 
     private ConsoleCreateViewModel viewModel;
+    Button buttonGetDestination;
+    Button buttonNext;
+    TextView labelConsoleCodeError;
+    TextView labelDestinationError;
+    TextInputEditText inputConsoleCode;
+
+    private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String destination = data.getStringExtra("DESTINATION");
+                    //ubah data ke dalam bentuk object
+                     DestinationModel destinationModel = new Gson().fromJson(destination, DestinationModel.class);
+                    // set data ke dalam view model
+                    viewModel.setDestinationModel(destinationModel);
+                }
+            });
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,23 +61,73 @@ public class ConsoleCreateFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Temukan tombol di dalam layout fragment_console.xml
-        Button button = view.findViewById(R.id.buttonSelectDestination);
+        buttonGetDestination = view.findViewById(R.id.buttonSelectDestination);
+        buttonNext = view.findViewById(R.id.buttonNext);
+        labelConsoleCodeError = view.findViewById(R.id.labelConsoleCodeError);
+        labelDestinationError = view.findViewById(R.id.labelDestinationError);
+        inputConsoleCode = view.findViewById(R.id.textInputConsoleCode);
 
-        // Atur OnClickListener untuk tombol
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonGetDestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handler untuk klik tombol
-                // Panggil metode atau lakukan tindakan yang Anda inginkan di sini
                 handleButtonClick();
+            }
+        });
+
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isValid = true;
+                if (viewModel.getDestinationModel().getValue() == null) {
+                    isValid = false;
+                    viewModel.setDestinationErrorMessage(getString(R.string.error_destination));
+                }else{
+                    viewModel.setDestinationErrorMessage("");
+                }
+                if(inputConsoleCode.getText().toString().isEmpty()) {
+                    isValid = false;
+                    viewModel.setConsoleCodeErrorMessage(getString(R.string.error_console_code));
+                }else{
+                    viewModel.setConsoleCodeErrorMessage("");
+                }
+            }
+        });
+
+        viewModel.getDestinationModel().observe(getViewLifecycleOwner(), new Observer<DestinationModel>() {
+            @Override
+            public void onChanged(DestinationModel destinationModel) {
+                buttonGetDestination.setText(destinationModel.getId());
+            }
+        });
+
+        viewModel.getConsoleCodeErrorMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                labelConsoleCodeError.setText(s);
+                if (s.isEmpty()) {
+                    labelConsoleCodeError.setVisibility(View.GONE);
+                } else {
+                    labelConsoleCodeError.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        viewModel.getDestinationErrorMessage().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                labelDestinationError.setText(s);
+                if(s.isEmpty()) {
+                    labelDestinationError.setVisibility(View.GONE);
+                } else {
+                    labelDestinationError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
 
     private void handleButtonClick() {
-        //buka dan dapatkan balikan dari GetDestinationActivity
-        Intent intent = new Intent(getContext(), GetDestinationActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
+        Intent intent = new Intent(getActivity(), GetDestinationActivity.class);
+        destinationLauncher.launch(intent);
     }
+
 }

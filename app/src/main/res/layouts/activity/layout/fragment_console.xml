@@ -1,103 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:id="@+id/console_code_layout"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.lionel.operational.ui.console.ConsoleCreateViewModel" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
-
-        <!-- Icon -->
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_icon_scanner"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:padding="8dp"
-            app:tint="?android:attr/textColor" />
-
-        <!-- Text Field -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputConsoleCodeLayout"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:hint="@string/console_number"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputConsoleCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/destination_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/console_code_layout"
-        android:layout_marginBottom="16dp">
-
-        <!-- Icon -->
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_icon_destination"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:padding="8dp"
-            app:tint="?android:attr/textColor"/>
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
         <LinearLayout
+            android:id="@+id/console_code_layout"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:paddingBottom="2px"
-            android:background="@drawable/dec_main_input"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <!-- Icon -->
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_icon_scanner"
+                app:tint="?android:attr/textColor" />
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="1dp"
-                android:paddingLeft="20px"
-                android:paddingTop="10px"
-                android:textColor="?android:attr/textColor"
-                android:text="@string/destination"/>
-            <Button
-                android:id="@+id/buttonSelectDestination"
-                android:backgroundTint="?android:attr/colorControlHighlight"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAlignment="textStart"
-                android:text="@string/select_destination"
-                android:textColor="?android:attr/textColor"
-                android:drawableEnd="@drawable/ic_menu_down"
-                android:tint="?android:attr/textColor"/>
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Text Field -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputConsoleCodeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/console_number"
+                    app:hintAnimationEnabled="true"
+                    app:hintEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textInputConsoleCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/labelConsoleCodeError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/colorError" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/navigationLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/buttonNext"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:id="@+id/destination_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/next" />
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_below="@id/console_code_layout"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <!-- Icon -->
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_icon_destination"
+                app:tint="?android:attr/textColor" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@drawable/dec_main_input"
+                    android:orientation="vertical"
+                    android:paddingBottom="2px">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="20px"
+                        android:paddingTop="10px"
+                        android:paddingBottom="1dp"
+                        android:text="@string/destination"
+                        android:textColor="?android:attr/textColor" />
+
+                    <Button
+                        android:id="@+id/buttonSelectDestination"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="?android:attr/colorControlHighlight"
+                        android:drawableEnd="@drawable/ic_menu_down"
+                        android:text="@string/select_destination"
+                        android:textAlignment="textStart"
+                        android:textColor="?android:attr/textColor"
+                        android:tint="?android:attr/textColor" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/labelDestinationError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/colorError" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navigationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/next" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>
