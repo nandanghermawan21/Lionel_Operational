@@ -14,48 +14,60 @@
         android:scaleType="fitCenter"
         android:src="@drawable/img_logo" />
 
-    <EditText
-        android:id="@+id/editTextEmail"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
         android:layout_below="@+id/imageView"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp">
 
-    <EditText
-        android:id="@+id/editTextPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_below="@id/editTextEmail"
-        android:layout_marginTop="8dp"/>
+        android:layout_below="@id/textInputLayoutEmail"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_below="@id/editTextPassword"
-        android:layout_marginTop="16dp"/>
+        android:layout_below="@id/textInputLayoutPassword"
+        android:layout_marginTop="16dp"
+        android:text="Login" />
 
     <TextView
         android:id="@+id/textViewForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot Password?"
         android:layout_below="@id/buttonLogin"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:layout_centerHorizontal="true"/>
+        android:text="Forgot Password?" />
 
     <TextView
         android:id="@+id/textViewSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Sign Up"
         android:layout_below="@id/textViewForgotPassword"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
+        android:text="Don't have an account? Sign Up" />
 
 </RelativeLayout>

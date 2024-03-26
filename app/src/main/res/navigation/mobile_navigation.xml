@@ -15,7 +15,7 @@
         android:id="@+id/nav_console"
         android:name="com.lionel.operational.ui.console.ConsoleCreateFragment"
         android:label="@string/menu_create_console"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_console" />
 
     <fragment
         android:id="@+id/nav_way_bill"

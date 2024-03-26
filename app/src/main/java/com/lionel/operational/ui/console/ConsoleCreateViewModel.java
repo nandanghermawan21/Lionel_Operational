@@ -1,19 +1,43 @@
 package com.lionel.operational.ui.console;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConsoleCreateViewModel extends ViewModel {
+    private List<String> sttItems;
+    private List<String> destinationItems;
 
-    private final MutableLiveData<String> mText;
-
-    public ConsoleCreateViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+    public List<String> getSttItems() {
+        if (sttItems == null) {
+            initDataSttList();
+        }
+        return sttItems;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    private void initDataSttList() {
+        // Isi dataList dengan data yang diinginkan
+        sttItems = new ArrayList<>();
+        sttItems.add("Item 1");
+        sttItems.add("Item 2");
+        sttItems.add("Item 3");
+        // Tambahkan data lainnya sesuai kebutuhan
+    }
+
+    public List<String> getDestinationItems() {
+        if (destinationItems == null) {
+            initDataSttList();
+        }
+        return destinationItems;
+    }
+
+    private void initDataDepartmentList() {
+        // Isi dataList dengan data yang diinginkan
+        destinationItems = new ArrayList<>();
+        destinationItems.add("Item 1");
+        destinationItems.add("Item 2");
+        destinationItems.add("Item 3");
+        // Tambahkan data lainnya sesuai kebutuhan
     }
 }

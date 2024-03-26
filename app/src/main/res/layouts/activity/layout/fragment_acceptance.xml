@@ -7,7 +7,7 @@
 
     <!-- Row 1: Icon and Search Field -->
     <LinearLayout
-        android:id="@+id/searchLayout"
+        android:id="@+id/console_code_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -21,9 +21,8 @@
             android:src="@drawable/ic_icon_scanner"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
-            android:background="@color/white"
             android:padding="8dp"
-            app:tint="@color/black" />
+            app:tint="?android:attr/textColor" />
 
         <!-- Text Field -->
         <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/searchLayout">
+        android:layout_below="@id/console_code_layout">
 
         <!-- GW Input -->
         <com.google.android.material.textfield.TextInputLayout

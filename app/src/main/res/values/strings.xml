@@ -17,4 +17,9 @@
     <string name="length">Length</string>
     <string name="width">Width</string>
     <string name="height">Height</string>
+    <string name="console_number">Console Number</string>
+    <string name="destination">Destination</string>
+    <string name="select_destination">Select Destination</string>
+    <string name="next">Next</string>
+    <string name="error_message">Get data error %s</string>
 </resources>
