@@ -24,4 +24,6 @@
     <string name="error_message">Get data error %s</string>
     <string name="error_destination">Please select destination</string>
     <string name="error_console_code">Please input / scan Console Code</string>
+    <string name="email_required">Email required</string>
+    <string name="password_required">Password required</string>
 </resources>

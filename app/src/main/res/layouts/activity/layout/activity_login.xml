@@ -29,11 +29,19 @@
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/labelEmailError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/textInputLayoutEmail"
+        android:textColor="?android:attr/colorError" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textInputLayoutEmail"
+        android:layout_below="@id/labelEmailError"
         android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -44,30 +52,21 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/labelPasswordError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/textInputLayoutPassword"
+        android:textColor="?android:attr/colorError" />
+
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textInputLayoutPassword"
+        android:layout_below="@id/labelPasswordError"
         android:layout_marginTop="16dp"
         android:text="Login" />
 
-    <TextView
-        android:id="@+id/textViewForgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/buttonLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:text="Forgot Password?" />
-
-    <TextView
-        android:id="@+id/textViewSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewForgotPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Don't have an account? Sign Up" />
 
 </RelativeLayout>
