@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="top"
         android:layout_marginBottom="16dp">
 
         <!-- Icon -->
@@ -24,22 +25,38 @@
             android:padding="8dp"
             app:tint="?android:attr/textColor" />
 
-        <!-- Text Field -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputSearch"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="@string/SttNumber"
-            app:hintEnabled="true"
-            app:hintAnimationEnabled="true">
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextSearch"
+            <!-- Text Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/SttNumber"
+                app:hintEnabled="true"
+                app:hintAnimationEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/labelSearchError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:visibility="gone"
+                android:textColor="?android:attr/colorError" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Blok Input -->
@@ -56,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/gross_weight"
+            android:inputType="numberDecimal"
             app:hintEnabled="true"
             app:hintAnimationEnabled="true">
 
@@ -124,13 +142,32 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
 
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:text="@string/next" />
+
         <!-- Submit Button -->
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
+            android:text="@string/cancel" />
+
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_marginLeft="8dp"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:text="@string/submit" />
 
         <!-- Other Navigation Buttons -->
         <!-- Add other navigation buttons here if needed -->

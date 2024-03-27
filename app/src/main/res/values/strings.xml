@@ -26,4 +26,11 @@
     <string name="error_console_code">Please input / scan Console Code</string>
     <string name="email_required">Email required</string>
     <string name="password_required">Password required</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="please_fill_STT">Please insert STT number</string>
+    <string name="gw_required">Gross Weight Required</string>
+    <string name="length_required">Length Required</string>
+    <string name="width_required">Width Required</string>
+    <string name="height_required">Height Required</string>
 </resources>
