@@ -33,4 +33,5 @@
     <string name="length_required">Length Required</string>
     <string name="width_required">Width Required</string>
     <string name="height_required">Height Required</string>
+    <string name="add">ADD</string>
 </resources>

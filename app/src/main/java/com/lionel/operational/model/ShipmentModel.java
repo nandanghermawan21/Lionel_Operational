@@ -3,6 +3,9 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 public class ShipmentModel {
+    private String vdate;
+    private String code;
+    private String barcode;
     private double length;
     private double width;
     private double height;
@@ -96,5 +99,29 @@ public class ShipmentModel {
     public String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public String getVdate() {
+        return vdate;
+    }
+
+    public void setVdate(String vdate) {
+        this.vdate = vdate;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 }
