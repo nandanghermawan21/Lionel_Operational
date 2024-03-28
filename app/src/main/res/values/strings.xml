@@ -36,4 +36,18 @@
     <string name="add">ADD</string>
     <string name="error_shipment_exist">Shipment already exist</string>
     <string name="error_shipment_empty">Please fill in at least one shipment</string>
+    <string name="way_bill_no">Way Bill Number</string>
+    <string name="shipping_method">Shipping Method</string>
+    <string name="select_shipping_method">Select Shipping Method</string>
+    <string name="shipping_agent">Shipping Agent</string>
+    <string name="select_shipping_agent">Select Shipping Agent</string>
+    <string name="origin">Origin</string>
+    <string name="select_origin">Select Origin</string>
+    <string name="liner">Liner</string>
+    <string name="select_liner">Select Liner</string>
+    <string name="waybill_no_required">Way bill number is required</string>
+    <string name="shipping_method_required">Shipping method is required</string>
+    <string name="shipping_agent_required">shipping agent is required</string>
+    <string name="rigin_required">Origin is required</string>
+    <string name="liner_required">Liner is required</string>
 </resources>

@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/nav_way_bill"
-        android:name="com.lionel.operational.ui.PaySlip.PaySlipFragment"
+        android:name="com.lionel.operational.ui.WayBill.WayBillFragment"
         android:label="@string/menu_create_way_bill"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_waybill" />
 
     <fragment
         android:id="@+id/nav_stob"

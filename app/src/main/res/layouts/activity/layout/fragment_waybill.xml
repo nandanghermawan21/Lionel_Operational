@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/layoutInputWayBill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <!-- Text Field -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputConsoleCodeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/way_bill_no"
+                        app:hintAnimationEnabled="true"
+                        app:hintEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputWayBillNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/labelWayBillNoError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/colorError" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/dec_main_input"
+                        android:orientation="vertical"
+                        android:paddingBottom="2px">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20px"
+                            android:paddingTop="10px"
+                            android:paddingBottom="1dp"
+                            android:text="@string/shipping_method"
+                            android:textColor="?android:attr/textColor" />
+
+                        <Button
+                            android:id="@+id/buttonSelectShippingMethod"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="?android:attr/colorControlHighlight"
+                            android:drawableEnd="@drawable/ic_menu_down"
+                            android:text="@string/select_shipping_method"
+                            android:textAlignment="textStart"
+                            android:textColor="?android:attr/textColor"
+                            android:tint="?android:attr/textColor" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/labelShippingMethodError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/colorError" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/dec_main_input"
+                        android:orientation="vertical"
+                        android:paddingBottom="2px">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20px"
+                            android:paddingTop="10px"
+                            android:paddingBottom="1dp"
+                            android:text="@string/shipping_agent"
+                            android:textColor="?android:attr/textColor" />
+
+                        <Button
+                            android:id="@+id/buttonSelectShippingAgent"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="?android:attr/colorControlHighlight"
+                            android:drawableEnd="@drawable/ic_menu_down"
+                            android:text="@string/select_shipping_agent"
+                            android:textAlignment="textStart"
+                            android:textColor="?android:attr/textColor"
+                            android:tint="?android:attr/textColor" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/labelShippingAgentError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/colorError" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/dec_main_input"
+                        android:orientation="vertical"
+                        android:paddingBottom="2px">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20px"
+                            android:paddingTop="10px"
+                            android:paddingBottom="1dp"
+                            android:text="@string/origin"
+                            android:textColor="?android:attr/textColor" />
+
+                        <Button
+                            android:id="@+id/buttonSelectOrigin"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="?android:attr/colorControlHighlight"
+                            android:drawableEnd="@drawable/ic_menu_down"
+                            android:text="@string/select_origin"
+                            android:textAlignment="textStart"
+                            android:textColor="?android:attr/textColor"
+                            android:tint="?android:attr/textColor" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/labelOriginError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/colorError" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/dec_main_input"
+                        android:orientation="vertical"
+                        android:paddingBottom="2px">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20px"
+                            android:paddingTop="10px"
+                            android:paddingBottom="1dp"
+                            android:text="@string/liner"
+                            android:textColor="?android:attr/textColor" />
+
+                        <Button
+                            android:id="@+id/buttonSelectLiner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="?android:attr/colorControlHighlight"
+                            android:drawableEnd="@drawable/ic_menu_down"
+                            android:text="@string/select_liner"
+                            android:textAlignment="textStart"
+                            android:textColor="?android:attr/textColor"
+                            android:tint="?android:attr/textColor" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/labelLinerError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/colorError" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/navigationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:text="@string/next" />
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:text="@string/submit" />
+
+            <!-- Other Navigation Buttons -->
+            <!-- Add other navigation buttons here if needed -->
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>
