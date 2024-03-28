@@ -1,6 +1,9 @@
 package com.lionel.operational;
 
+import static com.lionel.operational.model.Constant.AUTH_TOKEN;
 import static com.lionel.operational.model.Constant.BASE_URL;
+import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
+import static com.lionel.operational.model.Constant.USERDATA;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.lionel.operational.model.AccountModel;
+import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
 
@@ -81,12 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void postLogin() {
         //post api login
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiService apiService = retrofit.create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
         Call<ApiResponse<AccountModel>> call = apiService.login(inputEmail.getText().toString(), inputPassword.getText().toString());
 
@@ -98,10 +97,10 @@ public class LoginActivity extends AppCompatActivity {
                         AccountModel accountModel = response.body().getData();
                         Log.d("LoginActivity", "onResponse: " + accountModel.getName());
                         //set seeion is login true
-                        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean("isLoggedIn", true);
-                        editor.putString("userData", accountModel.toJson());
+                        editor.putString(AUTH_TOKEN, accountModel.getToken());
+                        editor.putString(USERDATA, accountModel.toJson());
                         editor.apply();
                         // Create Intent to start MainActivity
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

@@ -1,6 +1,7 @@
 package com.lionel.operational.adapter;
 
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -58,10 +59,12 @@ public class DestinationRecaicleViewAdapter extends RecyclerView.Adapter<Destina
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView destinationMame;
+        TextView branchId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             destinationMame = itemView.findViewById(R.id.textDestinationName);
+            branchId = itemView.findViewById(R.id.textBranchId);
         }
     }
 

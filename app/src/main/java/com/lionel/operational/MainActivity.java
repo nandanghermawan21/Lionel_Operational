@@ -1,5 +1,8 @@
 package com.lionel.operational;
 
+import static com.lionel.operational.model.Constant.AUTH_TOKEN;
+import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean sessionIsNull() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
         // Periksa apakah nilai 'isLoggedIn' dalam SharedPreferences bernilai false atau belum ada sama sekali
-        return !sharedPreferences.getBoolean("isLoggedIn", false);
+        return !sharedPreferences.getString(AUTH_TOKEN, "").isEmpty();
     }
 
     private void redirectToLoginPage() {
@@ -93,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         // Hapus status login dari SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        sharedPreferences.edit().remove("isLoggedIn").apply();
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().remove(AUTH_TOKEN).apply();
 
         // Redirect ke halaman login
         redirectToLoginPage();

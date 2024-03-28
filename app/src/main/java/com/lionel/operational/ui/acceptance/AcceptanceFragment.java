@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.lionel.operational.R;
+import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
 import com.lionel.operational.model.ShipmentModel;
@@ -140,31 +141,26 @@ public class AcceptanceFragment extends Fragment {
     }
 
     private void doGetShipment() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        ApiService apiService = retrofit.create(ApiService.class);
-
-        Call<ApiResponse<ShipmentModel>> call = apiService.getShipment(editTextSearch.getText().toString());
+        Call<ApiResponse<ShipmentModel>> call = apiService.getShipment(editTextSearch.getText().toString(), "get-shipment", "");
 
         call.enqueue(new Callback<ApiResponse<ShipmentModel>>() {
 
             @Override
             public void onResponse(Call<ApiResponse<ShipmentModel>> call, Response<ApiResponse<ShipmentModel>> response) {
                 if (response.isSuccessful()) {
-                    if(response.body().isSuccess()){
+                    if (response.body().isSuccess()) {
                         viewModel.setShipment(response.body().getData());
                         viewModel.setStateAsCreated();
                         editTextGW.setText(String.valueOf(viewModel.getShipment().getValue().getGrossWeight()));
                         editTextLength.setText(String.valueOf(viewModel.getShipment().getValue().getLength()));
                         editTextWidth.setText(String.valueOf(viewModel.getShipment().getValue().getWidth()));
                         editTextHeight.setText(String.valueOf(viewModel.getShipment().getValue().getHeight()));
-                    }else{
+                    } else {
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -177,48 +173,43 @@ public class AcceptanceFragment extends Fragment {
         });
     }
 
-    private void doSubmit(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    private void doSubmit() {
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        ApiService apiService = retrofit.create(ApiService.class);
+        Call<ApiResponse> call = apiService.acceptShipment(
+                "accept-shipment",
+                editTextSearch.getText().toString(),
+                editTextGW.getText().toString(),
+                editTextLength.getText().toString(),
+                editTextWidth.getText().toString(),
+                editTextHeight.getText().toString()
+        );
 
-            Call<ApiResponse> call = apiService.acceptShipment(
-                    "accept-shipment",
-                    editTextSearch.getText().toString(),
-                    editTextGW.getText().toString(),
-                    editTextLength.getText().toString(),
-                    editTextWidth.getText().toString(),
-                    editTextHeight.getText().toString()
-            );
-
-            call.enqueue(new Callback<ApiResponse>() {
-                @Override
-                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                    if (response.isSuccessful()) {
-                        if(response.body().isSuccess()){
-                            Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                            viewModel.setStateAsNew();
-                            editTextSearch.setText("");
-                            editTextGW.setText("");
-                            editTextLength.setText("");
-                            editTextWidth.setText("");
-                            editTextHeight.setText("");
-                        }else{
-                            Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().isSuccess()) {
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        viewModel.setStateAsNew();
+                        editTextSearch.setText("");
+                        editTextGW.setText("");
+                        editTextLength.setText("");
+                        editTextWidth.setText("");
+                        editTextHeight.setText("");
+                    } else {
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<ApiResponse> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

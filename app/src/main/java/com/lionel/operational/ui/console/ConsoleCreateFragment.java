@@ -1,7 +1,14 @@
 package com.lionel.operational.ui.console;
 
+import static com.lionel.operational.model.Constant.AUTH_TOKEN;
+import static com.lionel.operational.model.Constant.BASE_URL;
+import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
+import static com.lionel.operational.model.Constant.USERDATA;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.text.Editable;
@@ -12,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -27,12 +35,22 @@ import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
 import com.lionel.operational.R;
 import com.lionel.operational.adapter.ShipmentReceicleViewAdapter;
+import com.lionel.operational.model.AccountModel;
+import com.lionel.operational.model.ApiClient;
+import com.lionel.operational.model.ApiResponse;
+import com.lionel.operational.model.ApiService;
 import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ShipmentModel;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConsoleCreateFragment extends Fragment {
 
@@ -53,6 +71,7 @@ public class ConsoleCreateFragment extends Fragment {
     ShipmentReceicleViewAdapter shipmentReceicleViewAdapter;
     Button buttonAddShipment;
     TextInputEditText inputShipmentCode;
+    TextView labelShipmentCodeError;
 
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -85,8 +104,14 @@ public class ConsoleCreateFragment extends Fragment {
         shipmentReceicleViewAdapter = new ShipmentReceicleViewAdapter(viewModel.getShipmentList().getValue());
         recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
 
-        // Load data into adapter
-        // adapter.setData(data); // You can set data here if needed
+        //set listener adapter
+        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentReceicleViewAdapter.OnItemShipmentClickListener() {
+            @Override
+            public void onItemClickDelete(ShipmentModel item) {
+                viewModel.removeShipment(item);
+                shipmentReceicleViewAdapter.notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
@@ -109,6 +134,7 @@ public class ConsoleCreateFragment extends Fragment {
         labelDetailDestination = view.findViewById(R.id.detailConsoleDestination);
         buttonAddShipment = view.findViewById(R.id.buttonAddShipment);
         inputShipmentCode = view.findViewById(R.id.textInputSTTCode);
+        labelShipmentCodeError = view.findViewById(R.id.labelSTTCodeError);
 
         buttonGetDestination.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,8 +196,9 @@ public class ConsoleCreateFragment extends Fragment {
             public void onChanged(DestinationModel destinationModel) {
                 if(destinationModel != null){
                     viewModel.setDestinationErrorMessage("");
-                }else{
                     buttonGetDestination.setText(destinationModel.getId());
+                }else{
+                    buttonGetDestination.setText(getString(R.string.select_destination));
                 }
             }
         });
@@ -210,6 +237,18 @@ public class ConsoleCreateFragment extends Fragment {
             }
         });
 
+        //handle on click submit
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(viewModel.getShipmentList().getValue().size() == 0) {
+                    Toast.makeText(getContext(), getString(R.string.error_shipment_empty), Toast.LENGTH_SHORT).show();
+                }else{
+                    doSubmit();
+                }
+            }
+        });
+
         //handle on click add
         buttonAddShipment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,8 +256,28 @@ public class ConsoleCreateFragment extends Fragment {
                 //create object shipemnt
                 ShipmentModel shipmentModel = new ShipmentModel();
                 shipmentModel.setParentCode(inputConsoleCode.getText().toString());
-                //add new shipment
-                viewModel.addShipment(shipmentModel);
+                //validaasi apakah shipmentCode sudah diisi
+                if(inputShipmentCode.getText().toString().isEmpty()) {
+                    labelShipmentCodeError.setText(getString(R.string.please_fill_STT));
+                    labelShipmentCodeError.setVisibility(View.VISIBLE);
+                }else{
+                    boolean isExist = false;
+                    for (ShipmentModel shipment : viewModel.getShipmentList().getValue()) {
+                        if(shipment.getBarcode().equals(inputShipmentCode.getText().toString())) {
+                            isExist = true;
+                            break;
+                        }
+                    }
+                    if(isExist) {
+                        labelShipmentCodeError.setText(getString(R.string.error_shipment_exist));
+                        labelShipmentCodeError.setVisibility(View.VISIBLE);
+                    }else{
+                        labelShipmentCodeError.setText("");
+                        labelShipmentCodeError.setVisibility(View.GONE);
+                        doAddShipment();
+                    }
+                }
+
             }
         });
 
@@ -238,4 +297,88 @@ public class ConsoleCreateFragment extends Fragment {
         destinationLauncher.launch(intent);
     }
 
+    private void doAddShipment() {
+        //ambil shipment dari api
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+
+        Call<ApiResponse<ShipmentModel>> call = apiService.getShipment(inputShipmentCode.getText().toString(), "get-shipment",  viewModel.getDestinationModel().getValue().getId());
+
+        call.enqueue(new retrofit2.Callback<ApiResponse<ShipmentModel>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<ShipmentModel>> call, retrofit2.Response<ApiResponse<ShipmentModel>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    if(response.body().isSuccess()) {
+                        ShipmentModel shipmentModel = response.body().getData();
+                        //for test set parent code
+                        shipmentModel.setBarcode(inputShipmentCode.getText().toString());
+                        viewModel.addShipment(shipmentModel);
+                        //update adapter
+                        shipmentReceicleViewAdapter.notifyDataSetChanged();
+                        //set listener adapter
+                        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentReceicleViewAdapter.OnItemShipmentClickListener() {
+                            @Override
+                            public void onItemClickDelete(ShipmentModel item) {
+                                viewModel.removeShipment(item);
+                                shipmentReceicleViewAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        //scroll to last position
+                        recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
+                    }else{
+                        //show error message
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<ShipmentModel>> call, Throwable t) {
+                //show error message
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void doSubmit(){
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+
+        //get data user from shared preferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        AccountModel account = new Gson().fromJson(sharedPreferences.getString(USERDATA, "{}"), AccountModel.class);
+
+        Call<ApiResponse> call = apiService.submitConsole(
+                "submit-console",
+                inputConsoleCode.getText().toString(),
+                account.getName(),
+                viewModel.getDestinationModel().getValue().getBranchId(),
+                viewModel.getDestinationModel().getValue().getId(),
+                Arrays.stream(viewModel.getShipmentList().getValue().toArray(new ShipmentModel[0]))
+                        .map(ShipmentModel::getBarcode)
+                        .collect(Collectors.toList()));
+
+        call.enqueue(new retrofit2.Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, retrofit2.Response<ApiResponse> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    if(response.body().isSuccess()) {
+                        //show success message
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //reset form
+                        viewModel.setStateAsNew();
+                        inputConsoleCode.setText("");
+                        viewModel.setDestinationModel(null);
+                    }else{
+                        //show error message
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                //show error message
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

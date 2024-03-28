@@ -13,6 +13,10 @@ public class AccountModel {
     private String group;
     @SerializedName("branch_id")
     private String branchId;
+    @SerializedName("token")
+    private String token;
+    @SerializedName("nonce")
+    private String nonce;
 
     public int getAuth() {
         return auth;
@@ -53,5 +57,21 @@ public class AccountModel {
     public String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
     }
 }

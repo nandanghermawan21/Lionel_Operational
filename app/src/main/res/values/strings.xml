@@ -34,4 +34,6 @@
     <string name="width_required">Width Required</string>
     <string name="height_required">Height Required</string>
     <string name="add">ADD</string>
+    <string name="error_shipment_exist">Shipment already exist</string>
+    <string name="error_shipment_empty">Please fill in at least one shipment</string>
 </resources>

@@ -8,15 +8,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/textDestinationName"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="?android:attr/textColor"
+            android:paddingVertical="4dp"/>
+
+        <TextView
+            android:id="@+id/textBranchId"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAlignment="textEnd"
             android:textColor="?android:attr/textColor"
             android:paddingVertical="4dp"/>
 

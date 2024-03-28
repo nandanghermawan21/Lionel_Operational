@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lionel.operational.adapter.DestinationRecaicleViewAdapter;
+import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
 import com.lionel.operational.model.DestinationModel;
@@ -72,14 +73,9 @@ public class GetDestinationActivity extends AppCompatActivity {
     }
 
     private void fetchDataFromApi() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        ApiService service = retrofit.create(ApiService.class);
-
-        Call<ApiResponse<List<DestinationModel>>> call = service.getDestination();
+        Call<ApiResponse<List<DestinationModel>>> call = apiService.getDestination();
 
         call.enqueue(new Callback<ApiResponse<List<DestinationModel>>>() {
             @Override
