@@ -23,6 +23,7 @@
 
                 <!-- Judul AppBar ditempatkan di tengah -->
                 <TextView
+                    android:id="@+id/appBarTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -47,6 +48,7 @@
 
             <!-- Text Field -->
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutSearchDestination"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"

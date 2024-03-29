@@ -12,7 +12,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/textDestinationName"
+            android:id="@+id/optionName"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             android:paddingVertical="4dp"/>
 
         <TextView
-            android:id="@+id/textBranchId"
+            android:id="@+id/optionId"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

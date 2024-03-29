@@ -1,7 +1,7 @@
 package com.lionel.operational;
 
-import static com.lionel.operational.model.Constant.BASE_URL;
 import static com.lionel.operational.model.Constant.DESTINATION_KEY;
+import static com.lionel.operational.model.Constant.GET_DESTINATION;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +14,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.lionel.operational.adapter.DestinationRecaicleViewAdapter;
+import com.lionel.operational.adapter.DestinationRecycleViewAdapter;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
@@ -26,8 +26,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GetDestinationActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -35,13 +33,13 @@ public class GetDestinationActivity extends AppCompatActivity {
 
     DestinationModel selectedDestination = new DestinationModel();
     List<DestinationModel> destinations =  new ArrayList<>();
-    DestinationRecaicleViewAdapter adapter = new DestinationRecaicleViewAdapter(destinations);
+    DestinationRecycleViewAdapter adapter = new DestinationRecycleViewAdapter(destinations);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_destination);
+        setContentView(R.layout.activity_get_option);
 
         //initialize search view
         textFieldSearchDestinationView = findViewById(R.id.inputTextSearchDestination);
@@ -83,20 +81,20 @@ public class GetDestinationActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     if(response.body().isSuccess()) {
                         destinations = response.body().getData();
-                        adapter = new DestinationRecaicleViewAdapter(destinations);
+                        adapter = new DestinationRecycleViewAdapter(destinations);
                         recyclerView.setAdapter(adapter);
-                        adapter.setOnItemClickListener(new DestinationRecaicleViewAdapter.OnItemDestinationClickListener() {
+                        adapter.setOnItemClickListener(new DestinationRecycleViewAdapter.OnItemOptionClickListener() {
                             @Override
                             public void onItemClick(DestinationModel item) {
                                 selectedDestination = item;
-                                setResult(RESULT_OK, getIntent().putExtra(DESTINATION_KEY, selectedDestination.toJson()));
+                                setResult(RESULT_OK, getIntent().putExtra(GET_DESTINATION, selectedDestination.toJson()));
                                 finish();
                             }
                         });
-                        Log.e("GET_DESTINATION", "onResponse: "+ destinations.size());
+                        Log.e(GET_DESTINATION, "onResponse: "+ destinations.size());
                     } else {
                         Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("GET_DESTINATION", "onResponse: "+ response.body().getMessage());
+                        Log.e(GET_DESTINATION, "onResponse: "+ response.body().getMessage());
                     }
                 }
             }
@@ -106,7 +104,7 @@ public class GetDestinationActivity extends AppCompatActivity {
                 String errorMessage = getString(R.string.error_message);
                 errorMessage = String.format(errorMessage, t.getMessage());
                 Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                Log.e("GET_DESTINATION", "onFailure: "+ t.getMessage());
+                Log.e(GET_DESTINATION, "onFailure: "+ t.getMessage());
             }
         });
     }

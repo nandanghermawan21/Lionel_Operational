@@ -1,5 +1,8 @@
 package com.lionel.operational.ui.WayBill;
 
+import static com.lionel.operational.model.Constant.GET_DESTINATION;
+import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +23,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
+import com.lionel.operational.GetShippingMethodActivity;
 import com.lionel.operational.R;
 import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.ShippingMethodModel;
 
 public class WayBillFragment extends Fragment {
 
@@ -32,6 +37,7 @@ public class WayBillFragment extends Fragment {
     private Button buttonCancel;
     private Button buttonSubmit;
     private TextView labelWayBillError;
+    private Button buttonShippingMethod;
     private TextView labelShippingMethodError;
     private TextView labelShippingAgentError;
     private Button buttonOrigin;
@@ -42,11 +48,23 @@ public class WayBillFragment extends Fragment {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    String destination = data.getStringExtra("DESTINATION");
+                    String destination = data.getStringExtra(GET_DESTINATION);
                     //ubah data ke dalam bentuk object
                     DestinationModel destinationModel = new Gson().fromJson(destination, DestinationModel.class);
                     // set data ke dalam view model
                     viewModel.setOrigin(destinationModel);
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> shippingMethodLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String shippingMethod = data.getStringExtra(GET_SHIPPING_METHOD);
+                    //ubah data ke dalam bentuk object
+                    ShippingMethodModel shippingMethodModel = new Gson().fromJson(shippingMethod, ShippingMethodModel.class);
+                    // set data ke dalam view model
+                    viewModel.setShippingMethod(shippingMethodModel);
                 }
             });
 
@@ -74,6 +92,7 @@ public class WayBillFragment extends Fragment {
         buttonCancel = view.findViewById(R.id.buttonCancel);
         buttonSubmit = view.findViewById(R.id.buttonSubmit);
         labelWayBillError = view.findViewById(R.id.labelWayBillNoError);
+        buttonShippingMethod = view.findViewById(R.id.buttonSelectShippingMethod);
         labelShippingMethodError = view.findViewById(R.id.labelShippingMethodError);
         labelShippingAgentError = view.findViewById(R.id.labelShippingAgentError);
         buttonOrigin = view.findViewById(R.id.buttonSelectOrigin);
@@ -153,11 +172,33 @@ public class WayBillFragment extends Fragment {
                 buttonOrigin.setText(getString(R.string.select_origin));
             }
         });
+
+        buttonShippingMethod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSelectShippingMethod();
+            }
+        });
+
+        //wath shipping method data
+        viewModel.getShippingMethod().observe(getViewLifecycleOwner(), shippingMethodModel -> {
+            if(shippingMethodModel != null){
+                buttonShippingMethod.setText(shippingMethodModel.getId());
+                labelShippingMethodError.setText("");
+            }else{
+                buttonShippingMethod.setText(getString(R.string.select_shipping_method));
+            }
+        });
     }
 
     private void openSelectOrigin() {
         Intent intent = new Intent(getActivity(), GetDestinationActivity.class);
         destinationLauncher.launch(intent);
+    }
+
+    private void openSelectShippingMethod() {
+        Intent intent = new Intent(getActivity(), GetShippingMethodActivity.class);
+        shippingMethodLauncher.launch(intent);
     }
 
     @Override

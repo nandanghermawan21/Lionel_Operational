@@ -46,4 +46,9 @@ public interface ApiService {
             @Field("recordDestCity") String recordDestCity,
             @Field("recordSttNo[]") List<String> recordSttNo
     );
+
+    @GET("shippingMethod")
+    Call<ApiResponse<List<ShippingMethodModel>>> getShippingMethod(
+            @Query("action") String action
+    );
 }

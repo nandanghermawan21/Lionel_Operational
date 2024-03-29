@@ -1,7 +1,6 @@
 package com.lionel.operational.adapter;
 
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,26 +9,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lionel.operational.R;
-import com.lionel.operational.interfaces.OnItemDestinationClickListener;
 import com.lionel.operational.model.DestinationModel;
 
 import java.util.List;
 
-public class DestinationRecaicleViewAdapter extends RecyclerView.Adapter<DestinationRecaicleViewAdapter.ViewHolder> {
+public class DestinationRecycleViewAdapter extends RecyclerView.Adapter<DestinationRecycleViewAdapter.ViewHolder> {
 
     private List<DestinationModel> itemList;
     private List<DestinationModel> filteredList;
-    private OnItemDestinationClickListener listener;
+    private OnItemOptionClickListener listener;
 
-    public interface OnItemDestinationClickListener {
+    public interface OnItemOptionClickListener {
         void onItemClick(DestinationModel position);
     }
 
-    public void setOnItemClickListener(OnItemDestinationClickListener listener) {
+    public void setOnItemClickListener(OnItemOptionClickListener listener) {
         this.listener = listener;
     }
 
-    public DestinationRecaicleViewAdapter(List<DestinationModel> itemList) {
+    public DestinationRecycleViewAdapter(List<DestinationModel> itemList) {
         this.itemList = itemList;
         this.filteredList = itemList;
     }
@@ -37,7 +35,7 @@ public class DestinationRecaicleViewAdapter extends RecyclerView.Adapter<Destina
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_destination, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_option, parent, false);
         return new ViewHolder(view);
     }
 
@@ -63,8 +61,8 @@ public class DestinationRecaicleViewAdapter extends RecyclerView.Adapter<Destina
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            destinationMame = itemView.findViewById(R.id.textDestinationName);
-            branchId = itemView.findViewById(R.id.textBranchId);
+            destinationMame = itemView.findViewById(R.id.optionName);
+            branchId = itemView.findViewById(R.id.optionId);
         }
     }
 

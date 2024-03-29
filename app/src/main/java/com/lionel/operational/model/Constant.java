@@ -8,5 +8,9 @@ public class Constant {
     public static final String AUTH_NONCE = "AUTH_NONCE";
     public static final String USERDATA = "USERDATA";
 
+    //KEY FOR SHARED FOR ACTIVITY RESULT
+    public static final String GET_DESTINATION = "GET_DESTINATION";
+    public static final String GET_SHIPPING_METHOD = "GET_SHIPPING_METHOD";
+
     public static final String BASE_URL = "http://demo1023406.mockable.io/";
 }

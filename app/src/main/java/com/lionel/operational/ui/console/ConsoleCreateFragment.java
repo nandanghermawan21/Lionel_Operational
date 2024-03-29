@@ -1,7 +1,6 @@
 package com.lionel.operational.ui.console;
 
-import static com.lionel.operational.model.Constant.AUTH_TOKEN;
-import static com.lionel.operational.model.Constant.BASE_URL;
+import static com.lionel.operational.model.Constant.GET_DESTINATION;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
 import static com.lionel.operational.model.Constant.USERDATA;
 
@@ -10,9 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.ResultReceiver;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +30,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
 import com.lionel.operational.R;
-import com.lionel.operational.adapter.ShipmentReceicleViewAdapter;
+import com.lionel.operational.adapter.ShipmentRecycleViewAdapter;
 import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
@@ -49,8 +45,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConsoleCreateFragment extends Fragment {
 
@@ -68,7 +62,7 @@ public class ConsoleCreateFragment extends Fragment {
     TextView labelDetailConsoleCode;
     TextView labelDetailDestination;
     RecyclerView recyclerShipmentView;
-    ShipmentReceicleViewAdapter shipmentReceicleViewAdapter;
+    ShipmentRecycleViewAdapter shipmentReceicleViewAdapter;
     Button buttonAddShipment;
     TextInputEditText inputShipmentCode;
     TextView labelShipmentCodeError;
@@ -77,7 +71,7 @@ public class ConsoleCreateFragment extends Fragment {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    String destination = data.getStringExtra("DESTINATION");
+                    String destination = data.getStringExtra(GET_DESTINATION);
                     //ubah data ke dalam bentuk object
                      DestinationModel destinationModel = new Gson().fromJson(destination, DestinationModel.class);
                     // set data ke dalam view model
@@ -101,11 +95,11 @@ public class ConsoleCreateFragment extends Fragment {
         recyclerShipmentView = view.findViewById(R.id.recyclerViewShipment);
         recyclerShipmentView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        shipmentReceicleViewAdapter = new ShipmentReceicleViewAdapter(viewModel.getShipmentList().getValue());
+        shipmentReceicleViewAdapter = new ShipmentRecycleViewAdapter(viewModel.getShipmentList().getValue());
         recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
 
         //set listener adapter
-        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentReceicleViewAdapter.OnItemShipmentClickListener() {
+        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
             @Override
             public void onItemClickDelete(ShipmentModel item) {
                 viewModel.removeShipment(item);
@@ -285,7 +279,7 @@ public class ConsoleCreateFragment extends Fragment {
         viewModel.getShipmentList().observe(getViewLifecycleOwner(), new Observer<List<ShipmentModel>>() {
             @Override
             public void onChanged(List<ShipmentModel> shipmentModels) {
-                shipmentReceicleViewAdapter = new ShipmentReceicleViewAdapter(shipmentModels);
+                shipmentReceicleViewAdapter = new ShipmentRecycleViewAdapter(shipmentModels);
                 recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
                 shipmentReceicleViewAdapter.notifyDataSetChanged();
             }
@@ -315,7 +309,7 @@ public class ConsoleCreateFragment extends Fragment {
                         //update adapter
                         shipmentReceicleViewAdapter.notifyDataSetChanged();
                         //set listener adapter
-                        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentReceicleViewAdapter.OnItemShipmentClickListener() {
+                        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
                             @Override
                             public void onItemClickDelete(ShipmentModel item) {
                                 viewModel.removeShipment(item);
