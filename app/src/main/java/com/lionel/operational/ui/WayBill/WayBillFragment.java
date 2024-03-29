@@ -1,6 +1,7 @@
 package com.lionel.operational.ui.WayBill;
 
 import static com.lionel.operational.model.Constant.GET_DESTINATION;
+import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
 
 import android.app.Activity;
@@ -23,9 +24,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
+import com.lionel.operational.GetShippingAgentActivity;
 import com.lionel.operational.GetShippingMethodActivity;
 import com.lionel.operational.R;
 import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingMethodModel;
 
 public class WayBillFragment extends Fragment {
@@ -39,6 +42,7 @@ public class WayBillFragment extends Fragment {
     private TextView labelWayBillError;
     private Button buttonShippingMethod;
     private TextView labelShippingMethodError;
+    private Button buttonShippingAgent;
     private TextView labelShippingAgentError;
     private Button buttonOrigin;
     private TextView labelShippingOriginError;
@@ -68,6 +72,18 @@ public class WayBillFragment extends Fragment {
                 }
             });
 
+    private final ActivityResultLauncher<Intent> shippingAgentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String shippingAgent = data.getStringExtra(GET_SHIPPING_AGENT);
+                    //ubah data ke dalam bentuk object
+                    ShippingAgentModel shippingAgentModel = new Gson().fromJson(shippingAgent, ShippingAgentModel.class);
+                    // set data ke dalam view model
+                    viewModel.setShippingAgent(shippingAgentModel);
+                }
+            });
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +110,7 @@ public class WayBillFragment extends Fragment {
         labelWayBillError = view.findViewById(R.id.labelWayBillNoError);
         buttonShippingMethod = view.findViewById(R.id.buttonSelectShippingMethod);
         labelShippingMethodError = view.findViewById(R.id.labelShippingMethodError);
+        buttonShippingAgent = view.findViewById(R.id.buttonSelectShippingAgent);
         labelShippingAgentError = view.findViewById(R.id.labelShippingAgentError);
         buttonOrigin = view.findViewById(R.id.buttonSelectOrigin);
         labelShippingOriginError = view.findViewById(R.id.labelOriginError);
@@ -180,6 +197,13 @@ public class WayBillFragment extends Fragment {
             }
         });
 
+        buttonShippingAgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSelectShippingAgent();
+            }
+        });
+
         //wath shipping method data
         viewModel.getShippingMethod().observe(getViewLifecycleOwner(), shippingMethodModel -> {
             if(shippingMethodModel != null){
@@ -187,6 +211,16 @@ public class WayBillFragment extends Fragment {
                 labelShippingMethodError.setText("");
             }else{
                 buttonShippingMethod.setText(getString(R.string.select_shipping_method));
+            }
+        });
+
+        //watch shipping agent data
+        viewModel.getShippingAgent().observe(getViewLifecycleOwner(), shippingAgentModel -> {
+            if(shippingAgentModel != null){
+                buttonShippingAgent.setText(shippingAgentModel.getName());
+                labelShippingAgentError.setText("");
+            }else{
+                buttonShippingAgent.setText(getString(R.string.select_shipping_agent));
             }
         });
     }
@@ -199,6 +233,11 @@ public class WayBillFragment extends Fragment {
     private void openSelectShippingMethod() {
         Intent intent = new Intent(getActivity(), GetShippingMethodActivity.class);
         shippingMethodLauncher.launch(intent);
+    }
+
+    private void openSelectShippingAgent() {
+        Intent intent = new Intent(getActivity(), GetShippingAgentActivity.class);
+        shippingAgentLauncher.launch(intent);
     }
 
     @Override

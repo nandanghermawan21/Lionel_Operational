@@ -1,11 +1,16 @@
 package com.lionel.operational;
 
+import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
+import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
+import static com.lionel.operational.model.Constant.USERDATA;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,11 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.lionel.operational.adapter.ShippingAgentRecycleViewAdapter;
 import com.lionel.operational.adapter.ShippingMethodRecycleViewAdapter;
+import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
-import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingMethodModel;
 
 import java.util.ArrayList;
@@ -29,17 +37,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GetShippingMethodActivity extends AppCompatActivity {
+public class GetShippingAgentActivity extends AppCompatActivity {
 
     private TextView titleAppBar;
     private TextInputLayout hintSearch;
     private RecyclerView recyclerView;
     private EditText textFieldSearchDestinationView;
 
-    ShippingMethodModel selectedShippingMethod = new ShippingMethodModel();
-    List<ShippingMethodModel> shippingMethods =  new ArrayList<>();
+    ShippingAgentModel selectedShippingAgent = new ShippingAgentModel();
+    List<ShippingAgentModel> shippingAgents =  new ArrayList<>();
 
-    ShippingMethodRecycleViewAdapter adapter = new ShippingMethodRecycleViewAdapter(shippingMethods);
+    ShippingAgentRecycleViewAdapter adapter = new ShippingAgentRecycleViewAdapter(shippingAgents);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +58,9 @@ public class GetShippingMethodActivity extends AppCompatActivity {
         hintSearch = findViewById(R.id.inputLayoutSearchDestination);
 
         //set title
-        titleAppBar.setText(getString(R.string.select_shipping_method));
+        titleAppBar.setText(getString(R.string.select_shipping_agent));
         //set hint
-        hintSearch.setHint(getString(R.string.shipping_method));
+        hintSearch.setHint(getString(R.string.shipping_agent));
 
         //initialize recyclerview
         textFieldSearchDestinationView = findViewById(R.id.inputTextSearchDestination);
@@ -60,7 +68,6 @@ public class GetShippingMethodActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        //fetch data from api
         getDataFromAPi();
 
         textFieldSearchDestinationView.addTextChangedListener(new TextWatcher() {
@@ -77,48 +84,53 @@ public class GetShippingMethodActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
     }
 
     private void getDataFromAPi() {
 
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<List<ShippingMethodModel>>> call = apiService.getShippingMethod("shipping-method");
+        //get data user from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        AccountModel account = new Gson().fromJson(sharedPreferences.getString(USERDATA, "{}"), AccountModel.class);
 
-        call.enqueue(new Callback<ApiResponse<List<ShippingMethodModel>>>() {
+        Call<ApiResponse<List<ShippingAgentModel>>> call = apiService.getShippingAgent("get-shipping-agent", account.getBranchId());
+
+        call.enqueue(new Callback<ApiResponse<List<ShippingAgentModel>>>() {
 
             @Override
-            public void onResponse(Call<ApiResponse<List<ShippingMethodModel>>> call, Response<ApiResponse<List<ShippingMethodModel>>> response) {
+            public void onResponse(Call<ApiResponse<List<ShippingAgentModel>>> call, Response<ApiResponse<List<ShippingAgentModel>>> response) {
                 if(response.body().isSuccess()) {
-                    shippingMethods = response.body().getData();
-                    adapter = new ShippingMethodRecycleViewAdapter(shippingMethods);
+                    shippingAgents = response.body().getData();
+                    adapter = new ShippingAgentRecycleViewAdapter(shippingAgents);
                     recyclerView.setAdapter(adapter);
-                    adapter.setOnItemClickListener(new ShippingMethodRecycleViewAdapter.OnItemOptionClickListener() {
+                    adapter.setOnItemClickListener(new ShippingAgentRecycleViewAdapter.OnItemOptionClickListener() {
                         @Override
-                        public void onItemClick(ShippingMethodModel item) {
-                            selectedShippingMethod = item;
-                            setResult(RESULT_OK, getIntent().putExtra(GET_SHIPPING_METHOD, selectedShippingMethod.toJson()));
+                        public void onItemClick(ShippingAgentModel item) {
+                            selectedShippingAgent = item;
+                            setResult(RESULT_OK, getIntent().putExtra(GET_SHIPPING_AGENT, selectedShippingAgent.toJson()));
                             finish();
                         }
                     });
-                    Log.e(GET_SHIPPING_METHOD, "onResponse: "+ shippingMethods.size());
+                    Log.e(GET_SHIPPING_AGENT, "onResponse: "+ shippingAgents.size());
                 } else {
                     Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(GET_SHIPPING_METHOD, "onResponse: "+ response.body().getMessage());
+                    Log.e(GET_SHIPPING_AGENT, "onResponse: "+ response.body().getMessage());
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<List<ShippingMethodModel>>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<ShippingAgentModel>>> call, Throwable t) {
 
             }
         });
     }
 
     private void filter(String text) {
-        List<ShippingMethodModel> filteredList = new ArrayList<>();
-        for (ShippingMethodModel item : shippingMethods) {
-            if (item.getId().toLowerCase().contains(text.toLowerCase())) {
+        List<ShippingAgentModel> filteredList = new ArrayList<>();
+        for (ShippingAgentModel item : shippingAgents) {
+            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }

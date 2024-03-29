@@ -1,6 +1,5 @@
 package com.lionel.operational;
 
-import static com.lionel.operational.model.Constant.DESTINATION_KEY;
 import static com.lionel.operational.model.Constant.GET_DESTINATION;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,7 +72,9 @@ public class GetDestinationActivity extends AppCompatActivity {
     private void fetchDataFromApi() {
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<List<DestinationModel>>> call = apiService.getDestination();
+        Call<ApiResponse<List<DestinationModel>>> call = apiService.getDestination(
+                "get-destination"
+        );
 
         call.enqueue(new Callback<ApiResponse<List<DestinationModel>>>() {
             @Override

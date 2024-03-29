@@ -1,5 +1,7 @@
 package com.lionel.operational.model;
 
+import com.google.gson.Gson;
+
 public class ShippingAgentModel {
     private String id;
     private String name;
@@ -18,5 +20,10 @@ public class ShippingAgentModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

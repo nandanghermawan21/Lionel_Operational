@@ -1,5 +1,6 @@
 package com.lionel.operational;
 
+import static com.lionel.operational.model.Constant.AUTH_NONCE;
 import static com.lionel.operational.model.Constant.AUTH_TOKEN;
 import static com.lionel.operational.model.Constant.BASE_URL;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
@@ -100,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(AUTH_TOKEN, accountModel.getToken());
+                        editor.putString(AUTH_NONCE, accountModel.getNonce());
                         editor.putString(USERDATA, accountModel.toJson());
                         editor.apply();
                         // Create Intent to start MainActivity
