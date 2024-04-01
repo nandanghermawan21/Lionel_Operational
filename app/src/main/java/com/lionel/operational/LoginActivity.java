@@ -3,7 +3,9 @@ package com.lionel.operational;
 import static com.lionel.operational.model.Constant.AUTH_NONCE;
 import static com.lionel.operational.model.Constant.AUTH_TOKEN;
 import static com.lionel.operational.model.Constant.BASE_URL;
+import static com.lionel.operational.model.Constant.NOUNCE;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
+import static com.lionel.operational.model.Constant.SECRET;
 import static com.lionel.operational.model.Constant.USERDATA;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.lionel.operational.model.AccountModel;
@@ -95,30 +98,37 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<ApiResponse<AccountModel>> call, Response<ApiResponse<AccountModel>> response) {
                 if (response.isSuccessful()) {
                     if(response.body() != null) {
-                        AccountModel accountModel = response.body().getData();
-                        Log.d("LoginActivity", "onResponse: " + accountModel.getName());
-                        //set seeion is login true
-                        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(AUTH_TOKEN, accountModel.getToken());
-                        editor.putString(AUTH_NONCE, accountModel.getNonce());
-                        editor.putString(USERDATA, accountModel.toJson());
-                        editor.apply();
-                        // Create Intent to start MainActivity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        // Optionally, pass data to MainActivity using Intent extras
-                        startActivity(intent);
-                        // Optionally, finish the LoginActivity to prevent navigating back to it
-                        finish();
+                        if(response.body().isSuccess()){
+                            if(response.body().getData() instanceof AccountModel){
+                                AccountModel accountModel = response.body().getData();
+                                SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(USERDATA, accountModel.toJson());
+                                editor.apply();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                //show toast error
+                                Toast.makeText(LoginActivity.this, "Invalid REsponse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            //show toast error
+                            Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else {
                     Log.d("LoginActivity", "onResponse: " + response.message());
+                    //show toast error
+                    Toast.makeText(LoginActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<AccountModel>> call, Throwable t) {
                 Log.d("LoginActivity", "onFailure: " + t.getMessage());
+                //show toast error
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

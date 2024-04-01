@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -31,12 +32,13 @@ import com.lionel.operational.GetShippingMethodActivity;
 import com.lionel.operational.R;
 import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ShippingAgentModel;
+import com.lionel.operational.model.ShippingLinerModel;
 import com.lionel.operational.model.ShippingMethodModel;
 
 public class WayBillFragment extends Fragment {
 
     private WayBillViewModel viewModel;
-    private LinearLayout layoutInputWayBill;
+    private ScrollView layoutInputWayBill;
     private TextInputEditText inputWayBillNumber;
     private Button buttonNext;
     private Button buttonCancel;
@@ -50,6 +52,7 @@ public class WayBillFragment extends Fragment {
     private TextView labelShippingOriginError;
     private Button buttonShippingLiner;
     private TextView labelLinerError;
+    private LinearLayout layoutInputDetail;
 
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -91,11 +94,11 @@ public class WayBillFragment extends Fragment {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    String shippingAgent = data.getStringExtra(GET_SHIPPING_LINER);
+                    String shippingLiner = data.getStringExtra(GET_SHIPPING_LINER);
                     //ubah data ke dalam bentuk object
-                    ShippingAgentModel shippingAgentModel = new Gson().fromJson(shippingAgent, ShippingAgentModel.class);
+                    ShippingLinerModel shippingLinerModel = new Gson().fromJson(shippingLiner, ShippingLinerModel.class);
                     // set data ke dalam view model
-                    viewModel.setShippingAgent(shippingAgentModel);
+                    viewModel.setLiner(shippingLinerModel);
                 }
             });
 
@@ -131,17 +134,20 @@ public class WayBillFragment extends Fragment {
         labelShippingOriginError = view.findViewById(R.id.labelOriginError);
         buttonShippingLiner = view.findViewById(R.id.buttonSelectLiner);
         labelLinerError = view.findViewById(R.id.labelLinerError);
+        layoutInputDetail = view.findViewById(R.id.layoutInputDetail);
 
         //obserb status
         viewModel.getState().observe(getViewLifecycleOwner(), status -> {
             if (viewModel.isStateNew()) {
                 layoutInputWayBill.setVisibility(View.VISIBLE);
                 buttonNext.setVisibility(View.VISIBLE);
+                layoutInputDetail.setVisibility(View.GONE);
                 buttonCancel.setVisibility(View.GONE);
                 buttonSubmit.setVisibility(View.GONE);
             } else {
                 layoutInputWayBill.setVisibility(View.GONE);
                 buttonNext.setVisibility(View.GONE);
+                layoutInputDetail.setVisibility(View.VISIBLE);
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
             }
@@ -186,6 +192,10 @@ public class WayBillFragment extends Fragment {
                     isValid = false;
                 }else{
                     labelLinerError.setText("");
+                }
+
+                if(isValid){
+                    viewModel.setStateAsCreated();
                 }
             }
         });
@@ -246,6 +256,16 @@ public class WayBillFragment extends Fragment {
                 buttonShippingAgent.setText(getString(R.string.select_shipping_agent));
             }
         });
+
+        //watch shipping liner data
+        viewModel.getLiner().observe(getViewLifecycleOwner(), shippingAgentModel -> {
+            if(shippingAgentModel != null){
+                buttonShippingLiner.setText(shippingAgentModel.getName());
+                labelLinerError.setText("");
+            }else{
+                buttonShippingLiner.setText(getString(R.string.select_liner));
+            }
+        });
     }
 
     private void openSelectOrigin() {
@@ -265,7 +285,7 @@ public class WayBillFragment extends Fragment {
 
     private void openSelectShippingLiner() {
         Intent intent = new Intent(getActivity(), GetShipmentLinerActivity.class);
-        shippingAgentLauncher.launch(intent);
+        shippingLinerLauncher.launch(intent);
     }
 
     @Override

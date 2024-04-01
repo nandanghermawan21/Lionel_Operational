@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.lionel.operational.model.DestinationModel;
-import com.lionel.operational.model.LinerModel;
 import com.lionel.operational.model.ShippingAgentModel;
+import com.lionel.operational.model.ShippingLinerModel;
 import com.lionel.operational.model.ShippingMethodModel;
 
 public class WayBillViewModel extends ViewModel {
@@ -14,7 +14,7 @@ public class WayBillViewModel extends ViewModel {
     private MutableLiveData<ShippingMethodModel> shippingMethod;
     private MutableLiveData<ShippingAgentModel> shippingAgent;
     private MutableLiveData<DestinationModel> origin;
-    private MutableLiveData<LinerModel> liner;
+    private MutableLiveData<ShippingLinerModel> liner;
 
     public WayBillViewModel() {
         state = new MutableLiveData<>();
@@ -69,11 +69,11 @@ public class WayBillViewModel extends ViewModel {
         this.origin.setValue(origin);
     }
 
-    public MutableLiveData<LinerModel> getLiner() {
+    public MutableLiveData<ShippingLinerModel> getLiner() {
         return liner;
     }
 
-    public void setLiner(LinerModel liner) {
+    public void setLiner(ShippingLinerModel liner) {
         this.liner.setValue(liner);
     }
 

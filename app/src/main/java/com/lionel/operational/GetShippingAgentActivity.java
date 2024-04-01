@@ -93,7 +93,8 @@ public class GetShippingAgentActivity extends AppCompatActivity {
 
         //get data user from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
-        AccountModel account = new Gson().fromJson(sharedPreferences.getString(USERDATA, "{}"), AccountModel.class);
+        String json = sharedPreferences.getString(USERDATA, "");
+        AccountModel account = new Gson().fromJson(json, AccountModel.class);
 
         Call<ApiResponse<List<ShippingAgentModel>>> call = apiService.getShippingAgent("get-shipping-agent", account.getBranchId());
 
