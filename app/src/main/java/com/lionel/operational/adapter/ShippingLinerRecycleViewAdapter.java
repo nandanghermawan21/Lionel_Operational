@@ -9,40 +9,42 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lionel.operational.R;
-import com.lionel.operational.model.ShippingAgentModel;
+import com.lionel.operational.model.ShippingLinerModel;
 
 import java.util.List;
 
-public class ShippingAgentRecycleViewAdapter extends RecyclerView.Adapter<ShippingAgentRecycleViewAdapter.ViewHolder> {
+public class ShippingLinerRecycleViewAdapter extends RecyclerView.Adapter<ShippingLinerRecycleViewAdapter.ViewHolder>  {
 
-    private List<ShippingAgentModel> itemList;
-    private List<ShippingAgentModel> filteredList;
+    private List<ShippingLinerModel> itemList;
+    private List<ShippingLinerModel> filteredList;
     private OnItemOptionClickListener listener;
 
     public interface OnItemOptionClickListener {
-        void onItemClick(ShippingAgentModel position);
+        void onItemClick(ShippingLinerModel position);
     }
 
     public void setOnItemClickListener(OnItemOptionClickListener listener) {
         this.listener = listener;
     }
 
-    public ShippingAgentRecycleViewAdapter(List<ShippingAgentModel> itemList) {
+    public ShippingLinerRecycleViewAdapter(List<ShippingLinerModel> itemList) {
         this.itemList = itemList;
         this.filteredList = itemList;
     }
 
     @NonNull
     @Override
-    public ShippingAgentRecycleViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ShippingLinerRecycleViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_option, parent, false);
-        return new ShippingAgentRecycleViewAdapter.ViewHolder(view);
+        return new ShippingLinerRecycleViewAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ShippingAgentRecycleViewAdapter.ViewHolder holder, int position) {
-        ShippingAgentModel item = filteredList.get(position);
+    public void onBindViewHolder(@NonNull ShippingLinerRecycleViewAdapter.ViewHolder holder, int position) {
+        ShippingLinerModel item = filteredList.get(position);
         holder.name.setText(item.getName());
+        holder.desc.setText(item.getMaxColi() + " Coli" + " / " + item.getMaxGw() + " Kg");
+        holder.desc.setVisibility(View.VISIBLE);
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(item);
@@ -66,7 +68,7 @@ public class ShippingAgentRecycleViewAdapter extends RecyclerView.Adapter<Shippi
         return filteredList.size();
     }
 
-    public void filterList(List<ShippingAgentModel> filteredList) {
+    public void filterList(List<ShippingLinerModel> filteredList) {
         this.filteredList = filteredList;
         notifyDataSetChanged();
     }

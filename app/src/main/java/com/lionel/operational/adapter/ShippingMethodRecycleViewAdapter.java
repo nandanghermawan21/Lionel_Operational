@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lionel.operational.R;
-import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ShippingMethodModel;
 
 import java.util.List;
@@ -53,12 +52,12 @@ public class ShippingMethodRecycleViewAdapter  extends RecyclerView.Adapter<Ship
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
-        TextView id;
+        TextView desc;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.optionName);
-            id = itemView.findViewById(R.id.optionId);
+            desc = itemView.findViewById(R.id.optionDesc);
         }
     }
 

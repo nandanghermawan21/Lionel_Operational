@@ -62,7 +62,7 @@ public class DestinationRecycleViewAdapter extends RecyclerView.Adapter<Destinat
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             destinationMame = itemView.findViewById(R.id.optionName);
-            branchId = itemView.findViewById(R.id.optionId);
+            branchId = itemView.findViewById(R.id.optionDesc);
         }
     }
 

@@ -59,4 +59,9 @@ public interface ApiService {
             @Query("action") String action,
             @Query("recordUserBranchId") String recordUserBranchId
     );
+
+    @GET("get_shipping_liner.php")
+    Call<ApiResponse<List<ShippingLinerModel>>> getShippingLiner(
+            @Query("action") String action
+    );
 }
