@@ -2,6 +2,8 @@ package com.lionel.operational.model;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class AccountModel {
     @SerializedName("auth")
     private int auth;
@@ -13,10 +15,11 @@ public class AccountModel {
     private String group;
     @SerializedName("branch_id")
     private String branchId;
-    @SerializedName("token")
-    private String token;
-    @SerializedName("nonce")
-    private String nonce;
+    private String username;
+    private List<String> menu;
+
+    public AccountModel() {
+    }
 
     public int getAuth() {
         return auth;
@@ -59,19 +62,19 @@ public class AccountModel {
         return gson.toJson(this);
     }
 
-    public String getToken() {
-        return token;
+    public List<String> getMenu() {
+        return menu;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setMenu(List<String> menu) {
+        this.menu = menu;
     }
 
-    public String getNonce() {
-        return nonce;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNonce(String nonce) {
-        this.nonce = nonce;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -19,6 +19,12 @@ public interface ApiService {
             @Field("password") String password
     );
 
+    @POST("operation_employee_get_menu.php")
+    @FormUrlEncoded
+    Call<ApiResponse<AccountModel>> getMenu(
+            @Field("username") String token
+    );
+
     @GET("operation_acceptance.php")
     Call<ApiResponse<ShipmentModel>> getShipment(
             @Query("recordSttNo") String sttNo,
