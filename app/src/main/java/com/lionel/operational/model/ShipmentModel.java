@@ -5,6 +5,16 @@ import com.google.gson.annotations.SerializedName;
 public class ShipmentModel {
     private String vdate;
     private String code;
+    @SerializedName("dest_branch_id")
+    private String destBranchId;
+    @SerializedName("service_type")
+    private String serviceType;
+    @SerializedName("nature_of_goods")
+    private String natureOfGoods;
+    @SerializedName("shipping_method")
+    private String shippingMethod;
+    @SerializedName("shipping_agent")
+    private String consoleBarcode;
     private String barcode;
     private double length;
     private double width;
@@ -121,7 +131,51 @@ public class ShipmentModel {
         return barcode;
     }
 
+    public  String getSTTNumber() {
+        return barcode == null || barcode.isEmpty() ? code : barcode;
+    }
+
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public String getDestBranchId() {
+        return destBranchId;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public String getNatureOfGoods() {
+        return natureOfGoods;
+    }
+
+    public void setNatureOfGoods(String natureOfGoods) {
+        this.natureOfGoods = natureOfGoods;
+    }
+
+    public String getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public String getConsoleBarcode() {
+        return consoleBarcode;
+    }
+
+    public void setConsoleBarcode(String consoleBarcode) {
+        this.consoleBarcode = consoleBarcode;
+    }
+
+    public void setDestBranchId(String destBranchId) {
+        this.destBranchId = destBranchId;
     }
 }

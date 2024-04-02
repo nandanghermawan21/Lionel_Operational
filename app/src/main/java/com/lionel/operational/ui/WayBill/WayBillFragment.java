@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
@@ -30,10 +33,19 @@ import com.lionel.operational.GetShipmentLinerActivity;
 import com.lionel.operational.GetShippingAgentActivity;
 import com.lionel.operational.GetShippingMethodActivity;
 import com.lionel.operational.R;
+import com.lionel.operational.adapter.ShipmentRecycleViewAdapter;
+import com.lionel.operational.model.ApiClient;
+import com.lionel.operational.model.ApiResponse;
+import com.lionel.operational.model.ApiService;
 import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.ShipmentModel;
 import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingLinerModel;
 import com.lionel.operational.model.ShippingMethodModel;
+
+import java.util.List;
+
+import retrofit2.Call;
 
 public class WayBillFragment extends Fragment {
 
@@ -53,7 +65,11 @@ public class WayBillFragment extends Fragment {
     private Button buttonShippingLiner;
     private TextView labelLinerError;
     private LinearLayout layoutInputDetail;
-
+    private RecyclerView recyclerShipmentView;
+    private ShipmentRecycleViewAdapter shipmentReceicleViewAdapter;
+    private Button buttonAddShipment;
+    private TextInputEditText inputShipmentCode;
+    private TextView labelShipmentCodeError;
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -112,6 +128,19 @@ public class WayBillFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_waybill, container, false);
+        recyclerShipmentView = view.findViewById(R.id.recyclerViewShipment);
+        recyclerShipmentView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        shipmentReceicleViewAdapter = new ShipmentRecycleViewAdapter(viewModel.getShipmentList().getValue());
+        recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
+
+        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
+            @Override
+            public void onItemClickDelete(ShipmentModel item) {
+                viewModel.removeShipment(item);
+                shipmentReceicleViewAdapter.notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
@@ -135,6 +164,9 @@ public class WayBillFragment extends Fragment {
         buttonShippingLiner = view.findViewById(R.id.buttonSelectLiner);
         labelLinerError = view.findViewById(R.id.labelLinerError);
         layoutInputDetail = view.findViewById(R.id.layoutInputDetail);
+        buttonAddShipment = view.findViewById(R.id.buttonAddShipment);
+        inputShipmentCode = view.findViewById(R.id.textInputSTTCode);
+        labelShipmentCodeError = view.findViewById(R.id.labelSTTCodeError);
 
         //obserb status
         viewModel.getState().observe(getViewLifecycleOwner(), status -> {
@@ -264,6 +296,70 @@ public class WayBillFragment extends Fragment {
                 labelLinerError.setText("");
             }else{
                 buttonShippingLiner.setText(getString(R.string.select_liner));
+            }
+        });
+
+        buttonAddShipment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //create object shipemnt
+                ShipmentModel shipmentModel = new ShipmentModel();
+                //validaasi apakah shipmentCode sudah diisi
+                if(inputShipmentCode.getText().toString().isEmpty()) {
+                    labelShipmentCodeError.setText(getString(R.string.please_fill_STT));
+                    labelShipmentCodeError.setVisibility(View.VISIBLE);
+                }else{
+                    doAddShipment();
+                }
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputWayBillNumber.setText("");
+                viewModel.clear();
+            }
+        });
+    }
+
+    private void doAddShipment() {
+        //ambil shipment dari api
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+
+        Call<ApiResponse<List<ShipmentModel>>> call = apiService.getWayBillShipment("get-shipment", inputShipmentCode.getText().toString(),  viewModel.getOrigin().getValue().getId());
+
+        call.enqueue(new retrofit2.Callback<ApiResponse<List<ShipmentModel>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<ShipmentModel>>> call, retrofit2.Response<ApiResponse<List<ShipmentModel>>> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    if(response.body().isSuccess()) {
+                        List<ShipmentModel> shipmentModels = response.body().getData();
+                        //for test set parent code
+                        viewModel.addShipmentList(shipmentModels);
+                        //update adapter
+                        shipmentReceicleViewAdapter.notifyDataSetChanged();
+                        //set listener adapter
+                        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
+                            @Override
+                            public void onItemClickDelete(ShipmentModel item) {
+                                viewModel.removeShipment(item);
+                                shipmentReceicleViewAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        //scroll to last position
+                        recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
+                    }else{
+                        //show error message
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<ShipmentModel>>> call, Throwable t) {
+                //show error message
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

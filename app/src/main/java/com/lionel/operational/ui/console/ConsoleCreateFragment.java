@@ -228,6 +228,7 @@ public class ConsoleCreateFragment extends Fragment {
                 viewModel.setStateAsNew();
                 inputConsoleCode.setText("");
                 viewModel.setDestinationModel(null);
+                viewModel.clearShipmentList();
             }
         });
 
