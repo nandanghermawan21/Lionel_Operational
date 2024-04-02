@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_stob"
-        android:name="com.lionel.operational.ui.stob.CreateFragment"
+        android:name="com.lionel.operational.ui.stob.CreateStobFragment"
         android:label="@string/menu_create_stob"
         tools:layout="@layout/fragment_stob_create" />
 </navigation>

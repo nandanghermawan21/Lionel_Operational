@@ -253,27 +253,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/way_bill_no" />
-
-                    <TextView
-                        android:id="@+id/detailWayBillNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/way_bill_no"
-                        android:textAlignment="textEnd" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="@string/shipping_method" />
 
                     <TextView
@@ -316,14 +295,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/destination" />
+                        android:text="@string/origin" />
 
                     <TextView
-                        android:id="@+id/detailWayBilDestination"
+                        android:id="@+id/detailWayBilOrigin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/destination"
+                        android:text="@string/origin"
                         android:textAlignment="textEnd" />
 
                 </LinearLayout>
@@ -345,6 +324,27 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/liner"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/service" />
+
+                    <TextView
+                        android:id="@+id/detailWayBilShippingService"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/service"
                         android:textAlignment="textEnd" />
 
                 </LinearLayout>

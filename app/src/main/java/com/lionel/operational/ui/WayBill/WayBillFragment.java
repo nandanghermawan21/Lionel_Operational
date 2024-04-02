@@ -80,6 +80,11 @@ public class WayBillFragment extends Fragment {
     private Button buttonAddShipment;
     private TextInputEditText inputShipmentCode;
     private TextView labelShipmentCodeError;
+    private TextView detailShippingMethod;
+    private TextView detailShippingAgent;
+    private TextView detailOrigin;
+    private TextView detailLiner;
+    private TextView detailService;
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -189,6 +194,11 @@ public class WayBillFragment extends Fragment {
         buttonAddShipment = view.findViewById(R.id.buttonAddShipment);
         inputShipmentCode = view.findViewById(R.id.textInputSTTCode);
         labelShipmentCodeError = view.findViewById(R.id.labelSTTCodeError);
+        detailShippingMethod = view.findViewById(R.id.detailWayBillShippingMethod);
+        detailShippingAgent = view.findViewById(R.id.detailWayBillShippingAgent);
+        detailOrigin = view.findViewById(R.id.detailWayBilOrigin);
+        detailLiner = view.findViewById(R.id.detailWayBilShippingLiner);
+        detailService = view.findViewById(R.id.detailWayBilShippingService);
 
         //obserb status
         viewModel.getState().observe(getViewLifecycleOwner(), status -> {
@@ -303,6 +313,7 @@ public class WayBillFragment extends Fragment {
         viewModel.getShippingMethod().observe(getViewLifecycleOwner(), shippingMethodModel -> {
             if(shippingMethodModel != null){
                 buttonShippingMethod.setText(shippingMethodModel.getId());
+                detailShippingAgent.setText(shippingMethodModel.getId());
                 labelShippingMethodError.setText("");
             }else{
                 buttonShippingMethod.setText(getString(R.string.select_shipping_method));
@@ -313,6 +324,7 @@ public class WayBillFragment extends Fragment {
         viewModel.getShippingAgent().observe(getViewLifecycleOwner(), shippingAgentModel -> {
             if(shippingAgentModel != null){
                 buttonShippingAgent.setText(shippingAgentModel.getName());
+                detailShippingAgent.setText(shippingAgentModel.getName());
                 labelShippingAgentError.setText("");
             }else{
                 buttonShippingAgent.setText(getString(R.string.select_shipping_agent));
@@ -323,6 +335,7 @@ public class WayBillFragment extends Fragment {
         viewModel.getLiner().observe(getViewLifecycleOwner(), shippingAgentModel -> {
             if(shippingAgentModel != null){
                 buttonShippingLiner.setText(shippingAgentModel.getName());
+                detailLiner.setText(shippingAgentModel.getName());
                 labelLinerError.setText("");
             }else{
                 buttonShippingLiner.setText(getString(R.string.select_liner));
@@ -333,6 +346,7 @@ public class WayBillFragment extends Fragment {
         viewModel.getService().observe(getViewLifecycleOwner(), serviceModel -> {
             if(serviceModel != null){
                 buttonShippingService.setText(serviceModel.getName());
+                detailService.setText(serviceModel.getName());
                 labelServiceError.setText("");
             }else{
                 buttonShippingService.setText(getString(R.string.select_service));
