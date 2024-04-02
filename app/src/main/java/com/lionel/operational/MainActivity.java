@@ -1,7 +1,6 @@
 package com.lionel.operational;
 
 import static com.lionel.operational.model.Constant.AUTH_TOKEN;
-import static com.lionel.operational.model.Constant.NOUNCE;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
 import static com.lionel.operational.model.Constant.USERDATA;
 

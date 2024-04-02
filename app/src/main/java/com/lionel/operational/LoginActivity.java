@@ -1,11 +1,6 @@
 package com.lionel.operational;
 
-import static com.lionel.operational.model.Constant.AUTH_NONCE;
-import static com.lionel.operational.model.Constant.AUTH_TOKEN;
-import static com.lionel.operational.model.Constant.BASE_URL;
-import static com.lionel.operational.model.Constant.NOUNCE;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
-import static com.lionel.operational.model.Constant.SECRET;
 import static com.lionel.operational.model.Constant.USERDATA;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,8 +24,6 @@ import com.lionel.operational.model.ApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 

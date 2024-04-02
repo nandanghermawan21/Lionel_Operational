@@ -1,6 +1,5 @@
 package com.lionel.operational.model;
 import static com.lionel.operational.model.Constant.BASE_URL;
-import static com.lionel.operational.model.Constant.NOUNCE;
 import static com.lionel.operational.model.Constant.SECRET;
 
 import android.util.Log;

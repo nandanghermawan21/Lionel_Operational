@@ -56,4 +56,7 @@
     <string name="shipping_factor">Shipping Factor</string>
     <string name="please_fill_STT_or_consol_no">Please fill STT or Console number</string>
     <string name="SttOrConsoleNumber">STT / Console Number</string>
+    <string name="select_service">Select Service</string>
+    <string name="service">Service</string>
+    <string name="service_required">Service type is required</string>
 </resources>

@@ -15,9 +15,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".GetShipmentLinerActivity"
+            android:name=".GetServiceActivity"
             android:theme="@style/Theme.LionelOperational.NoActionBar"
             android:exported="false" />
+        <activity
+            android:name=".GetShipmentLinerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.LionelOperational.NoActionBar" />
         <activity
             android:name=".GetShippingAgentActivity"
             android:exported="false"

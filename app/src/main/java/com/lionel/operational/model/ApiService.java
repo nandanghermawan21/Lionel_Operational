@@ -1,4 +1,5 @@
 package com.lionel.operational.model;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -17,6 +18,7 @@ public interface ApiService {
             @Field("username") String email,
             @Field("password") String password
     );
+
     @GET("operation_acceptance.php")
     Call<ApiResponse<ShipmentModel>> getShipment(
             @Query("recordSttNo") String sttNo,
@@ -27,6 +29,7 @@ public interface ApiService {
             @Query("recordSttNo") String sttNo,
             @Query("action") String action,
             @Query("recordDestCity") String recordDestCity);
+
     @FormUrlEncoded
     @POST("operation_acceptance.php")
     Call<ApiResponse> acceptShipment(
@@ -72,9 +75,27 @@ public interface ApiService {
     );
 
     @GET("operation_waybill.php")
+    Call<ApiResponse<List<ServiceModel>>> getService(
+            @Query("action") String action
+    );
+
+    @GET("operation_waybill.php")
     Call<ApiResponse<List<ShipmentModel>>> getWayBillShipment(
             @Query("action") String action,
             @Query("recordBarcode") String recordBarcode,
             @Query("recordDestBranchId") String recordDestBranchId
     );
+
+    @FormUrlEncoded
+    @POST("operation_waybill.php")
+    Call<ApiResponse> submitWaybill(
+            @Field("action") String action,
+            @Field("recordShippingMethod") String shippingMethod,
+            @Field("recordShippingAgentId") String shippingAgentId,
+            @Field("recordDestBranchId") String destBranchId,
+            @Field("recordLinerId") String linerId,
+            @Field("recordServiceSelect") String serviceSelect,
+            @Field("recordBranchId") String branchId,
+            @Field("recordEmployeeName") String employeeName,
+            @Field("recordShipment") String shipmentItems);
 }

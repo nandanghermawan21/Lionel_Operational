@@ -20,37 +20,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:paddingBottom="8dp">
-
-                    <!-- Text Field -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputConsoleCodeLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/way_bill_no"
-                        app:hintAnimationEnabled="true"
-                        app:hintEnabled="true">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputWayBillNo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapCharacters" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/labelWayBillNoError"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:attr/colorError" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingBottom="8dp">
 
@@ -210,6 +179,48 @@
 
                     <TextView
                         android:id="@+id/labelLinerError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/colorError" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/dec_main_input"
+                        android:orientation="vertical"
+                        android:paddingBottom="2px">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="20px"
+                            android:paddingTop="10px"
+                            android:paddingBottom="1dp"
+                            android:text="@string/service"
+                            android:textColor="?android:attr/textColor" />
+
+                        <Button
+                            android:id="@+id/buttonSelectService"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="?android:attr/colorControlHighlight"
+                            android:drawableEnd="@drawable/ic_menu_down"
+                            android:text="@string/select_service"
+                            android:textAlignment="textStart"
+                            android:textColor="?android:attr/textColor"
+                            android:tint="?android:attr/textColor" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/labelServiceError"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="?android:attr/colorError" />

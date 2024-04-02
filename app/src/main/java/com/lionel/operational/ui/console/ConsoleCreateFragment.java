@@ -350,8 +350,6 @@ public class ConsoleCreateFragment extends Fragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
         AccountModel account = new Gson().fromJson(sharedPreferences.getString(USERDATA, "{}"), AccountModel.class);
 
-        Log.i("SUBMIT-CONSOLE", "doSubmit: " + account.getName() + " " + viewModel.getDestinationModel().getValue().getBranchId() + " " + viewModel.getDestinationModel().getValue().getId() + " " + viewModel.getShipmentList().getValue().stream().map(ShipmentModel::getBarcode).collect(Collectors.toList()) + " " + inputConsoleCode.getText().toString());
-
         Call<ApiResponse> call = apiService.submitConsole(
                 "submit-console",
                 inputConsoleCode.getText().toString(),

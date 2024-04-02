@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.ServiceModel;
 import com.lionel.operational.model.ShipmentModel;
 import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingLinerModel;
@@ -19,6 +20,7 @@ public class WayBillViewModel extends ViewModel {
     private MutableLiveData<ShippingAgentModel> shippingAgent;
     private MutableLiveData<DestinationModel> origin;
     private MutableLiveData<ShippingLinerModel> liner;
+    private MutableLiveData<ServiceModel> service;
     private MutableLiveData<List<ShipmentModel>> shipmentList;
 
     public WayBillViewModel() {
@@ -27,6 +29,7 @@ public class WayBillViewModel extends ViewModel {
         shippingAgent = new MutableLiveData<>();
         origin = new MutableLiveData<>();
         liner = new MutableLiveData<>();
+        service = new MutableLiveData<>();
         setStateAsNew();
     }
 
@@ -80,6 +83,14 @@ public class WayBillViewModel extends ViewModel {
 
     public void setLiner(ShippingLinerModel liner) {
         this.liner.setValue(liner);
+    }
+
+    public MutableLiveData<ServiceModel> getService() {
+        return service;
+    }
+
+    public void setService(ServiceModel service) {
+        this.service.setValue(service);
     }
 
     public MutableLiveData<List<ShipmentModel>> getShipmentList() {

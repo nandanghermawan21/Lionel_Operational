@@ -4,9 +4,14 @@ import static com.lionel.operational.model.Constant.GET_DESTINATION;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_LINER;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
+import static com.lionel.operational.model.Constant.GET_SHIPPING_SERVICE;
+import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
+import static com.lionel.operational.model.Constant.USERDATA;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,21 +34,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
+import com.lionel.operational.GetServiceActivity;
 import com.lionel.operational.GetShipmentLinerActivity;
 import com.lionel.operational.GetShippingAgentActivity;
 import com.lionel.operational.GetShippingMethodActivity;
 import com.lionel.operational.R;
 import com.lionel.operational.adapter.ShipmentRecycleViewAdapter;
+import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
 import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.ServiceModel;
 import com.lionel.operational.model.ShipmentModel;
 import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingLinerModel;
 import com.lionel.operational.model.ShippingMethodModel;
+import com.lionel.operational.model.WaybillShipmentItem;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 
@@ -51,11 +61,9 @@ public class WayBillFragment extends Fragment {
 
     private WayBillViewModel viewModel;
     private ScrollView layoutInputWayBill;
-    private TextInputEditText inputWayBillNumber;
     private Button buttonNext;
     private Button buttonCancel;
     private Button buttonSubmit;
-    private TextView labelWayBillError;
     private Button buttonShippingMethod;
     private TextView labelShippingMethodError;
     private Button buttonShippingAgent;
@@ -64,9 +72,11 @@ public class WayBillFragment extends Fragment {
     private TextView labelShippingOriginError;
     private Button buttonShippingLiner;
     private TextView labelLinerError;
+    private Button buttonShippingService;
+    private TextView labelServiceError;
     private LinearLayout layoutInputDetail;
     private RecyclerView recyclerShipmentView;
-    private ShipmentRecycleViewAdapter shipmentReceicleViewAdapter;
+    private ShipmentRecycleViewAdapter shipmentRecycleViewAdapter;
     private Button buttonAddShipment;
     private TextInputEditText inputShipmentCode;
     private TextView labelShipmentCodeError;
@@ -118,6 +128,18 @@ public class WayBillFragment extends Fragment {
                 }
             });
 
+    private final ActivityResultLauncher<Intent> serviceLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String servic = data.getStringExtra(GET_SHIPPING_SERVICE);
+                    //ubah data ke dalam bentuk object
+                    ServiceModel serviceModel = new Gson().fromJson(servic, ServiceModel.class);
+                    // set data ke dalam view model
+                    viewModel.setService(serviceModel);
+                }
+            });
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,14 +153,14 @@ public class WayBillFragment extends Fragment {
         recyclerShipmentView = view.findViewById(R.id.recyclerViewShipment);
         recyclerShipmentView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        shipmentReceicleViewAdapter = new ShipmentRecycleViewAdapter(viewModel.getShipmentList().getValue());
-        recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
+        shipmentRecycleViewAdapter = new ShipmentRecycleViewAdapter(viewModel.getShipmentList().getValue());
+        recyclerShipmentView.setAdapter(shipmentRecycleViewAdapter);
 
-        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
+        shipmentRecycleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
             @Override
             public void onItemClickDelete(ShipmentModel item) {
                 viewModel.removeShipment(item);
-                shipmentReceicleViewAdapter.notifyDataSetChanged();
+                shipmentRecycleViewAdapter.notifyDataSetChanged();
             }
         });
 
@@ -149,12 +171,10 @@ public class WayBillFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        inputWayBillNumber = view.findViewById(R.id.textInputWayBillNo);
         layoutInputWayBill = view.findViewById(R.id.layoutInputWayBill);
         buttonNext = view.findViewById(R.id.buttonNext);
         buttonCancel = view.findViewById(R.id.buttonCancel);
         buttonSubmit = view.findViewById(R.id.buttonSubmit);
-        labelWayBillError = view.findViewById(R.id.labelWayBillNoError);
         buttonShippingMethod = view.findViewById(R.id.buttonSelectShippingMethod);
         labelShippingMethodError = view.findViewById(R.id.labelShippingMethodError);
         buttonShippingAgent = view.findViewById(R.id.buttonSelectShippingAgent);
@@ -163,6 +183,8 @@ public class WayBillFragment extends Fragment {
         labelShippingOriginError = view.findViewById(R.id.labelOriginError);
         buttonShippingLiner = view.findViewById(R.id.buttonSelectLiner);
         labelLinerError = view.findViewById(R.id.labelLinerError);
+        buttonShippingService = view.findViewById(R.id.buttonSelectService);
+        labelServiceError = view.findViewById(R.id.labelServiceError);
         layoutInputDetail = view.findViewById(R.id.layoutInputDetail);
         buttonAddShipment = view.findViewById(R.id.buttonAddShipment);
         inputShipmentCode = view.findViewById(R.id.textInputSTTCode);
@@ -190,12 +212,6 @@ public class WayBillFragment extends Fragment {
             public void onClick(View v) {
                 //validate input
                 boolean isValid = true;
-                if (inputWayBillNumber.getText().toString().isEmpty()) {
-                    labelWayBillError.setText(getString(R.string.waybill_no_required));
-                    isValid = false;
-                } else {
-                    labelWayBillError.setText("");
-                }
 
                 if(viewModel.getShippingMethod().getValue() == null){
                     labelShippingMethodError.setText(getString(R.string.shipping_method_required));
@@ -224,6 +240,13 @@ public class WayBillFragment extends Fragment {
                     isValid = false;
                 }else{
                     labelLinerError.setText("");
+                }
+
+                if(viewModel.getService().getValue() == null){
+                    labelServiceError.setText(getString(R.string.service_required));
+                    isValid = false;
+                }else{
+                    labelServiceError.setText("");
                 }
 
                 if(isValid){
@@ -269,6 +292,13 @@ public class WayBillFragment extends Fragment {
             }
         });
 
+        buttonShippingService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSelectShippingService();
+            }
+        });
+
         //wath shipping method data
         viewModel.getShippingMethod().observe(getViewLifecycleOwner(), shippingMethodModel -> {
             if(shippingMethodModel != null){
@@ -299,6 +329,16 @@ public class WayBillFragment extends Fragment {
             }
         });
 
+        //watch shipping service data
+        viewModel.getService().observe(getViewLifecycleOwner(), serviceModel -> {
+            if(serviceModel != null){
+                buttonShippingService.setText(serviceModel.getName());
+                labelServiceError.setText("");
+            }else{
+                buttonShippingService.setText(getString(R.string.select_service));
+            }
+        });
+
         buttonAddShipment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -314,13 +354,13 @@ public class WayBillFragment extends Fragment {
             }
         });
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inputWayBillNumber.setText("");
-                viewModel.clear();
+                doSubmit();
             }
         });
+
     }
 
     private void doAddShipment() {
@@ -342,17 +382,17 @@ public class WayBillFragment extends Fragment {
                             //for test set parent code
                             viewModel.addShipmentList(shipmentModels);
                             //update adapter
-                            shipmentReceicleViewAdapter.notifyDataSetChanged();
+                            shipmentRecycleViewAdapter.notifyDataSetChanged();
                             //set listener adapter
-                            shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
+                            shipmentRecycleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
                                 @Override
                                 public void onItemClickDelete(ShipmentModel item) {
                                     viewModel.removeShipment(item);
-                                    shipmentReceicleViewAdapter.notifyDataSetChanged();
+                                    shipmentRecycleViewAdapter.notifyDataSetChanged();
                                 }
                             });
                             //scroll to last position
-                            recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
+                            recyclerShipmentView.scrollToPosition(shipmentRecycleViewAdapter.getItemCount() - 1);
                         }
                     }else{
                         //show error message
@@ -364,6 +404,50 @@ public class WayBillFragment extends Fragment {
             @Override
             public void onFailure(Call<ApiResponse<List<ShipmentModel>>> call, Throwable t) {
                 //show error message
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void doSubmit() {
+        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+
+        //get data user from shared preferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        AccountModel account = new Gson().fromJson(sharedPreferences.getString(USERDATA, "{}"), AccountModel.class);
+
+        //kumpulkan barang WaybillShipmentItem dari list shipment
+        List<WaybillShipmentItem> waybillShipmentItems = viewModel.getShipmentList().getValue().stream().map(shipmentModel -> {
+            return new WaybillShipmentItem(shipmentModel.getCode(), shipmentModel.getConsoleBarcode());
+        }).collect(Collectors.toList());
+
+        Call<ApiResponse> call = apiService.submitWaybill(
+                "submit-waybill",
+                viewModel.getShippingMethod().getValue().getId(),
+                viewModel.getShippingAgent().getValue().getId(),
+                viewModel.getOrigin().getValue().getBranchId(),
+                viewModel.getLiner().getValue().getId(),
+                viewModel.getService().getValue().getId(),
+                account.getBranchId(),
+                account.getName(),
+                new Gson().toJson(waybillShipmentItems));
+
+        call.enqueue(new retrofit2.Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, retrofit2.Response<ApiResponse> response) {
+                if(response.isSuccessful() && response.body() != null) {
+                    if(response.body().isSuccess()) {
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //clear data
+                        viewModel.clear();
+                    }else{
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -387,6 +471,11 @@ public class WayBillFragment extends Fragment {
     private void openSelectShippingLiner() {
         Intent intent = new Intent(getActivity(), GetShipmentLinerActivity.class);
         shippingLinerLauncher.launch(intent);
+    }
+
+    private void openSelectShippingService() {
+        Intent intent = new Intent(getActivity(), GetServiceActivity.class);
+        serviceLauncher.launch(intent);
     }
 
     @Override
