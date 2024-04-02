@@ -50,4 +50,6 @@
     <string name="shipping_agent_required">shipping agent is required</string>
     <string name="rigin_required">Origin is required</string>
     <string name="liner_required">Liner is required</string>
+    <string name="weight_must_greater_than_or_equal">weight must greater than or equal</string>
+    <string name="data_not_found">data not found</string>
 </resources>
