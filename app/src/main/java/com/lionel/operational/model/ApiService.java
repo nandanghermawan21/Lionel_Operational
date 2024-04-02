@@ -98,4 +98,24 @@ public interface ApiService {
             @Field("recordBranchId") String branchId,
             @Field("recordEmployeeName") String employeeName,
             @Field("recordShipment") String shipmentItems);
+
+    @GET("operation_stob.php")
+    Call<ApiResponse<List<WayBillModel>>> getStobWayBill(
+            @Query("action") String action,
+            @Query("recordShippingMethod") String method
+    );
+
+    @FormUrlEncoded
+    @POST("operation_stob.php")
+    Call<ApiResponse> submitStob(
+            @Field("action") String action,
+            @Field("recordBranchId") String recordBranchId,
+            @Field("recordOrigin") String recordOrigin,
+            @Field("recordShippingAgentId") String recordShippingAgentId,
+            @Field("recordShippingMethod") String recordShippingMethod,
+            @Field("recordCarLicenseNo") String recordCarLicenseNo,
+            @Field("recordSealNo") String recordSealNo,
+            @Field("recordEmployeeName") String recordEmployeeName,
+            @Field("recordWaybillNo[]") List<String> recordWaybillNo
+    );
 }

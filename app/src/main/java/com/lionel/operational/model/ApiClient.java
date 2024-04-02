@@ -20,8 +20,8 @@ public class ApiClient {
             //create X-Auth-Token header
             String token = createToken(time);
 
-            Log.i("NOUNCE", String.valueOf(time));
-            Log.i("TOKEN", token);
+            Log.i("AUTH-NONCE", String.valueOf(time));
+            Log.i("AUTH-TOKEN", token);
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(new HeaderInterceptor("X-Authorization", token))

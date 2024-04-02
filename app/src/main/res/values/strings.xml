@@ -63,4 +63,9 @@
     <string name="car_license_no">Car License Number</string>
     <string name="car_license_required">car license is required</string>
     <string name="seal_no_required">seal no is required</string>
+    <string name="branch_id">Branch ID</string>
+    <string name="ttl_pieces">TTL Piece</string>
+    <string name="ttl_chargeable_weight">TTL Chargeable Weight</string>
+    <string name="check_all">Check All</string>
+    <string name="search">Search</string>
 </resources>

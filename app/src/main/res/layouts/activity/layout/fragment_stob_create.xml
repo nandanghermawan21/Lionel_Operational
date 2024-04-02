@@ -202,6 +202,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/dec_main_input"
                 android:orientation="vertical"
                 android:padding="8dp">
@@ -215,35 +216,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/way_bill_no" />
+                        android:text="@string/origin" />
 
                     <TextView
-                        android:id="@+id/detailWayBillNo"
+                        android:id="@+id/detailOrigin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/way_bill_no"
-                        android:textAlignment="textEnd" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/shipping_method" />
-
-                    <TextView
-                        android:id="@+id/detailWayBillShippingMethod"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/shipping_method"
+                        android:text="@string/origin"
                         android:textAlignment="textEnd" />
 
                 </LinearLayout>
@@ -260,7 +240,7 @@
                         android:text="@string/shipping_agent" />
 
                     <TextView
-                        android:id="@+id/detailWayBillShippingAgent"
+                        android:id="@+id/detailShippingAgent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -278,14 +258,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/destination" />
+                        android:text="@string/shipping_method" />
 
                     <TextView
-                        android:id="@+id/detailWayBilDestination"
+                        android:id="@+id/detailShippingMethod"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/destination"
+                        android:text="@string/shipping_method"
                         android:textAlignment="textEnd" />
 
                 </LinearLayout>
@@ -299,14 +279,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/liner" />
+                        android:text="@string/car_license_no" />
 
                     <TextView
-                        android:id="@+id/detailWayBilShippingLiner"
+                        android:id="@+id/detailLicenseNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/liner"
+                        android:text="@string/car_license_no"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/seal_no" />
+
+                    <TextView
+                        android:id="@+id/detailSealNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/seal_no"
                         android:textAlignment="textEnd" />
 
                 </LinearLayout>
@@ -316,68 +317,55 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
-                android:layout_gravity="top"
-                android:paddingTop="8dp">
+                android:gravity="center"
+                android:padding="8dp">
 
-                <LinearLayout
+                <CheckBox
+                    android:id="@+id/checkAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="9dp"
+                    android:text="@string/check_all" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputSearchLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:hint="@string/search"
+                    app:hintAnimationEnabled="true"
+                    app:hintEnabled="true">
 
-                    <!-- Text Field -->
-                    <com.google.android.material.textfield.TextInputLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/searchWaybill"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/SttOrConsoleNumber"
-                        app:hintAnimationEnabled="true"
-                        app:hintEnabled="true">
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputSTTCode"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapCharacters" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/labelSTTCodeError"
-                        android:paddingTop="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="?android:attr/colorError" />
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/buttonAddShipment"
-                    android:layout_width="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/add"
-                    android:height="50dp"
-                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:background="@color/gray"
+                android:layout_height="0dp"
                 android:layout_marginBottom="50dp"
-                android:layout_height="0dp">
+                android:layout_weight="1"
+                android:background="@color/gray">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewShipment"
+                    android:id="@+id/recyclerViewWayBill"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
-                    android:paddingHorizontal="8dp"
                     android:layout_weight="1"
+                    android:paddingHorizontal="8dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             </LinearLayout>
+
 
         </LinearLayout>
 
