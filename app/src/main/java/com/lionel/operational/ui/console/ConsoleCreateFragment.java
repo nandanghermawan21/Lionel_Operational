@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -296,7 +297,7 @@ public class ConsoleCreateFragment extends Fragment {
         //ambil shipment dari api
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<ShipmentModel>> call = apiService.getShipment(inputShipmentCode.getText().toString(), "get-shipment",  viewModel.getDestinationModel().getValue().getId());
+        Call<ApiResponse<ShipmentModel>> call = apiService.getShipmentConsole(inputShipmentCode.getText().toString(), "get-shipment",  viewModel.getDestinationModel().getValue().getId());
 
         call.enqueue(new retrofit2.Callback<ApiResponse<ShipmentModel>>() {
             @Override
@@ -304,21 +305,29 @@ public class ConsoleCreateFragment extends Fragment {
                 if(response.isSuccessful() && response.body() != null) {
                     if(response.body().isSuccess()) {
                         ShipmentModel shipmentModel = response.body().getData();
-                        //for test set parent code
-                        shipmentModel.setBarcode(inputShipmentCode.getText().toString());
-                        viewModel.addShipment(shipmentModel);
-                        //update adapter
-                        shipmentReceicleViewAdapter.notifyDataSetChanged();
-                        //set listener adapter
-                        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
-                            @Override
-                            public void onItemClickDelete(ShipmentModel item) {
-                                viewModel.removeShipment(item);
-                                shipmentReceicleViewAdapter.notifyDataSetChanged();
-                            }
-                        });
-                        //scroll to last position
-                        recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
+                        //check jika shipment bernilai null maka tampilkan pesan error
+                        if(shipmentModel == null) {
+                            Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                        }else{
+                            //for test set parent code
+                            shipmentModel.setBarcode(inputShipmentCode.getText().toString());
+                            viewModel.addShipment(shipmentModel);
+                            //update adapter
+                            shipmentReceicleViewAdapter.notifyDataSetChanged();
+                            //set listener adapter
+                            shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
+                                @Override
+                                public void onItemClickDelete(ShipmentModel item) {
+                                    viewModel.removeShipment(item);
+                                    shipmentReceicleViewAdapter.notifyDataSetChanged();
+                                }
+                            });
+                            //scroll to last position
+                            recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
+                            //clear input
+                            inputShipmentCode.setText("");
+                        }
+
                     }else{
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -341,15 +350,15 @@ public class ConsoleCreateFragment extends Fragment {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
         AccountModel account = new Gson().fromJson(sharedPreferences.getString(USERDATA, "{}"), AccountModel.class);
 
+        Log.i("SUBMIT-CONSOLE", "doSubmit: " + account.getName() + " " + viewModel.getDestinationModel().getValue().getBranchId() + " " + viewModel.getDestinationModel().getValue().getId() + " " + viewModel.getShipmentList().getValue().stream().map(ShipmentModel::getBarcode).collect(Collectors.toList()) + " " + inputConsoleCode.getText().toString());
+
         Call<ApiResponse> call = apiService.submitConsole(
                 "submit-console",
                 inputConsoleCode.getText().toString(),
                 account.getName(),
                 viewModel.getDestinationModel().getValue().getBranchId(),
                 viewModel.getDestinationModel().getValue().getId(),
-                Arrays.stream(viewModel.getShipmentList().getValue().toArray(new ShipmentModel[0]))
-                        .map(ShipmentModel::getBarcode)
-                        .collect(Collectors.toList()));
+                viewModel.getShipmentList().getValue().stream().map(ShipmentModel::getBarcode).collect(Collectors.toList()));
 
         call.enqueue(new retrofit2.Callback<ApiResponse>() {
             @Override

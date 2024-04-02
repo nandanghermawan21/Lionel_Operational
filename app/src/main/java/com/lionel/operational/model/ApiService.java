@@ -20,6 +20,11 @@ public interface ApiService {
     @GET("operation_acceptance.php")
     Call<ApiResponse<ShipmentModel>> getShipment(
             @Query("recordSttNo") String sttNo,
+            @Query("action") String action);
+
+    @GET("operation_console.php")
+    Call<ApiResponse<ShipmentModel>> getShipmentConsole(
+            @Query("recordSttNo") String sttNo,
             @Query("action") String action,
             @Query("recordDestCity") String recordDestCity);
     @FormUrlEncoded
