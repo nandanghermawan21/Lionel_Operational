@@ -64,4 +64,11 @@ public interface ApiService {
     Call<ApiResponse<List<ShippingLinerModel>>> getShippingLiner(
             @Query("action") String action
     );
+
+    @GET("operation_way_bill_shipment.php")
+    Call<ApiResponse<List<ShipmentModel>>> getWayBillShipment(
+            @Query("action") String action,
+            @Query("recordBarcode") String recordBarcode,
+            @Query("recordDestBranchId") String recordDestBranchId
+    );
 }

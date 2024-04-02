@@ -85,7 +85,19 @@ public class ConsoleCreateViewModel extends ViewModel {
 
     public void removeShipment(ShipmentModel shipmentModel) {
         List<ShipmentModel> list = getShipmentList().getValue();
-        list.remove(shipmentModel);
+        //cari index dengan code yang sama
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getSTTNumber().equals(shipmentModel.getSTTNumber())) {
+                list.remove(i);
+                break;
+            }
+        }
+        shipmentList.setValue(list);
+    }
+
+    public void clearShipmentList() {
+        List<ShipmentModel> list = getShipmentList().getValue();
+        list.clear();
         shipmentList.setValue(list);
     }
 }

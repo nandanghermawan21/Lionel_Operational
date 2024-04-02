@@ -1,1 +1,6 @@
-<resources></resources>
+<resources>
+    <string name="chageable_weight">Chargeable View</string>
+    <string name="voulme_weight">Volume Weight</string>
+    <string name="service_type">Service Type</string>
+    <string name="nature_of_goods">Nature of Goods</string>
+</resources>

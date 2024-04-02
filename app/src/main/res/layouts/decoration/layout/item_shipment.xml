@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
@@ -13,18 +14,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textSttNumber"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:layout_weight="1"
+                android:paddingVertical="2dp"
                 android:textColor="?android:attr/textColor"
-                android:paddingVertical="2dp"/>
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/btnDelete"
@@ -40,9 +41,176 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/colorControlHighlight"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/colorControlHighlight" />
+
+        <LinearLayout
+            android:id="@+id/consoleInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelBarcodeConsole"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/console_number"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueBarcodeConsole"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/destination"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/height"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ServiceInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelServiceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/service_type"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueServiceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labeNatureOfGoods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/nature_of_goods"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueNatureOfGoods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelShippingMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/shipping_method"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueSHippingMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,56 +219,78 @@
 
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/labelGW"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/gross_weight"
-                    android:textSize="8sp"
-                    android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
-
-                <TextView
-                    android:id="@+id/valueGW"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/labelLength"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
                     android:text="@string/length"
-                    android:textSize="8sp"
-                    android:textAlignment="textEnd"
                     android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
+                    android:textSize="10dp" />
 
                 <TextView
                     android:id="@+id/valueLength"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textAlignment="textEnd"
+                    android:paddingVertical="2dp"
                     android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
+                    android:textSize="12dp" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelWidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/width"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueWidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelLHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/height"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -112,59 +302,165 @@
 
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/labelWidth"
+                    android:id="@+id/labelGw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/width"
-                    android:textSize="8sp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/gross_weight"
                     android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
+                    android:textSize="8dp" />
 
                 <TextView
-                    android:id="@+id/valueWidth"
+                    android:id="@+id/valueGW"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:paddingVertical="2dp"
                     android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
+                    android:textSize="12dp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/labelLHeight"
+                    android:id="@+id/volume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/height"
-                    android:textSize="8sp"
-                    android:textAlignment="textEnd"
+                    android:paddingVertical="2dp"
+                    android:text="@string/volume"
                     android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
+                    android:textSize="10dp" />
 
                 <TextView
-                    android:id="@+id/valueHeight"
-                    android:textAlignment="textEnd"
+                    android:id="@+id/valueVolume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:paddingVertical="2dp"
                     android:textColor="?android:attr/textColor"
-                    android:paddingVertical="2dp"/>
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelVolumeWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/voulme_weight"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueVolumeWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
 
             </LinearLayout>
 
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelChargeableWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/chageable_weight"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="8dp" />
+
+                <TextView
+                    android:id="@+id/valueChargeableWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelShippingFactor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/shipping_factor"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/valueShippingFactor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/voulme_weight"
+                    android:textColor="?android:attr/textColor"
+                    android:visibility="gone"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:textColor="?android:attr/textColor"
+                    android:visibility="gone"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
+
 
     </LinearLayout>
 

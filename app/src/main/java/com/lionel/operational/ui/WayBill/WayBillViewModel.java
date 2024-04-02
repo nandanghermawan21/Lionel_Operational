@@ -4,9 +4,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.ShipmentModel;
 import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingLinerModel;
 import com.lionel.operational.model.ShippingMethodModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WayBillViewModel extends ViewModel {
 
@@ -15,6 +19,7 @@ public class WayBillViewModel extends ViewModel {
     private MutableLiveData<ShippingAgentModel> shippingAgent;
     private MutableLiveData<DestinationModel> origin;
     private MutableLiveData<ShippingLinerModel> liner;
+    private MutableLiveData<List<ShipmentModel>> shipmentList;
 
     public WayBillViewModel() {
         state = new MutableLiveData<>();
@@ -77,4 +82,40 @@ public class WayBillViewModel extends ViewModel {
         this.liner.setValue(liner);
     }
 
+    public MutableLiveData<List<ShipmentModel>> getShipmentList() {
+        if (shipmentList == null) {
+            shipmentList = new MutableLiveData<>();
+            shipmentList.setValue(new ArrayList<>());
+        }
+        return shipmentList;
+    }
+
+    public void addShipment(ShipmentModel shipmentModel) {
+        List<ShipmentModel> list = getShipmentList().getValue();
+        list.add(shipmentModel);
+        shipmentList.setValue(list);
+    }
+
+    public void removeShipment(ShipmentModel shipmentModel) {
+        List<ShipmentModel> list = getShipmentList().getValue();
+        list.remove(shipmentModel);
+        shipmentList.setValue(list);
+    }
+
+    //add more then one shipment
+    public void addShipmentList(List<ShipmentModel> shipmentModelList) {
+        List<ShipmentModel> list = getShipmentList().getValue();
+        list.addAll(shipmentModelList);
+        shipmentList.setValue(list);
+    }
+
+    public void clear() {
+        //reset all data
+        setStateAsNew();
+        setShippingMethod(null);
+        setShippingAgent(null);
+        setOrigin(null);
+        setLiner(null);
+        getShipmentList().getValue().clear();
+    }
 }
