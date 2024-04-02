@@ -52,4 +52,6 @@
     <string name="liner_required">Liner is required</string>
     <string name="weight_must_greater_than_or_equal">weight must greater than or equal</string>
     <string name="data_not_found">data not found</string>
+    <string name="volume">Volume</string>
+    <string name="shipping_factor">Shipping Factor</string>
 </resources>
