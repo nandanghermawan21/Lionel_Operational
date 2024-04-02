@@ -54,4 +54,6 @@
     <string name="data_not_found">data not found</string>
     <string name="volume">Volume</string>
     <string name="shipping_factor">Shipping Factor</string>
+    <string name="please_fill_STT_or_consol_no">Please fill STT or Console number</string>
+    <string name="SttOrConsoleNumber">STT / Console Number</string>
 </resources>

@@ -66,12 +66,12 @@ public interface ApiService {
             @Query("recordUserBranchId") String recordUserBranchId
     );
 
-    @GET("get_shipping_liner.php")
+    @GET("operation_waybill.php")
     Call<ApiResponse<List<ShippingLinerModel>>> getShippingLiner(
             @Query("action") String action
     );
 
-    @GET("operation_way_bill_shipment.php")
+    @GET("operation_waybill.php")
     Call<ApiResponse<List<ShipmentModel>>> getWayBillShipment(
             @Query("action") String action,
             @Query("recordBarcode") String recordBarcode,

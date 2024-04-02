@@ -306,7 +306,7 @@ public class WayBillFragment extends Fragment {
                 ShipmentModel shipmentModel = new ShipmentModel();
                 //validaasi apakah shipmentCode sudah diisi
                 if(inputShipmentCode.getText().toString().isEmpty()) {
-                    labelShipmentCodeError.setText(getString(R.string.please_fill_STT));
+                    labelShipmentCodeError.setText(getString(R.string.please_fill_STT_or_consol_no));
                     labelShipmentCodeError.setVisibility(View.VISIBLE);
                 }else{
                     doAddShipment();
@@ -327,7 +327,7 @@ public class WayBillFragment extends Fragment {
         //ambil shipment dari api
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<List<ShipmentModel>>> call = apiService.getWayBillShipment("get-shipment", inputShipmentCode.getText().toString(),  viewModel.getOrigin().getValue().getId());
+        Call<ApiResponse<List<ShipmentModel>>> call = apiService.getWayBillShipment("get-shipment", inputShipmentCode.getText().toString(),  viewModel.getOrigin().getValue().getBranchId());
 
         call.enqueue(new retrofit2.Callback<ApiResponse<List<ShipmentModel>>>() {
             @Override
@@ -335,20 +335,25 @@ public class WayBillFragment extends Fragment {
                 if(response.isSuccessful() && response.body() != null) {
                     if(response.body().isSuccess()) {
                         List<ShipmentModel> shipmentModels = response.body().getData();
-                        //for test set parent code
-                        viewModel.addShipmentList(shipmentModels);
-                        //update adapter
-                        shipmentReceicleViewAdapter.notifyDataSetChanged();
-                        //set listener adapter
-                        shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
-                            @Override
-                            public void onItemClickDelete(ShipmentModel item) {
-                                viewModel.removeShipment(item);
-                                shipmentReceicleViewAdapter.notifyDataSetChanged();
-                            }
-                        });
-                        //scroll to last position
-                        recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
+                        //jika shipmentmodels null kosong maka tampilkan pesan error
+                        if(shipmentModels == null || shipmentModels.size() == 0) {
+                            Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                        }else{
+                            //for test set parent code
+                            viewModel.addShipmentList(shipmentModels);
+                            //update adapter
+                            shipmentReceicleViewAdapter.notifyDataSetChanged();
+                            //set listener adapter
+                            shipmentReceicleViewAdapter.setOnItemClickListener(new ShipmentRecycleViewAdapter.OnItemShipmentClickListener() {
+                                @Override
+                                public void onItemClickDelete(ShipmentModel item) {
+                                    viewModel.removeShipment(item);
+                                    shipmentReceicleViewAdapter.notifyDataSetChanged();
+                                }
+                            });
+                            //scroll to last position
+                            recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
+                        }
                     }else{
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();

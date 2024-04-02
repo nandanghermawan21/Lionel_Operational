@@ -83,7 +83,7 @@ public class GetShippingMethodActivity extends AppCompatActivity {
 
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<List<ShippingMethodModel>>> call = apiService.getShippingMethod("shipping-method");
+        Call<ApiResponse<List<ShippingMethodModel>>> call = apiService.getShippingMethod("get-shipping-method");
 
         call.enqueue(new Callback<ApiResponse<List<ShippingMethodModel>>>() {
 

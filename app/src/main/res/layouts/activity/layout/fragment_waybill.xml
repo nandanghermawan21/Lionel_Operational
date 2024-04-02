@@ -37,7 +37,7 @@
                             android:id="@+id/textInputWayBillNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text" />
+                            android:inputType="textCapCharacters" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -358,7 +358,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/SttNumber"
+                        android:hint="@string/SttOrConsoleNumber"
                         app:hintAnimationEnabled="true"
                         app:hintEnabled="true">
 
@@ -366,7 +366,7 @@
                             android:id="@+id/textInputSTTCode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text" />
+                            android:inputType="textCapCharacters" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
