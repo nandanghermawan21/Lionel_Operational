@@ -356,8 +356,9 @@ public class ConsoleCreateFragment extends Fragment {
                 "submit-console",
                 inputConsoleCode.getText().toString(),
                 account.getName(),
-                viewModel.getDestinationModel().getValue().getBranchId(),
+                account.getBranchId(),
                 viewModel.getDestinationModel().getValue().getId(),
+                viewModel.getDestinationModel().getValue().getBranchId(),
                 viewModel.getShipmentList().getValue().stream().map(ShipmentModel::getBarcode).collect(Collectors.toList()));
 
         call.enqueue(new retrofit2.Callback<ApiResponse>() {

@@ -51,6 +51,7 @@ public interface ApiService {
             @Field("recordEmployeeName") String recordEmployeeName,
             @Field("recordBranchId") String recordBranchId,
             @Field("recordDestCity") String recordDestCity,
+            @Field("recordDestBranchId") String recordDestBranchId,
             @Field("recordSttNo[]") List<String> recordSttNo
     );
 
