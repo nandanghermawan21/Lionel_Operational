@@ -134,6 +134,13 @@ public class AcceptanceFragment extends Fragment {
                 editTextHeight.setError(getString(R.string.height_required));
                 isValid = false;
             }
+            //cehck apakahh nilai gw lebih kecil dari response
+            if (viewModel.getShipment().getValue() != null) {
+                if (Integer.parseInt(editTextGW.getText().toString()) < viewModel.getShipment().getValue().getGrossWeight()) {
+                    editTextGW.setError(getString(R.string.weight_must_greater_than_or_equal) + ' ' + viewModel.getShipment().getValue().getGrossWeight());
+                    isValid = false;
+                }
+            }
             if (isValid) {
                 doSubmit();
             }
@@ -152,11 +159,15 @@ public class AcceptanceFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body().isSuccess()) {
                         viewModel.setShipment(response.body().getData());
-                        viewModel.setStateAsCreated();
-                        editTextGW.setText(String.valueOf(viewModel.getShipment().getValue().getGrossWeight()));
-                        editTextLength.setText(String.valueOf(viewModel.getShipment().getValue().getLength()));
-                        editTextWidth.setText(String.valueOf(viewModel.getShipment().getValue().getWidth()));
-                        editTextHeight.setText(String.valueOf(viewModel.getShipment().getValue().getHeight()));
+                        if(viewModel.getShipment().getValue() != null){
+                            viewModel.setStateAsCreated();
+                            editTextGW.setText(String.valueOf(viewModel.getShipment().getValue().getGrossWeight()));
+                            editTextLength.setText(String.valueOf(viewModel.getShipment().getValue().getLength()));
+                            editTextWidth.setText(String.valueOf(viewModel.getShipment().getValue().getWidth()));
+                            editTextHeight.setText(String.valueOf(viewModel.getShipment().getValue().getHeight()));
+                        }else{
+                            Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -177,7 +188,7 @@ public class AcceptanceFragment extends Fragment {
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
         Call<ApiResponse> call = apiService.acceptShipment(
-                "accept-shipment",
+                "submit-acceptance",
                 editTextSearch.getText().toString(),
                 editTextGW.getText().toString(),
                 editTextLength.getText().toString(),
