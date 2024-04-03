@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -130,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/destination_layout"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -138,7 +139,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/dec_main_input"
                 android:orientation="vertical"
-
                 android:padding="8dp">
 
                 <LinearLayout
@@ -149,7 +149,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:text="@string/console_number" />
 
                     <TextView
@@ -170,7 +170,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:text="@string/destination" />
 
                     <TextView
@@ -188,10 +188,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
                 android:layout_gravity="top"
-                android:paddingTop="8dp">
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal"
+                android:paddingTop="4dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -216,9 +216,9 @@
 
                     <TextView
                         android:id="@+id/labelSTTCodeError"
-                        android:paddingTop="2dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
                         android:textColor="?android:attr/colorError" />
 
                 </LinearLayout>
@@ -226,28 +226,59 @@
                 <Button
                     android:id="@+id/buttonAddShipment"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="@string/add"
                     android:height="50dp"
-                    android:layout_height="wrap_content"/>
+                    android:text="@string/add" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/gray"
-                android:layout_marginBottom="50dp"
-                android:layout_height="0dp">
+                android:background="@color/gray">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewShipment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:paddingHorizontal="8dp"
+                    android:layout_marginTop="0dp"
                     android:layout_weight="1"
+                    android:padding="8dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal"
+                android:paddingTop="4dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/total_gross_weight" />
+
+                    <TextView
+                        android:id="@+id/totalGrossWeight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="0"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -89,7 +89,6 @@ public class CreateStobFragment extends Fragment {
     private CheckBox selectAll;
     private TextInputEditText searchWaybill;
 
-
     private final ActivityResultLauncher<Intent> shippingMethodLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {

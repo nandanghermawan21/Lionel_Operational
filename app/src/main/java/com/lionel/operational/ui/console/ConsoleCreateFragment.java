@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,6 +69,8 @@ public class ConsoleCreateFragment extends Fragment {
     Button buttonAddShipment;
     TextInputEditText inputShipmentCode;
     TextView labelShipmentCodeError;
+    TextView totalGrossWeight;
+
 
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -74,7 +78,7 @@ public class ConsoleCreateFragment extends Fragment {
                     Intent data = result.getData();
                     String destination = data.getStringExtra(GET_DESTINATION);
                     //ubah data ke dalam bentuk object
-                     DestinationModel destinationModel = new Gson().fromJson(destination, DestinationModel.class);
+                    DestinationModel destinationModel = new Gson().fromJson(destination, DestinationModel.class);
                     // set data ke dalam view model
                     viewModel.setDestinationModel(destinationModel);
                 }
@@ -130,6 +134,7 @@ public class ConsoleCreateFragment extends Fragment {
         buttonAddShipment = view.findViewById(R.id.buttonAddShipment);
         inputShipmentCode = view.findViewById(R.id.textInputSTTCode);
         labelShipmentCodeError = view.findViewById(R.id.labelSTTCodeError);
+        totalGrossWeight = view.findViewById(R.id.totalGrossWeight);
 
         buttonGetDestination.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,17 +150,17 @@ public class ConsoleCreateFragment extends Fragment {
                 if (viewModel.getDestinationModel().getValue() == null) {
                     isValid = false;
                     viewModel.setDestinationErrorMessage(getString(R.string.error_destination));
-                }else{
+                } else {
                     viewModel.setDestinationErrorMessage("");
                 }
-                if(inputConsoleCode.getText().toString().isEmpty()) {
+                if (inputConsoleCode.getText().toString().isEmpty()) {
                     isValid = false;
                     viewModel.setConsoleCodeErrorMessage(getString(R.string.error_console_code));
-                }else{
+                } else {
                     viewModel.setConsoleCodeErrorMessage("");
                 }
 
-                if(isValid) {
+                if (isValid) {
                     viewModel.setStateAsCreated();
                 }
             }
@@ -189,10 +194,10 @@ public class ConsoleCreateFragment extends Fragment {
         viewModel.getDestinationModel().observe(getViewLifecycleOwner(), new Observer<DestinationModel>() {
             @Override
             public void onChanged(DestinationModel destinationModel) {
-                if(destinationModel != null){
+                if (destinationModel != null) {
                     viewModel.setDestinationErrorMessage("");
                     buttonGetDestination.setText(destinationModel.getId());
-                }else{
+                } else {
                     buttonGetDestination.setText(getString(R.string.select_destination));
                 }
             }
@@ -214,7 +219,7 @@ public class ConsoleCreateFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 labelDestinationError.setText(s);
-                if(s.isEmpty()) {
+                if (s.isEmpty()) {
                     labelDestinationError.setVisibility(View.GONE);
                 } else {
                     labelDestinationError.setVisibility(View.VISIBLE);
@@ -227,9 +232,20 @@ public class ConsoleCreateFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewModel.setStateAsNew();
-                inputConsoleCode.setText("");
-                viewModel.setDestinationModel(null);
                 viewModel.clearShipmentList();
+            }
+        });
+
+        //handle ketika done editing inputShipmentCode
+        inputShipmentCode.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    buttonAddShipment.performClick();
+
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -237,9 +253,11 @@ public class ConsoleCreateFragment extends Fragment {
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viewModel.getShipmentList().getValue().size() == 0) {
+                if (viewModel.getShipmentList().getValue().size() == 0) {
                     Toast.makeText(getContext(), getString(R.string.error_shipment_empty), Toast.LENGTH_SHORT).show();
-                }else{
+                    //focue to input shipment code
+                    inputShipmentCode.requestFocus();
+                } else {
                     doSubmit();
                 }
             }
@@ -253,21 +271,21 @@ public class ConsoleCreateFragment extends Fragment {
                 ShipmentModel shipmentModel = new ShipmentModel();
                 shipmentModel.setParentCode(inputConsoleCode.getText().toString());
                 //validaasi apakah shipmentCode sudah diisi
-                if(inputShipmentCode.getText().toString().isEmpty()) {
+                if (inputShipmentCode.getText().toString().isEmpty()) {
                     labelShipmentCodeError.setText(getString(R.string.please_fill_STT));
                     labelShipmentCodeError.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     boolean isExist = false;
                     for (ShipmentModel shipment : viewModel.getShipmentList().getValue()) {
-                        if(shipment.getBarcode().equals(inputShipmentCode.getText().toString())) {
+                        if (shipment.getBarcode().equals(inputShipmentCode.getText().toString())) {
                             isExist = true;
                             break;
                         }
                     }
-                    if(isExist) {
+                    if (isExist) {
                         labelShipmentCodeError.setText(getString(R.string.error_shipment_exist));
                         labelShipmentCodeError.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         labelShipmentCodeError.setText("");
                         labelShipmentCodeError.setVisibility(View.GONE);
                         doAddShipment();
@@ -281,9 +299,9 @@ public class ConsoleCreateFragment extends Fragment {
         viewModel.getShipmentList().observe(getViewLifecycleOwner(), new Observer<List<ShipmentModel>>() {
             @Override
             public void onChanged(List<ShipmentModel> shipmentModels) {
-                shipmentReceicleViewAdapter = new ShipmentRecycleViewAdapter(shipmentModels);
-                recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
                 shipmentReceicleViewAdapter.notifyDataSetChanged();
+                //update total gross
+                totalGrossWeight.setText(String.valueOf(shipmentModels.stream().mapToDouble(ShipmentModel::getGrossWeight).sum()));
             }
         });
     }
@@ -297,18 +315,18 @@ public class ConsoleCreateFragment extends Fragment {
         //ambil shipment dari api
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<ShipmentModel>> call = apiService.getShipmentConsole(inputShipmentCode.getText().toString(), "get-shipment",  viewModel.getDestinationModel().getValue().getId());
+        Call<ApiResponse<ShipmentModel>> call = apiService.getShipmentConsole(inputShipmentCode.getText().toString(), "get-shipment", viewModel.getDestinationModel().getValue().getId());
 
         call.enqueue(new retrofit2.Callback<ApiResponse<ShipmentModel>>() {
             @Override
             public void onResponse(Call<ApiResponse<ShipmentModel>> call, retrofit2.Response<ApiResponse<ShipmentModel>> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    if(response.body().isSuccess()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isSuccess()) {
                         ShipmentModel shipmentModel = response.body().getData();
                         //check jika shipment bernilai null maka tampilkan pesan error
-                        if(shipmentModel == null) {
+                        if (shipmentModel == null) {
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             //for test set parent code
                             shipmentModel.setBarcode(inputShipmentCode.getText().toString());
                             viewModel.addShipment(shipmentModel);
@@ -326,9 +344,11 @@ public class ConsoleCreateFragment extends Fragment {
                             recyclerShipmentView.scrollToPosition(shipmentReceicleViewAdapter.getItemCount() - 1);
                             //clear input
                             inputShipmentCode.setText("");
+                            //focue to input shipment code
+                            inputShipmentCode.requestFocus();
                         }
 
-                    }else{
+                    } else {
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -343,7 +363,7 @@ public class ConsoleCreateFragment extends Fragment {
         });
     }
 
-    private void doSubmit(){
+    private void doSubmit() {
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
         //get data user from shared preferences
@@ -362,15 +382,15 @@ public class ConsoleCreateFragment extends Fragment {
         call.enqueue(new retrofit2.Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, retrofit2.Response<ApiResponse> response) {
-                if(response.isSuccessful() && response.body() != null) {
-                    if(response.body().isSuccess()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isSuccess()) {
                         //show success message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         //reset form
                         viewModel.setStateAsNew();
                         inputConsoleCode.setText("");
                         viewModel.setDestinationModel(null);
-                    }else{
+                    } else {
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -383,5 +403,10 @@ public class ConsoleCreateFragment extends Fragment {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

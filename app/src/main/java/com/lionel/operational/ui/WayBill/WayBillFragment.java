@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -283,6 +284,7 @@ public class WayBillFragment extends Fragment {
         viewModel.getOrigin().observe(getViewLifecycleOwner(), destinationModel -> {
             if(destinationModel != null){
                 buttonOrigin.setText(destinationModel.getId());
+                detailOrigin.setText(destinationModel.getId());
                 labelShippingOriginError.setText("");
             }else{
                 buttonOrigin.setText(getString(R.string.select_origin));
@@ -321,7 +323,7 @@ public class WayBillFragment extends Fragment {
         viewModel.getShippingMethod().observe(getViewLifecycleOwner(), shippingMethodModel -> {
             if(shippingMethodModel != null){
                 buttonShippingMethod.setText(shippingMethodModel.getId());
-                detailShippingAgent.setText(shippingMethodModel.getId());
+                detailShippingMethod.setText(shippingMethodModel.getId());
                 labelShippingMethodError.setText("");
             }else{
                 buttonShippingMethod.setText(getString(R.string.select_shipping_method));
@@ -370,7 +372,10 @@ public class WayBillFragment extends Fragment {
                 if(inputShipmentCode.getText().toString().isEmpty()) {
                     labelShipmentCodeError.setText(getString(R.string.please_fill_STT_or_consol_no));
                     labelShipmentCodeError.setVisibility(View.VISIBLE);
+                    //focus to input shipment code
+                    inputShipmentCode.requestFocus();
                 }else{
+                    labelShipmentCodeError.setText("");
                     doAddShipment();
                 }
             }
@@ -380,6 +385,18 @@ public class WayBillFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 doSubmit();
+            }
+        });
+
+        //handle on done input shipment code
+        inputShipmentCode.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    buttonAddShipment.performClick();
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -415,6 +432,8 @@ public class WayBillFragment extends Fragment {
                             });
                             //scroll to last position
                             recyclerShipmentView.scrollToPosition(shipmentRecycleViewAdapter.getItemCount() - 1);
+                            //focus to input shipment code
+                            inputShipmentCode.requestFocus();
                         }
                     }else{
                         //show error message
