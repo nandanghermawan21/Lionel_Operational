@@ -390,6 +390,8 @@ public class CreateStobFragment extends Fragment {
                         viewModel.setShippingMethod(null);
                         inputCarLicense.setText("");
                         inputSealNo.setText("");
+                        labelShippingAgentError.setText("");
+                        labelShippingMethodError.setText("");
                     }else{
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();

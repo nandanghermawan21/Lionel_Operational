@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     //mapping menu name to menu id
     private int mapMenuItem(String menuName) {
         switch (menuName) {
-            case "Optional Acceptance":
+            case "OP Acceptance":
                 return (R.id.nav_acceptance);
             case "OP Console":
                 return (R.id.nav_console);

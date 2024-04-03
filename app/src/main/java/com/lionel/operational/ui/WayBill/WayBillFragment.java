@@ -272,6 +272,14 @@ public class WayBillFragment extends Fragment {
             }
         });
 
+        // cancel
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.setStateAsNew();
+            }
+        });
+
         viewModel.getOrigin().observe(getViewLifecycleOwner(), destinationModel -> {
             if(destinationModel != null){
                 buttonOrigin.setText(destinationModel.getId());
