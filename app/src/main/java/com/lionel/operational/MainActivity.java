@@ -78,12 +78,14 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
         String userData = sharedPreferences.getString(USERDATA, null);
         //convert to object
-        AccountModel accountModel = new Gson().fromJson(userData, AccountModel.class);
-        tvUsername.setText(accountModel.getName());
-        tvGroupName.setText(accountModel.getGroup());
-
         hideAllMenuItem();
-        getMenu();
+        if(userData != null){
+            AccountModel accountModel = new Gson().fromJson(userData, AccountModel.class);
+            tvUsername.setText(accountModel.getUsername());
+            tvGroupName.setText(accountModel.getGroup());
+            getMenu();
+        }
+
     }
 
     private boolean sessionIsNull() {

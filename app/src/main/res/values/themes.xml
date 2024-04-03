@@ -13,7 +13,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/black</item>
-        <item name="android:colorControlHighlight">@color/contol</item>
+        <item name="android:colorControlHighlight">@color/control</item>
     </style>
 
     <style name="Theme.LionelOperational.NoActionBar">
