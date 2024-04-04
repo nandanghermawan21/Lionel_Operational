@@ -78,7 +78,7 @@ public class CreateStobFragment extends Fragment {
     TextView labelCarLicenseError;
     TextInputEditText inputSealNo;
     TextView labelSealNoError;
-    LinearLayout layoutInputDetail;
+    ScrollView layoutInputDetail;
     TextView detailOrigin;
     TextView detailShippingAgent;
     TextView detailShippingMethod;
