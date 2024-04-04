@@ -386,6 +386,12 @@ public class WayBillFragment extends Fragment {
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check jika shipment list kosong maka tampilkan pesan error
+                if(viewModel.getShipmentList().getValue().size() == 0){
+                    Toast.makeText(getContext(), getString(R.string.error_shipment_empty), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //total weight
                 double totalWeight = viewModel.getShipmentList().getValue().stream().map(ShipmentModel::getGrossWeight).reduce(0.0, Double::sum);
 
@@ -422,7 +428,7 @@ public class WayBillFragment extends Fragment {
         viewModel.getShipmentList().observe(getViewLifecycleOwner(), shipmentModels -> {
             if(shipmentModels != null){
                 String totalWeight = shipmentModels.stream().map(ShipmentModel::getGrossWeight).reduce(0.0, Double::sum).toString();
-                detailTotalWeight.setText(String.valueOf(shipmentModels.size()) + " Coli, " + totalWeight + " Kg");
+                detailTotalWeight.setText(String.valueOf(shipmentModels.size()) + " Coli / " + totalWeight + " Kg");
             }
         });
 
@@ -443,6 +449,8 @@ public class WayBillFragment extends Fragment {
                         //jika shipmentmodels null kosong maka tampilkan pesan error
                         if(shipmentModels == null || shipmentModels.size() == 0) {
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                            //focus to input shipment code
+                            inputShipmentCode.requestFocus();
                         }else{
                             //loop data shipment dan kembalikan pesan error jika shipment telah ada
                             for(ShipmentModel shipmentModel : shipmentModels){
@@ -464,6 +472,8 @@ public class WayBillFragment extends Fragment {
                                     shipmentRecycleViewAdapter.notifyDataSetChanged();
                                 }
                             });
+                            //Clear input shipment code
+                            inputShipmentCode.setText("");
                             //scroll to last position
                             recyclerShipmentView.scrollToPosition(shipmentRecycleViewAdapter.getItemCount() - 1);
                             //focus to input shipment code
@@ -472,6 +482,8 @@ public class WayBillFragment extends Fragment {
                     }else{
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //focus to input shipment code
+                        inputShipmentCode.requestFocus();
                     }
                 }
             }
@@ -480,6 +492,8 @@ public class WayBillFragment extends Fragment {
             public void onFailure(Call<ApiResponse<List<ShipmentModel>>> call, Throwable t) {
                 //show error message
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                //focus to input shipment code
+                inputShipmentCode.requestFocus();
             }
         });
     }

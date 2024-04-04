@@ -326,6 +326,8 @@ public class ConsoleCreateFragment extends Fragment {
                         //check jika shipment bernilai null maka tampilkan pesan error
                         if (shipmentModel == null) {
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                            //focue to input shipment code
+                            inputShipmentCode.requestFocus();
                         } else {
                             //for test set parent code
                             shipmentModel.setBarcode(inputShipmentCode.getText().toString());
@@ -351,6 +353,8 @@ public class ConsoleCreateFragment extends Fragment {
                     } else {
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //focue to input shipment code
+                        inputShipmentCode.requestFocus();
                     }
                 }
             }
@@ -359,6 +363,8 @@ public class ConsoleCreateFragment extends Fragment {
             public void onFailure(Call<ApiResponse<ShipmentModel>> call, Throwable t) {
                 //show error message
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                //focue to input shipment code
+                inputShipmentCode.requestFocus();
             }
         });
     }

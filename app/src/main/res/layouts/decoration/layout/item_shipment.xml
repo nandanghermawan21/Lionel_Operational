@@ -361,7 +361,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="2dp"
-                    android:text="@string/voulme_weight"
+                    android:text="@string/volume_weight"
                     android:textColor="?android:attr/textColor"
                     android:textSize="10dp" />
 
@@ -394,7 +394,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="2dp"
-                    android:text="@string/chageable_weight"
+                    android:text="@string/chargeable_weight"
                     android:textColor="?android:attr/textColor"
                     android:textSize="8dp" />
 
@@ -443,7 +443,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingVertical="2dp"
-                    android:text="@string/voulme_weight"
+                    android:text="@string/volume_weight"
                     android:textColor="?android:attr/textColor"
                     android:visibility="gone"
                     android:textSize="10dp" />

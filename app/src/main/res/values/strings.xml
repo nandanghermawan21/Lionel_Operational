@@ -73,4 +73,5 @@
     <string name="already_exist">already exist</string>
     <string name="shipment">Shipment</string>
     <string name="destination_required">Destination is required</string>
+    <string name="welcome">Welcome to Lional Operational</string>
 </resources>

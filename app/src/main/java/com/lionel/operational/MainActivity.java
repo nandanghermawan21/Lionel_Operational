@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_welcome,
                 R.id.nav_acceptance, R.id.nav_console, R.id.nav_way_bill, R.id.nav_stob)
                 .setOpenableLayout(drawer)
                 .build();
@@ -217,11 +217,11 @@ public class MainActivity extends AppCompatActivity {
                                     for (String menu : accountModel.getMenu()) {
                                         showMenuItem(mapMenuItem(menu));
                                     }
-                                    setInitialSelectedItem(getFirstVisibleMenuItem());
-                                    NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                                            .findFragmentById(R.id.nav_host_fragment_content_main);
-                                    navController = navHostFragment.getNavController();
-                                    navController.navigate(getFirstVisibleMenuItem());
+//                                    setInitialSelectedItem(getFirstVisibleMenuItem());
+//                                    NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+//                                            .findFragmentById(R.id.nav_host_fragment_content_main);
+//                                    navController = navHostFragment.getNavController();
+//                                    navController.navigate(getFirstVisibleMenuItem());
                                 }else{
                                     doesNotHavePermission();
                                 }
