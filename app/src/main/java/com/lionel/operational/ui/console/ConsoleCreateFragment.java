@@ -315,7 +315,7 @@ public class ConsoleCreateFragment extends Fragment {
         //ambil shipment dari api
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<ShipmentModel>> call = apiService.getShipmentConsole(inputShipmentCode.getText().toString(), "get-shipment", viewModel.getDestinationModel().getValue().getId());
+        Call<ApiResponse<ShipmentModel>> call = apiService.getShipmentConsole(inputShipmentCode.getText().toString().trim(), "get-shipment", viewModel.getDestinationModel().getValue().getId());
 
         call.enqueue(new retrofit2.Callback<ApiResponse<ShipmentModel>>() {
             @Override
@@ -372,7 +372,7 @@ public class ConsoleCreateFragment extends Fragment {
 
         Call<ApiResponse> call = apiService.submitConsole(
                 "submit-console",
-                inputConsoleCode.getText().toString(),
+                inputConsoleCode.getText().toString().trim(),
                 account.getName(),
                 account.getBranchId(),
                 viewModel.getDestinationModel().getValue().getId(),

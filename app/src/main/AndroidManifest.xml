@@ -15,6 +15,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".GetCityActivity"
+            android:theme="@style/Theme.LionelOperational.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".GetServiceActivity"
             android:theme="@style/Theme.LionelOperational.NoActionBar"
             android:exported="false" />

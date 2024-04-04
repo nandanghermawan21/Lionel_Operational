@@ -1,13 +1,9 @@
 package com.lionel.operational;
 
+import static com.lionel.operational.model.Constant.GET_CITY;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
-import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
 import static com.lionel.operational.model.Constant.USERDATA;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,16 +15,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.lionel.operational.adapter.CityRecycleViewAdapter;
 import com.lionel.operational.adapter.ShippingAgentRecycleViewAdapter;
-import com.lionel.operational.adapter.ShippingMethodRecycleViewAdapter;
 import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
+import com.lionel.operational.model.CityModel;
 import com.lionel.operational.model.ShippingAgentModel;
-import com.lionel.operational.model.ShippingMethodModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +37,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GetShippingAgentActivity extends AppCompatActivity {
-
+public class GetCityActivity extends AppCompatActivity {
     private TextView titleAppBar;
     private TextInputLayout hintSearch;
     private RecyclerView recyclerView;
     private EditText textFieldSearchDestinationView;
 
-    ShippingAgentModel selectedShippingAgent = new ShippingAgentModel();
-    List<ShippingAgentModel> shippingAgents =  new ArrayList<>();
+    CityModel selectedCity = new CityModel();
+    List<CityModel> cities =  new ArrayList<>();
 
-    ShippingAgentRecycleViewAdapter adapter = new ShippingAgentRecycleViewAdapter(shippingAgents);
+    CityRecycleViewAdapter adapter = new CityRecycleViewAdapter(cities);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +57,9 @@ public class GetShippingAgentActivity extends AppCompatActivity {
         hintSearch = findViewById(R.id.inputLayoutSearchDestination);
 
         //set title
-        titleAppBar.setText(getString(R.string.select_shipping_agent));
+        titleAppBar.setText(getString(R.string.select_destination));
         //set hint
-        hintSearch.setHint(getString(R.string.shipping_agent));
+        hintSearch.setHint(getString(R.string.select_destination));
 
         //initialize recyclerview
         textFieldSearchDestinationView = findViewById(R.id.inputTextSearchDestination);
@@ -91,47 +90,42 @@ public class GetShippingAgentActivity extends AppCompatActivity {
 
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        //get data user from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
-        String json = sharedPreferences.getString(USERDATA, "");
-        AccountModel account = new Gson().fromJson(json, AccountModel.class);
+        Call<ApiResponse<List<CityModel>>> call = apiService.getCity("get-branch");
 
-        Call<ApiResponse<List<ShippingAgentModel>>> call = apiService.getShippingAgent("get-shipping-agent", account.getBranchId());
-
-        call.enqueue(new Callback<ApiResponse<List<ShippingAgentModel>>>() {
+        call.enqueue(new Callback<ApiResponse<List<CityModel>>>() {
 
             @Override
-            public void onResponse(Call<ApiResponse<List<ShippingAgentModel>>> call, Response<ApiResponse<List<ShippingAgentModel>>> response) {
+            public void onResponse(Call<ApiResponse<List<CityModel>>> call, Response<ApiResponse<List<CityModel>>> response) {
                 if(response.body().isSuccess()) {
-                    shippingAgents = response.body().getData();
-                    adapter = new ShippingAgentRecycleViewAdapter(shippingAgents);
+                    cities = response.body().getData();
+                    adapter = new CityRecycleViewAdapter(cities);
                     recyclerView.setAdapter(adapter);
-                    adapter.setOnItemClickListener(new ShippingAgentRecycleViewAdapter.OnItemOptionClickListener() {
+                    adapter.setOnItemClickListener(new CityRecycleViewAdapter.OnItemOptionClickListener() {
                         @Override
-                        public void onItemClick(ShippingAgentModel item) {
-                            selectedShippingAgent = item;
-                            setResult(RESULT_OK, getIntent().putExtra(GET_SHIPPING_AGENT, selectedShippingAgent.toJson()));
+                        public void onItemClick(CityModel item) {
+                            selectedCity = item;
+                            setResult(RESULT_OK, getIntent().putExtra(GET_CITY, selectedCity.toJson()));
                             finish();
                         }
                     });
-                    Log.e(GET_SHIPPING_AGENT, "onResponse: "+ shippingAgents.size());
+                    Log.e(GET_CITY, "onResponse: "+ cities.size());
                 } else {
                     Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e(GET_SHIPPING_AGENT, "onResponse: "+ response.body().getMessage());
+                    Log.e(GET_CITY, "onResponse: "+ response.body().getMessage());
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<List<ShippingAgentModel>>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<CityModel>>> call, Throwable t) {
 
             }
         });
     }
 
     private void filter(String text) {
-        List<ShippingAgentModel> filteredList = new ArrayList<>();
-        for (ShippingAgentModel item : shippingAgents) {
-            if ((item.getId() + " - " + item.getName() ).toLowerCase().contains(text.toLowerCase())) {
+        List<CityModel> filteredList = new ArrayList<>();
+        for (CityModel item : cities) {
+            if ((item.getId()).toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }

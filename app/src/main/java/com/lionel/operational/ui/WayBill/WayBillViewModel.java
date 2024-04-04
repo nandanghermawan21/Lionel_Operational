@@ -3,6 +3,7 @@ package com.lionel.operational.ui.WayBill;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.lionel.operational.model.CityModel;
 import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ServiceModel;
 import com.lionel.operational.model.ShipmentModel;
@@ -18,7 +19,7 @@ public class WayBillViewModel extends ViewModel {
     private MutableLiveData<String> state;
     private MutableLiveData<ShippingMethodModel> shippingMethod;
     private MutableLiveData<ShippingAgentModel> shippingAgent;
-    private MutableLiveData<DestinationModel> origin;
+    private MutableLiveData<CityModel> destination;
     private MutableLiveData<ShippingLinerModel> liner;
     private MutableLiveData<ServiceModel> service;
     private MutableLiveData<List<ShipmentModel>> shipmentList;
@@ -27,7 +28,7 @@ public class WayBillViewModel extends ViewModel {
         state = new MutableLiveData<>();
         shippingMethod = new MutableLiveData<>();
         shippingAgent = new MutableLiveData<>();
-        origin = new MutableLiveData<>();
+        destination = new MutableLiveData<>();
         liner = new MutableLiveData<>();
         service = new MutableLiveData<>();
         setStateAsNew();
@@ -69,12 +70,12 @@ public class WayBillViewModel extends ViewModel {
         this.shippingAgent.setValue(shippingAgent);
     }
 
-    public MutableLiveData<DestinationModel> getOrigin() {
-        return origin;
+    public MutableLiveData<CityModel> getDestination() {
+        return destination;
     }
 
-    public void setOrigin(DestinationModel origin) {
-        this.origin.setValue(origin);
+    public void setDestination(CityModel destination) {
+        this.destination.setValue(destination);
     }
 
     public MutableLiveData<ShippingLinerModel> getLiner() {
@@ -125,7 +126,7 @@ public class WayBillViewModel extends ViewModel {
         setStateAsNew();
         setShippingMethod(null);
         setShippingAgent(null);
-        setOrigin(null);
+        setDestination(null);
         setLiner(null);
         getShipmentList().getValue().clear();
     }

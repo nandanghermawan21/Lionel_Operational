@@ -10,7 +10,7 @@
 
     <string name="menu_acceptance">Acceptance</string>
     <string name="menu_create_console">Create Console</string>
-    <string name="menu_create_way_bill">Create Way Bill</string>
+    <string name="menu_create_way_bill">Create Waybill</string>
     <string name="menu_create_stob">Create STOB</string>
     <string name="gross_weight">Gross Weight</string>
     <string name="SttNumber">STT Number</string>
@@ -36,7 +36,7 @@
     <string name="add">ADD</string>
     <string name="error_shipment_exist">Shipment already exist</string>
     <string name="error_shipment_empty">Please fill in at least one shipment</string>
-    <string name="way_bill_no">Way Bill Number</string>
+    <string name="way_bill_no">Waybill Number</string>
     <string name="shipping_method">Shipping Method</string>
     <string name="select_shipping_method">Select Shipping Method</string>
     <string name="shipping_agent">Shipping Agent</string>
@@ -45,9 +45,9 @@
     <string name="select_origin">Select Origin</string>
     <string name="liner">Liner</string>
     <string name="select_liner">Select Liner</string>
-    <string name="waybill_no_required">Way bill number is required</string>
+    <string name="waybill_no_required">Waybill number is required</string>
     <string name="shipping_method_required">Shipping method is required</string>
-    <string name="shipping_agent_required">shipping agent is required</string>
+    <string name="shipping_agent_required">Shipping agent is required</string>
     <string name="rigin_required">Origin is required</string>
     <string name="liner_required">Liner is required</string>
     <string name="weight_must_greater_than_or_equal">weight must greater than or equal</string>
@@ -69,4 +69,8 @@
     <string name="check_all">Check All</string>
     <string name="search">Search</string>
     <string name="total_gross_weight">Total Gross Weight</string>
+    <string name="total_coli_gross_weight">Total Coli / Total Weight</string>
+    <string name="already_exist">already exist</string>
+    <string name="shipment">Shipment</string>
+    <string name="destination_required">Destination is required</string>
 </resources>

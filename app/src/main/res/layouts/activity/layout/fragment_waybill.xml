@@ -10,6 +10,8 @@
         <ScrollView
             android:id="@+id/layoutInputWayBill"
             android:layout_width="match_parent"
+            android:layout_marginBottom="50dp"
+            android:visibility="gone"
             android:layout_height="match_parent">
 
             <LinearLayout
@@ -120,23 +122,23 @@
                             android:paddingLeft="20px"
                             android:paddingTop="10px"
                             android:paddingBottom="1dp"
-                            android:text="@string/origin"
+                            android:text="@string/destination"
                             android:textColor="?android:attr/textColor" />
 
                         <Button
-                            android:id="@+id/buttonSelectOrigin"
+                            android:id="@+id/buttonSelectDestination"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:backgroundTint="?android:attr/colorControlHighlight"
                             android:drawableEnd="@drawable/ic_menu_down"
-                            android:text="@string/select_origin"
+                            android:text="@string/select_destination"
                             android:textAlignment="textStart"
                             android:textColor="?android:attr/textColor"
                             android:tint="?android:attr/textColor" />
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/labelOriginError"
+                        android:id="@+id/labelDestinationError"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="?android:attr/colorError" />
@@ -235,6 +237,7 @@
             android:id="@+id/layoutInputDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -295,14 +298,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="@string/origin" />
+                        android:text="@string/destination" />
 
                     <TextView
-                        android:id="@+id/detailWayBilOrigin"
+                        android:id="@+id/detailWayBilDestination"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/origin"
+                        android:text="@string/destination"
                         android:textAlignment="textEnd" />
 
                 </LinearLayout>
@@ -401,9 +404,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:background="@color/gray"
-                android:layout_marginBottom="50dp"
                 android:layout_height="0dp">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -412,11 +414,30 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:paddingHorizontal="8dp"
-                    android:layout_weight="1"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/total_coli_gross_weight" />
+
+                <TextView
+                    android:id="@+id/totalColiGrossWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="0 Coli / 0 Kg"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

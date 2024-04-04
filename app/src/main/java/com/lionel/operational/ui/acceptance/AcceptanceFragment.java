@@ -150,7 +150,7 @@ public class AcceptanceFragment extends Fragment {
     private void doGetShipment() {
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<ShipmentModel>> call = apiService.getShipment(editTextSearch.getText().toString(), "get-shipment");
+        Call<ApiResponse<ShipmentModel>> call = apiService.getShipment(editTextSearch.getText().toString().trim(), "get-shipment");
 
         call.enqueue(new Callback<ApiResponse<ShipmentModel>>() {
 

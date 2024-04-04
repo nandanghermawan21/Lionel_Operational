@@ -5,4 +5,6 @@
     <string name="nature_of_goods">Nature of Goods</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="the_total_weight_exceeds_the_maximum_limit">The total weight exceeds the maximum limit</string>
+    <string name="the_total_coli_exceeds_the_maximum_limit">The total shipment exceeds the maximum limit</string>
 </resources>

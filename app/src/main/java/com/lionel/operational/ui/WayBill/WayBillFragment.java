@@ -1,6 +1,6 @@
 package com.lionel.operational.ui.WayBill;
 
-import static com.lionel.operational.model.Constant.GET_DESTINATION;
+import static com.lionel.operational.model.Constant.GET_CITY;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_LINER;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-import com.lionel.operational.GetDestinationActivity;
+import com.lionel.operational.GetCityActivity;
 import com.lionel.operational.GetServiceActivity;
 import com.lionel.operational.GetShipmentLinerActivity;
 import com.lionel.operational.GetShippingAgentActivity;
@@ -45,7 +45,7 @@ import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
-import com.lionel.operational.model.DestinationModel;
+import com.lionel.operational.model.CityModel;
 import com.lionel.operational.model.ServiceModel;
 import com.lionel.operational.model.ShipmentModel;
 import com.lionel.operational.model.ShippingAgentModel;
@@ -69,8 +69,8 @@ public class WayBillFragment extends Fragment {
     private TextView labelShippingMethodError;
     private Button buttonShippingAgent;
     private TextView labelShippingAgentError;
-    private Button buttonOrigin;
-    private TextView labelShippingOriginError;
+    private Button buttonOestination;
+    private TextView labelShippingDestinationError;
     private Button buttonShippingLiner;
     private TextView labelLinerError;
     private Button buttonShippingService;
@@ -83,18 +83,19 @@ public class WayBillFragment extends Fragment {
     private TextView labelShipmentCodeError;
     private TextView detailShippingMethod;
     private TextView detailShippingAgent;
-    private TextView detailOrigin;
+    private TextView detailDestination;
     private TextView detailLiner;
     private TextView detailService;
+    private TextView detailTotalWeight;
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    String destination = data.getStringExtra(GET_DESTINATION);
+                    String city = data.getStringExtra(GET_CITY);
                     //ubah data ke dalam bentuk object
-                    DestinationModel destinationModel = new Gson().fromJson(destination, DestinationModel.class);
+                    CityModel cityModel = new Gson().fromJson(city, CityModel.class);
                     // set data ke dalam view model
-                    viewModel.setOrigin(destinationModel);
+                    viewModel.setDestination(cityModel);
                 }
             });
 
@@ -185,8 +186,8 @@ public class WayBillFragment extends Fragment {
         labelShippingMethodError = view.findViewById(R.id.labelShippingMethodError);
         buttonShippingAgent = view.findViewById(R.id.buttonSelectShippingAgent);
         labelShippingAgentError = view.findViewById(R.id.labelShippingAgentError);
-        buttonOrigin = view.findViewById(R.id.buttonSelectOrigin);
-        labelShippingOriginError = view.findViewById(R.id.labelOriginError);
+        buttonOestination = view.findViewById(R.id.buttonSelectDestination);
+        labelShippingDestinationError = view.findViewById(R.id.labelDestinationError);
         buttonShippingLiner = view.findViewById(R.id.buttonSelectLiner);
         labelLinerError = view.findViewById(R.id.labelLinerError);
         buttonShippingService = view.findViewById(R.id.buttonSelectService);
@@ -197,9 +198,10 @@ public class WayBillFragment extends Fragment {
         labelShipmentCodeError = view.findViewById(R.id.labelSTTCodeError);
         detailShippingMethod = view.findViewById(R.id.detailWayBillShippingMethod);
         detailShippingAgent = view.findViewById(R.id.detailWayBillShippingAgent);
-        detailOrigin = view.findViewById(R.id.detailWayBilOrigin);
+        detailDestination = view.findViewById(R.id.detailWayBilDestination);
         detailLiner = view.findViewById(R.id.detailWayBilShippingLiner);
         detailService = view.findViewById(R.id.detailWayBilShippingService);
+        detailTotalWeight = view.findViewById(R.id.totalColiGrossWeight);
 
         //obserb status
         viewModel.getState().observe(getViewLifecycleOwner(), status -> {
@@ -239,11 +241,11 @@ public class WayBillFragment extends Fragment {
                     labelShippingAgentError.setText("");
                 }
 
-                if(viewModel.getOrigin().getValue() == null){
-                    labelShippingOriginError.setText(getString(R.string.rigin_required));
+                if(viewModel.getDestination().getValue() == null){
+                    labelShippingDestinationError.setText(getString(R.string.destination_required));
                     isValid = false;
                 }else{
-                    labelShippingOriginError.setText("");
+                    labelShippingDestinationError.setText("");
                 }
 
                 if(viewModel.getLiner().getValue() == null){
@@ -266,10 +268,10 @@ public class WayBillFragment extends Fragment {
             }
         });
 
-        buttonOrigin.setOnClickListener(new View.OnClickListener() {
+        buttonOestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSelectOrigin();
+                openSelectDestination();
             }
         });
 
@@ -281,13 +283,13 @@ public class WayBillFragment extends Fragment {
             }
         });
 
-        viewModel.getOrigin().observe(getViewLifecycleOwner(), destinationModel -> {
+        viewModel.getDestination().observe(getViewLifecycleOwner(), destinationModel -> {
             if(destinationModel != null){
-                buttonOrigin.setText(destinationModel.getId());
-                detailOrigin.setText(destinationModel.getId());
-                labelShippingOriginError.setText("");
+                buttonOestination.setText(destinationModel.getId());
+                detailDestination.setText(destinationModel.getId());
+                labelShippingDestinationError.setText("");
             }else{
-                buttonOrigin.setText(getString(R.string.select_origin));
+                buttonOestination.setText(getString(R.string.select_destination));
             }
         });
 
@@ -333,8 +335,8 @@ public class WayBillFragment extends Fragment {
         //watch shipping agent data
         viewModel.getShippingAgent().observe(getViewLifecycleOwner(), shippingAgentModel -> {
             if(shippingAgentModel != null){
-                buttonShippingAgent.setText(shippingAgentModel.getName());
-                detailShippingAgent.setText(shippingAgentModel.getName());
+                buttonShippingAgent.setText(shippingAgentModel.getId() + " - " + shippingAgentModel.getName());
+                detailShippingAgent.setText(shippingAgentModel.getId() + " - " + shippingAgentModel.getName());
                 labelShippingAgentError.setText("");
             }else{
                 buttonShippingAgent.setText(getString(R.string.select_shipping_agent));
@@ -384,6 +386,22 @@ public class WayBillFragment extends Fragment {
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //total weight
+                double totalWeight = viewModel.getShipmentList().getValue().stream().map(ShipmentModel::getGrossWeight).reduce(0.0, Double::sum);
+
+                //jika total shipment > dari max coli liner maka tampilkan pesan error
+                if(viewModel.getShipmentList().getValue().size() > viewModel.getLiner().getValue().getMaxColi()){
+                    Object weight;
+                    Toast.makeText(getContext(), getString(R.string.the_total_coli_exceeds_the_maximum_limit) + (" ("+viewModel.getLiner().getValue().getMaxColi()+" Coli)"), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //jika total weight melebihi dari max weight liner
+                if(totalWeight > viewModel.getLiner().getValue().getMaxGw()){
+                    Toast.makeText(getContext(), getString(R.string.the_total_weight_exceeds_the_maximum_limit) + (" ("+viewModel.getLiner().getValue().getMaxGw()+" Kg)"), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 doSubmit();
             }
         });
@@ -400,13 +418,21 @@ public class WayBillFragment extends Fragment {
             }
         });
 
+        //watch shipment list
+        viewModel.getShipmentList().observe(getViewLifecycleOwner(), shipmentModels -> {
+            if(shipmentModels != null){
+                String totalWeight = shipmentModels.stream().map(ShipmentModel::getGrossWeight).reduce(0.0, Double::sum).toString();
+                detailTotalWeight.setText(String.valueOf(shipmentModels.size()) + " Coli, " + totalWeight + " Kg");
+            }
+        });
+
     }
 
     private void doAddShipment() {
         //ambil shipment dari api
         ApiService apiService = ApiClient.getInstant().create(ApiService.class);
 
-        Call<ApiResponse<List<ShipmentModel>>> call = apiService.getWayBillShipment("get-shipment", inputShipmentCode.getText().toString(),  viewModel.getOrigin().getValue().getBranchId());
+        Call<ApiResponse<List<ShipmentModel>>> call = apiService.getWayBillShipment("get-shipment", inputShipmentCode.getText().toString().trim(),  viewModel.getDestination().getValue().getId());
 
         call.enqueue(new retrofit2.Callback<ApiResponse<List<ShipmentModel>>>() {
             @Override
@@ -418,8 +444,16 @@ public class WayBillFragment extends Fragment {
                         if(shipmentModels == null || shipmentModels.size() == 0) {
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
                         }else{
-                            //for test set parent code
-                            viewModel.addShipmentList(shipmentModels);
+                            //loop data shipment dan kembalikan pesan error jika shipment telah ada
+                            for(ShipmentModel shipmentModel : shipmentModels){
+                                if(viewModel.getShipmentList().getValue().stream().anyMatch(item -> item.getCode().equals(shipmentModel.getCode()))){
+                                    Toast.makeText(getContext(),   getString(R.string.shipment) + " "+shipmentModel.getCode() + " "+  getString(R.string.already_exist), Toast.LENGTH_SHORT).show();
+                                }else{
+                                    //tambahkan shipment ke dalam list
+                                    viewModel.addShipment(shipmentModel);
+                                }
+                            }
+
                             //update adapter
                             shipmentRecycleViewAdapter.notifyDataSetChanged();
                             //set listener adapter
@@ -466,7 +500,7 @@ public class WayBillFragment extends Fragment {
                 "submit-waybill",
                 viewModel.getShippingMethod().getValue().getId(),
                 viewModel.getShippingAgent().getValue().getId(),
-                viewModel.getOrigin().getValue().getBranchId(),
+                viewModel.getDestination().getValue().getId(),
                 viewModel.getLiner().getValue().getId(),
                 viewModel.getService().getValue().getId(),
                 account.getBranchId(),
@@ -494,8 +528,8 @@ public class WayBillFragment extends Fragment {
         });
     }
 
-    private void openSelectOrigin() {
-        Intent intent = new Intent(getActivity(), GetDestinationActivity.class);
+    private void openSelectDestination() {
+        Intent intent = new Intent(getActivity(), GetCityActivity.class);
         destinationLauncher.launch(intent);
     }
 

@@ -14,9 +14,11 @@ public class Constant {
 
     //KEY FOR SHARED FOR ACTIVITY RESULT
     public static final String GET_DESTINATION = "GET_DESTINATION";
+    public static final String GET_CITY = "GET_CITY";
     public static final String GET_SHIPPING_METHOD = "GET_SHIPPING_METHOD";
     public static final String GET_SHIPPING_AGENT = "GET_SHIPPING_AGENT";
     public static final String GET_SHIPPING_LINER = "GET_SHIPPING_LINER";
     public static final String GET_SHIPPING_SERVICE = "GET_SHIPPING_SERVICE";
+
 
 }

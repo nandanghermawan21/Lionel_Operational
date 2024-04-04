@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
         hideAllMenuItem();
         if(userData != null){
             AccountModel accountModel = new Gson().fromJson(userData, AccountModel.class);
-            tvUsername.setText(accountModel.getUsername());
-            tvGroupName.setText(accountModel.getGroup());
+            tvUsername.setText(accountModel.getName());
+            tvGroupName.setText(accountModel.getGroup() + " - " + accountModel.getBranchId());
             getMenu();
         }
 

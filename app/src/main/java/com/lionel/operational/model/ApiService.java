@@ -52,6 +52,11 @@ public interface ApiService {
             @Query("action") String action
     );
 
+    @GET("operation_city.php")
+    Call<ApiResponse<List<CityModel>>> getCity(
+            @Query("action") String action
+    );
+
     @FormUrlEncoded
     @POST("operation_console.php")
     Call<ApiResponse> submitConsole(
