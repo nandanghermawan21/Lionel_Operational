@@ -75,7 +75,7 @@ public class WayBillFragment extends Fragment {
     private TextView labelLinerError;
     private Button buttonShippingService;
     private TextView labelServiceError;
-    private LinearLayout layoutInputDetail;
+    private ScrollView layoutInputDetail;
     private RecyclerView recyclerShipmentView;
     private ShipmentRecycleViewAdapter shipmentRecycleViewAdapter;
     private Button buttonAddShipment;
@@ -87,6 +87,7 @@ public class WayBillFragment extends Fragment {
     private TextView detailLiner;
     private TextView detailService;
     private TextView detailTotalWeight;
+    private LinearLayout totalColiGrossWeightLayout;
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -202,6 +203,7 @@ public class WayBillFragment extends Fragment {
         detailLiner = view.findViewById(R.id.detailWayBilShippingLiner);
         detailService = view.findViewById(R.id.detailWayBilShippingService);
         detailTotalWeight = view.findViewById(R.id.totalColiGrossWeight);
+        totalColiGrossWeightLayout = view.findViewById(R.id.totalColiGrossWeightLayout);
 
         //obserb status
         viewModel.getState().observe(getViewLifecycleOwner(), status -> {
@@ -211,12 +213,14 @@ public class WayBillFragment extends Fragment {
                 layoutInputDetail.setVisibility(View.GONE);
                 buttonCancel.setVisibility(View.GONE);
                 buttonSubmit.setVisibility(View.GONE);
+                totalColiGrossWeightLayout.setVisibility(View.GONE);
             } else {
                 layoutInputWayBill.setVisibility(View.GONE);
                 buttonNext.setVisibility(View.GONE);
                 layoutInputDetail.setVisibility(View.VISIBLE);
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
+                totalColiGrossWeightLayout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -346,8 +350,8 @@ public class WayBillFragment extends Fragment {
         //watch shipping liner data
         viewModel.getLiner().observe(getViewLifecycleOwner(), shippingAgentModel -> {
             if(shippingAgentModel != null){
-                buttonShippingLiner.setText(shippingAgentModel.getName());
-                detailLiner.setText(shippingAgentModel.getName());
+                buttonShippingLiner.setText(shippingAgentModel.getId() + " - " + shippingAgentModel.getName());
+                detailLiner.setText(shippingAgentModel.getId() + " - " + shippingAgentModel.getName());
                 labelLinerError.setText("");
             }else{
                 buttonShippingLiner.setText(getString(R.string.select_liner));
@@ -378,6 +382,7 @@ public class WayBillFragment extends Fragment {
                     inputShipmentCode.requestFocus();
                 }else{
                     labelShipmentCodeError.setText("");
+                    labelShipmentCodeError.setVisibility(View.GONE);
                     doAddShipment();
                 }
             }

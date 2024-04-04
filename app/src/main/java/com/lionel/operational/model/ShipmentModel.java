@@ -13,7 +13,7 @@ public class ShipmentModel {
     private String natureOfGoods;
     @SerializedName("shipping_method")
     private String shippingMethod;
-    @SerializedName("shipping_agent")
+    @SerializedName("console_barcode")
     private String consoleBarcode;
     private String barcode;
     private double length;

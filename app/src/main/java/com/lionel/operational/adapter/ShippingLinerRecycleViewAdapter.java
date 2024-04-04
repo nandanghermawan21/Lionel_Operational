@@ -42,7 +42,7 @@ public class ShippingLinerRecycleViewAdapter extends RecyclerView.Adapter<Shippi
     @Override
     public void onBindViewHolder(@NonNull ShippingLinerRecycleViewAdapter.ViewHolder holder, int position) {
         ShippingLinerModel item = filteredList.get(position);
-        holder.name.setText(item.getName());
+        holder.name.setText(item.getId()+" - "+item.getName());
         holder.desc.setText(item.getMaxColi() + " Coli" + " / " + item.getMaxGw() + " Kg");
         holder.desc.setVisibility(View.VISIBLE);
         holder.itemView.setOnClickListener(v -> {

@@ -52,14 +52,7 @@ public class ShipmentRecycleViewAdapter extends RecyclerView.Adapter<ShipmentRec
         holder.volumeWeight.setText(String.valueOf(item.getVolumeWeight()));
         holder.chargeableWeight.setText(String.valueOf(item.getChargeableWeight()));
         holder.shippingFactor.setText(String.valueOf(item.getShippingFactor()));
-        //nyalakan console layout jika barcode console tidak kosong
-        if (item.getConsoleBarcode() != null && !item.getConsoleBarcode().isEmpty()) {
-            holder.consoleLayout.setVisibility(View.VISIBLE);
-            holder.consoleCode.setText(item.getConsoleBarcode());
-            holder.destination.setText(item.getDestBranchId());
-        } else {
-            holder.consoleLayout.setVisibility(View.GONE);
-        }
+        holder.consoleCode2.setText(item.getConsoleBarcode());
 
         //nyarakan service layout jika service type tidak kosong
         if (item.getServiceType() != null && !item.getServiceType().isEmpty()) {
@@ -93,13 +86,11 @@ public class ShipmentRecycleViewAdapter extends RecyclerView.Adapter<ShipmentRec
         TextView volumeWeight;
         TextView chargeableWeight;
         TextView shippingFactor;
-        LinearLayout consoleLayout;
         LinearLayout serviceLayout;
-        TextView consoleCode;
-        TextView destination;
         TextView serviceType;
         TextView natureOfGoods;
         TextView ahippingMethod;
+        TextView consoleCode2;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,13 +104,11 @@ public class ShipmentRecycleViewAdapter extends RecyclerView.Adapter<ShipmentRec
             volumeWeight = itemView.findViewById(R.id.valueVolumeWeight);
             chargeableWeight = itemView.findViewById(R.id.valueChargeableWeight);
             shippingFactor = itemView.findViewById(R.id.valueShippingFactor);
-            consoleLayout = itemView.findViewById(R.id.consoleInfoLayout);
             serviceLayout = itemView.findViewById(R.id.ServiceInfoLayout);
-            consoleCode = itemView.findViewById(R.id.valueBarcodeConsole);
-            destination = itemView.findViewById(R.id.valueDestination);
             serviceType = itemView.findViewById(R.id.valueServiceType);
             natureOfGoods = itemView.findViewById(R.id.valueNatureOfGoods);
             ahippingMethod = itemView.findViewById(R.id.valueSHippingMethod);
+            consoleCode2 = itemView.findViewById(R.id.valueBarcodeConsole2);
 
         }
     }

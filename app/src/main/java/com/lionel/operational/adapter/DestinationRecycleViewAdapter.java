@@ -42,7 +42,7 @@ public class DestinationRecycleViewAdapter extends RecyclerView.Adapter<Destinat
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DestinationModel item = filteredList.get(position);
-        holder.destinationMame.setText(item.getId());
+        holder.destinationMame.setText(item.getId() + " - " + item.getBranchId());
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(item);

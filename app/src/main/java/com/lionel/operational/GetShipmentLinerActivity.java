@@ -128,7 +128,7 @@ public class GetShipmentLinerActivity extends AppCompatActivity {
     private void filter(String text) {
         List<ShippingLinerModel> filteredList = new ArrayList<>();
         for (ShippingLinerModel item : shippingLiners) {
-            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+            if ((item.getId().toLowerCase() + " - " + item.getName().toLowerCase()).contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }

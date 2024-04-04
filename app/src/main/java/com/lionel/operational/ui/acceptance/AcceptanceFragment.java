@@ -70,6 +70,9 @@ public class AcceptanceFragment extends Fragment {
         editTextHeight = view.findViewById(R.id.editTextHeight);
         labelSearchError = view.findViewById(R.id.labelSearchError);
 
+        //focuse to search
+        editTextSearch.requestFocus();
+
         viewModel.getState().observe(getViewLifecycleOwner(), state -> {
             if (viewModel.isStateNew()) {
                 buttonCancel.setVisibility(View.GONE);
@@ -165,14 +168,28 @@ public class AcceptanceFragment extends Fragment {
                             editTextLength.setText(String.valueOf(viewModel.getShipment().getValue().getLength()));
                             editTextWidth.setText(String.valueOf(viewModel.getShipment().getValue().getWidth()));
                             editTextHeight.setText(String.valueOf(viewModel.getShipment().getValue().getHeight()));
+                            //focuse to gw
+                            editTextGW.requestFocus();
                         }else{
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                            //focuse to search
+                            editTextSearch.requestFocus();
+                            //clear all input
+                            editTextSearch.setText("");
                         }
                     } else {
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //focuse to search
+                        editTextSearch.requestFocus();
+                        //clear all input
+                        editTextSearch.setText("");
                     }
                 } else {
                     Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                    //focuse to search
+                    editTextSearch.requestFocus();
+                    //clear all input
+                    editTextSearch.setText("");
                 }
 
             }

@@ -113,7 +113,7 @@ public class GetDestinationActivity extends AppCompatActivity {
     private void filter(String text) {
         List<DestinationModel> filteredList = new ArrayList<>();
         for (DestinationModel item : destinations) {
-            if (item.getId().toLowerCase().contains(text.toLowerCase())) {
+            if ((item.getId().toLowerCase()+ " - "+ item.getBranchId().toLowerCase() ).contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }

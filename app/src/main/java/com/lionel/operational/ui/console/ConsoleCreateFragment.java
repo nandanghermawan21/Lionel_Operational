@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class ConsoleCreateFragment extends Fragment {
     TextInputEditText inputConsoleCode;
     LinearLayout consoleCodeLayout;
     LinearLayout destinationLayout;
-    LinearLayout consoleDetailLayout;
+    ScrollView consoleDetailLayout;
     TextView labelDetailConsoleCode;
     TextView labelDetailDestination;
     RecyclerView recyclerShipmentView;
@@ -70,6 +71,7 @@ public class ConsoleCreateFragment extends Fragment {
     TextInputEditText inputShipmentCode;
     TextView labelShipmentCodeError;
     TextView totalGrossWeight;
+    LinearLayout totalGrossWeightLayout;
 
 
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -135,6 +137,7 @@ public class ConsoleCreateFragment extends Fragment {
         inputShipmentCode = view.findViewById(R.id.textInputSTTCode);
         labelShipmentCodeError = view.findViewById(R.id.labelSTTCodeError);
         totalGrossWeight = view.findViewById(R.id.totalGrossWeight);
+        totalGrossWeightLayout = view.findViewById(R.id.totalGrossWeightLayout);
 
         buttonGetDestination.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,16 +181,18 @@ public class ConsoleCreateFragment extends Fragment {
                 consoleCodeLayout.setVisibility(View.VISIBLE);
                 destinationLayout.setVisibility(View.VISIBLE);
                 buttonNext.setVisibility(View.VISIBLE);
+                totalGrossWeightLayout.setVisibility(View.GONE);
             } else if (viewModel.isStateCreated()) {
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
                 consoleDetailLayout.setVisibility(View.VISIBLE);
                 labelDetailConsoleCode.setText(inputConsoleCode.getText().toString());
-                labelDetailDestination.setText(viewModel.getDestinationModel().getValue().getId());
+                labelDetailDestination.setText(viewModel.getDestinationModel().getValue().getId()+" - "+viewModel.getDestinationModel().getValue().getBranchId());
                 //disable button next
                 consoleCodeLayout.setVisibility(View.GONE);
                 destinationLayout.setVisibility(View.GONE);
                 buttonNext.setVisibility(View.GONE);
+                totalGrossWeightLayout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -196,7 +201,7 @@ public class ConsoleCreateFragment extends Fragment {
             public void onChanged(DestinationModel destinationModel) {
                 if (destinationModel != null) {
                     viewModel.setDestinationErrorMessage("");
-                    buttonGetDestination.setText(destinationModel.getId());
+                    buttonGetDestination.setText(destinationModel.getId() + " - " + destinationModel.getBranchId());
                 } else {
                     buttonGetDestination.setText(getString(R.string.select_destination));
                 }
