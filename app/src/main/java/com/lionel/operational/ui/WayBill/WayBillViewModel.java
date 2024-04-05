@@ -128,6 +128,7 @@ public class WayBillViewModel extends ViewModel {
         setShippingAgent(null);
         setDestination(null);
         setLiner(null);
+        setService(null);
         getShipmentList().getValue().clear();
     }
 }

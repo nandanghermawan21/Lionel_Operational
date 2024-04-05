@@ -182,6 +182,8 @@ public class ConsoleCreateFragment extends Fragment {
                 destinationLayout.setVisibility(View.VISIBLE);
                 buttonNext.setVisibility(View.VISIBLE);
                 totalGrossWeightLayout.setVisibility(View.GONE);
+                //focuse ke input console code
+                inputConsoleCode.requestFocus();
             } else if (viewModel.isStateCreated()) {
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
@@ -193,6 +195,8 @@ public class ConsoleCreateFragment extends Fragment {
                 destinationLayout.setVisibility(View.GONE);
                 buttonNext.setVisibility(View.GONE);
                 totalGrossWeightLayout.setVisibility(View.VISIBLE);
+                //focuse ke input shipment code
+                inputShipmentCode.requestFocus();
             }
         });
 
@@ -331,6 +335,8 @@ public class ConsoleCreateFragment extends Fragment {
                         //check jika shipment bernilai null maka tampilkan pesan error
                         if (shipmentModel == null) {
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                            //clear input
+                            inputShipmentCode.setText("");
                             //focue to input shipment code
                             inputShipmentCode.requestFocus();
                         } else {
@@ -358,6 +364,8 @@ public class ConsoleCreateFragment extends Fragment {
                     } else {
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //clear input
+                        inputShipmentCode.setText("");
                         //focue to input shipment code
                         inputShipmentCode.requestFocus();
                     }
@@ -368,6 +376,8 @@ public class ConsoleCreateFragment extends Fragment {
             public void onFailure(Call<ApiResponse<ShipmentModel>> call, Throwable t) {
                 //show error message
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                //clear input
+                inputShipmentCode.setText("");
                 //focue to input shipment code
                 inputShipmentCode.requestFocus();
             }

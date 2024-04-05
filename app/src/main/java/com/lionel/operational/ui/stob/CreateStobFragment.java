@@ -317,7 +317,7 @@ public class CreateStobFragment extends Fragment {
                 detailShippingMethod.setText(shippingMethodModel.getId());
                 labelShippingMethodError.setText("");
             }else{
-                labelShippingMethodError.setText(getString(R.string.select_shipping_method));
+                selectShippingMethod.setText(getString(R.string.select_shipping_method));
             }
         });
 
@@ -328,7 +328,7 @@ public class CreateStobFragment extends Fragment {
                 detailShippingAgent.setText(shippingAgentModel.getName());
                 labelShippingAgentError.setText("");
             }else{
-                labelShippingAgentError.setText(getString(R.string.select_shipping_agent));
+                selectShippingAgent.setText(getString(R.string.select_shipping_agent));
             }
         });
 

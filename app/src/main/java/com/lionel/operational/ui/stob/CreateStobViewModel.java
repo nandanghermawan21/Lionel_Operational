@@ -74,4 +74,12 @@ public class CreateStobViewModel extends ViewModel {
     public void setWayBillList(List<WayBillModel> wayBillList) {
         this.wayBillList.setValue(wayBillList);
     }
+
+    //clear data
+    public void clear() {
+        setStateAsNew();
+        shippingAgent.setValue(null);
+        shippingMethode.setValue(null);
+        wayBillList.setValue(null);
+    }
 }

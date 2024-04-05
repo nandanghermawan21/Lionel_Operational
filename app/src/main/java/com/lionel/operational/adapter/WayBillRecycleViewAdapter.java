@@ -51,7 +51,7 @@ public class WayBillRecycleViewAdapter extends RecyclerView.Adapter<WayBillRecyc
         holder.date.setText(item.getDate());
         holder.shippingAgent.setText(item.getShippingAgentId());
         holder.liner.setText(item.getLinerId());
-        holder.branch.setText(item.getBranchId());
+        holder.branch.setText(item.getBranchId()+" - "+item.getWaybillType());
         holder.destBranch.setText(item.getDestBranchId());
         holder.ttlPieces.setText(item.getTtlPieces());
         holder.ttlChargeableWeight.setText(item.getTtlChargeableWeight());

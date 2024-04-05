@@ -74,4 +74,5 @@
     <string name="shipment">Shipment</string>
     <string name="destination_required">Destination is required</string>
     <string name="welcome">Welcome to Lionel Operational</string>
+    <string name="wrong_format">Wrong format</string>
 </resources>

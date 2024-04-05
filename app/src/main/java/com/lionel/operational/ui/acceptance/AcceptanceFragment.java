@@ -86,6 +86,8 @@ public class AcceptanceFragment extends Fragment {
                 editTextSearch.setEnabled(true);
                 //enable button next
                 buttonNext.setVisibility(View.VISIBLE);
+                //focus to search
+                editTextSearch.requestFocus();
             } else if (viewModel.isStateCreated()) {
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
@@ -137,13 +139,45 @@ public class AcceptanceFragment extends Fragment {
                 editTextHeight.setError(getString(R.string.height_required));
                 isValid = false;
             }
-            //cehck apakahh nilai gw lebih kecil dari response
-            if (viewModel.getShipment().getValue() != null) {
-                if (Integer.parseInt(editTextGW.getText().toString()) < viewModel.getShipment().getValue().getGrossWeight()) {
-                    editTextGW.setError(getString(R.string.weight_must_greater_than_or_equal) + ' ' + viewModel.getShipment().getValue().getGrossWeight());
+
+            //check format input apakah seudah merupakan angka double
+            if (isValid) {
+                try {
+                    Double.parseDouble(editTextGW.getText().toString());
+                } catch (NumberFormatException e) {
+                    editTextGW.setError(getString(R.string.wrong_format));
+                    isValid = false;
+                }
+                try {
+                    Double.parseDouble(editTextLength.getText().toString());
+                } catch (NumberFormatException e) {
+                    editTextLength.setError(getString(R.string.wrong_format));
+                    isValid = false;
+                }
+                try {
+                    Double.parseDouble(editTextWidth.getText().toString());
+                } catch (NumberFormatException e) {
+                    editTextWidth.setError(getString(R.string.wrong_format));
+                    isValid = false;
+                }
+                try {
+                    Double.parseDouble(editTextHeight.getText().toString());
+                } catch (NumberFormatException e) {
+                    editTextHeight.setError(getString(R.string.wrong_format));
                     isValid = false;
                 }
             }
+
+            if(isValid){
+                //check apakah nilai gw lebih kecil dari response bernilai double
+                if (viewModel.getShipment().getValue() != null) {
+                    if (Double.parseDouble(editTextGW.getText().toString()) < viewModel.getShipment().getValue().getGrossWeight()) {
+                        editTextGW.setError(getString(R.string.weight_must_greater_than_or_equal) + viewModel.getShipment().getValue().getGrossWeight());
+                        isValid = false;
+                    }
+                }
+            }
+
             if (isValid) {
                 doSubmit();
             }
@@ -162,15 +196,15 @@ public class AcceptanceFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body().isSuccess()) {
                         viewModel.setShipment(response.body().getData());
-                        if(viewModel.getShipment().getValue() != null){
+                        if (viewModel.getShipment().getValue() != null) {
                             viewModel.setStateAsCreated();
                             editTextGW.setText(String.valueOf(viewModel.getShipment().getValue().getGrossWeight()));
                             editTextLength.setText(String.valueOf(viewModel.getShipment().getValue().getLength()));
                             editTextWidth.setText(String.valueOf(viewModel.getShipment().getValue().getWidth()));
                             editTextHeight.setText(String.valueOf(viewModel.getShipment().getValue().getHeight()));
-                            //focuse to gw
-                            editTextGW.requestFocus();
-                        }else{
+                            //focuse to search
+                            editTextSearch.requestFocus();
+                        } else {
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
                             //focuse to search
                             editTextSearch.requestFocus();

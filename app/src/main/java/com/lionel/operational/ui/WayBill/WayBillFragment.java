@@ -221,6 +221,8 @@ public class WayBillFragment extends Fragment {
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
                 totalColiGrossWeightLayout.setVisibility(View.VISIBLE);
+                //focuse to input shipment code
+                inputShipmentCode.requestFocus();
             }
         });
 
@@ -454,6 +456,8 @@ public class WayBillFragment extends Fragment {
                         //jika shipmentmodels null kosong maka tampilkan pesan error
                         if(shipmentModels == null || shipmentModels.size() == 0) {
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
+                            //clear input shipment code
+                            inputShipmentCode.setText("");
                             //focus to input shipment code
                             inputShipmentCode.requestFocus();
                         }else{
@@ -487,6 +491,8 @@ public class WayBillFragment extends Fragment {
                     }else{
                         //show error message
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        //clear input shipment code
+                        inputShipmentCode.setText("");
                         //focus to input shipment code
                         inputShipmentCode.requestFocus();
                     }
@@ -497,6 +503,8 @@ public class WayBillFragment extends Fragment {
             public void onFailure(Call<ApiResponse<List<ShipmentModel>>> call, Throwable t) {
                 //show error message
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                //clear input shipment code
+                inputShipmentCode.setText("");
                 //focus to input shipment code
                 inputShipmentCode.requestFocus();
             }
