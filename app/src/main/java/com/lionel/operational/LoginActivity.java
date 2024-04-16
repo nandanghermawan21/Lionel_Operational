@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText inputPassword;
     private TextView labelEmailError;
     private TextView labelPasswordError;
+    private TextView tvVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         inputPassword = findViewById(R.id.editTextPassword);
         labelEmailError = findViewById(R.id.labelEmailError);
         labelPasswordError = findViewById(R.id.labelPasswordError);
+        tvVersion = findViewById(R.id.tvVersion);
 
         // Set click listener for login button
         buttonLogin.setOnClickListener(loginClickListener);

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
+    android:background="@drawable/welcome_background_2"
     android:padding="16dp">
 
     <ImageView
@@ -12,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/img_logo" />
+        android:src="@drawable/logo_white" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutEmail"
@@ -67,6 +68,20 @@
         android:layout_below="@id/labelPasswordError"
         android:layout_marginTop="16dp"
         android:text="Login" />
+
+    <!-- buat text view dibawah tombol untuk tampilkan versi app -->
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonLogin"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_version"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
 
 
 </RelativeLayout>

@@ -37,8 +37,8 @@ public class WelcomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvUsername = view.findViewById(R.id.name);
-        tvGroupName = view.findViewById(R.id.group);
+        tvUsername = view.findViewById(R.id.tvUsername);
+//        tvGroupName = view.findViewById(R.id.group);
 
         //ambil data user dari shared preferences
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
@@ -46,8 +46,8 @@ public class WelcomeFragment extends Fragment {
         //convert to object
         if(userData != null){
             AccountModel accountModel = new Gson().fromJson(userData, AccountModel.class);
-            tvUsername.setText(accountModel.getName());
-            tvGroupName.setText(accountModel.getGroup() + " - " + accountModel.getBranchId());
+            tvUsername.setText(getString(R.string.welcome) + ' ' +  accountModel.getName());
+//            tvGroupName.setText(accountModel.getGroup() + " - " + accountModel.getBranchId());
         }
     }
 }
