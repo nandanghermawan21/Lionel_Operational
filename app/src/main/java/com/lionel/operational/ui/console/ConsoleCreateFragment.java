@@ -76,6 +76,7 @@ public class ConsoleCreateFragment extends Fragment {
     TextView totalGrossWeight;
     LinearLayout totalGrossWeightLayout;
     private ImageView scanBarcodeBtn;
+    private ImageView scanBarcodeSttBtn;
 
     private final ActivityResultLauncher<Intent> scanBarcode = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -83,6 +84,16 @@ public class ConsoleCreateFragment extends Fragment {
                     Intent data = result.getData();
                     String barcode = data.getStringExtra(GET_BARCODE);
                     inputConsoleCode.setText(barcode);
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> scanSTTBarcode = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String barcode = data.getStringExtra(GET_BARCODE);
+                    inputShipmentCode.setText(barcode);
+                    buttonAddShipment.performClick();
                 }
             });
 
@@ -152,6 +163,7 @@ public class ConsoleCreateFragment extends Fragment {
         totalGrossWeight = view.findViewById(R.id.totalGrossWeight);
         totalGrossWeightLayout = view.findViewById(R.id.totalGrossWeightLayout);
         scanBarcodeBtn = view.findViewById(R.id.scanBarcodeBtn);
+        scanBarcodeSttBtn = view.findViewById(R.id.scanBarcodeSttBtn);
 
         buttonGetDestination.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +208,7 @@ public class ConsoleCreateFragment extends Fragment {
                 destinationLayout.setVisibility(View.VISIBLE);
                 buttonNext.setVisibility(View.VISIBLE);
                 totalGrossWeightLayout.setVisibility(View.GONE);
+                scanBarcodeSttBtn.setVisibility(View.GONE);
                 //focuse ke input console code
                 inputConsoleCode.requestFocus();
             } else if (viewModel.isStateCreated()) {
@@ -209,6 +222,7 @@ public class ConsoleCreateFragment extends Fragment {
                 destinationLayout.setVisibility(View.GONE);
                 buttonNext.setVisibility(View.GONE);
                 totalGrossWeightLayout.setVisibility(View.VISIBLE);
+                scanBarcodeSttBtn.setVisibility(View.VISIBLE);
                 //focuse ke input shipment code
                 inputShipmentCode.requestFocus();
             }
@@ -314,7 +328,6 @@ public class ConsoleCreateFragment extends Fragment {
                         doAddShipment();
                     }
                 }
-
             }
         });
 
@@ -334,11 +347,23 @@ public class ConsoleCreateFragment extends Fragment {
                 handleScan();
             }
         });
+
+        scanBarcodeSttBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleScanSTT();
+            }
+        });
     }
 
     private void handleScan() {
         Intent intent = new Intent(getActivity(), ScanBarcodeActivity.class);
         scanBarcode.launch(intent);
+    }
+
+    private void handleScanSTT() {
+        Intent intent = new Intent(getActivity(), ScanBarcodeActivity.class);
+        scanSTTBarcode.launch(intent);
     }
 
     private void handleButtonClick() {
