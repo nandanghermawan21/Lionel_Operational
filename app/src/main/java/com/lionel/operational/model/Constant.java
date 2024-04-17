@@ -19,6 +19,7 @@ public class Constant {
     public static final String GET_SHIPPING_AGENT = "GET_SHIPPING_AGENT";
     public static final String GET_SHIPPING_LINER = "GET_SHIPPING_LINER";
     public static final String GET_SHIPPING_SERVICE = "GET_SHIPPING_SERVICE";
+    public static final String GET_BARCODE = "GET_BARCODE";
 
 
 }

@@ -1,26 +1,37 @@
 package com.lionel.operational.ui.acceptance;
 
 import static com.lionel.operational.model.Constant.BASE_URL;
+import static com.lionel.operational.model.Constant.GET_BARCODE;
+import static com.lionel.operational.model.Constant.GET_DESTINATION;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.lionel.operational.GetDestinationActivity;
 import com.lionel.operational.R;
+import com.lionel.operational.ScanBarcodeActivity;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
+import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ShipmentModel;
 
 import java.util.List;
@@ -43,6 +54,16 @@ public class AcceptanceFragment extends Fragment {
     private TextInputEditText editTextWidth;
     private TextInputEditText editTextHeight;
     private TextView labelSearchError;
+    private ImageView scanBarcodeBtn;
+
+    private final ActivityResultLauncher<Intent> scanBarcode = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String barcode = data.getStringExtra(GET_BARCODE);
+                    editTextSearch.setText(barcode);
+                }
+            });
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +90,7 @@ public class AcceptanceFragment extends Fragment {
         editTextWidth = view.findViewById(R.id.editTextWidth);
         editTextHeight = view.findViewById(R.id.editTextHeight);
         labelSearchError = view.findViewById(R.id.labelSearchError);
+        scanBarcodeBtn = view.findViewById(R.id.scanBarcodeBtn);
 
         //focuse to search
         editTextSearch.requestFocus();
@@ -182,6 +204,11 @@ public class AcceptanceFragment extends Fragment {
                 doSubmit();
             }
         });
+
+        //add click event to scandbarcodeBtn
+        scanBarcodeBtn.setOnClickListener(v -> {
+            handleScan();
+        });
     }
 
     private void doGetShipment() {
@@ -272,6 +299,11 @@ public class AcceptanceFragment extends Fragment {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void handleScan() {
+        Intent intent = new Intent(getActivity(), ScanBarcodeActivity.class);
+        scanBarcode.launch(intent);
     }
 
     @Override
