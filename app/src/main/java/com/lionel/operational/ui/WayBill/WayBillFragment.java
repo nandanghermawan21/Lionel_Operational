@@ -1,5 +1,6 @@
 package com.lionel.operational.ui.WayBill;
 
+import static com.lionel.operational.model.Constant.GET_BARCODE;
 import static com.lionel.operational.model.Constant.GET_CITY;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_LINER;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ import com.lionel.operational.GetShipmentLinerActivity;
 import com.lionel.operational.GetShippingAgentActivity;
 import com.lionel.operational.GetShippingMethodActivity;
 import com.lionel.operational.R;
+import com.lionel.operational.ScanBarcodeActivity;
 import com.lionel.operational.adapter.ShipmentRecycleViewAdapter;
 import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
@@ -88,6 +91,17 @@ public class WayBillFragment extends Fragment {
     private TextView detailService;
     private TextView detailTotalWeight;
     private LinearLayout totalColiGrossWeightLayout;
+    private ImageView scanBarcodeSttBtn;
+
+    private final ActivityResultLauncher<Intent> scanBarcode = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String barcode = data.getStringExtra(GET_BARCODE);
+                    inputShipmentCode.setText(barcode);
+                    buttonAddShipment.performClick();
+                }
+            });
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -204,6 +218,7 @@ public class WayBillFragment extends Fragment {
         detailService = view.findViewById(R.id.detailWayBilShippingService);
         detailTotalWeight = view.findViewById(R.id.totalColiGrossWeight);
         totalColiGrossWeightLayout = view.findViewById(R.id.totalColiGrossWeightLayout);
+        scanBarcodeSttBtn = view.findViewById(R.id.scanBarcodeSttBtn);
 
         //obserb status
         viewModel.getState().observe(getViewLifecycleOwner(), status -> {
@@ -214,6 +229,7 @@ public class WayBillFragment extends Fragment {
                 buttonCancel.setVisibility(View.GONE);
                 buttonSubmit.setVisibility(View.GONE);
                 totalColiGrossWeightLayout.setVisibility(View.GONE);
+                scanBarcodeSttBtn.setVisibility(View.GONE);
             } else {
                 layoutInputWayBill.setVisibility(View.GONE);
                 buttonNext.setVisibility(View.GONE);
@@ -221,6 +237,7 @@ public class WayBillFragment extends Fragment {
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
                 totalColiGrossWeightLayout.setVisibility(View.VISIBLE);
+                scanBarcodeSttBtn.setVisibility(View.VISIBLE);
                 //focuse to input shipment code
                 inputShipmentCode.requestFocus();
             }
@@ -439,6 +456,13 @@ public class WayBillFragment extends Fragment {
             }
         });
 
+        scanBarcodeSttBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openScanBarcode();
+            }
+        });
+
     }
 
     private void doAddShipment() {
@@ -553,6 +577,11 @@ public class WayBillFragment extends Fragment {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void openScanBarcode() {
+        Intent intent = new Intent(getActivity(), ScanBarcodeActivity.class);
+        scanBarcode.launch(intent);
     }
 
     private void openSelectDestination() {

@@ -481,6 +481,19 @@
                     android:text="@string/cancel"
                     android:textColor="@android:color/white" />
 
+                <!-- scan button dengan image view -->
+                <ImageView
+                    android:id="@+id/scanBarcodeSttBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded_corner"
+                    android:src="@drawable/ic_icon_scanner"
+                    app:tint="?android:attr/textColor" />
+
                 <Button
                     android:id="@+id/buttonSubmit"
                     android:layout_width="0dp"
