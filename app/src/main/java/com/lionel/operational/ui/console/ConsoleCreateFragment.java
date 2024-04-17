@@ -1,5 +1,6 @@
 package com.lionel.operational.ui.console;
 
+import static com.lionel.operational.model.Constant.GET_BARCODE;
 import static com.lionel.operational.model.Constant.GET_DESTINATION;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
 import static com.lionel.operational.model.Constant.USERDATA;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
 import com.lionel.operational.R;
+import com.lionel.operational.ScanBarcodeActivity;
 import com.lionel.operational.adapter.ShipmentRecycleViewAdapter;
 import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
@@ -72,6 +75,16 @@ public class ConsoleCreateFragment extends Fragment {
     TextView labelShipmentCodeError;
     TextView totalGrossWeight;
     LinearLayout totalGrossWeightLayout;
+    private ImageView scanBarcodeBtn;
+
+    private final ActivityResultLauncher<Intent> scanBarcode = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String barcode = data.getStringExtra(GET_BARCODE);
+                    inputConsoleCode.setText(barcode);
+                }
+            });
 
 
     private final ActivityResultLauncher<Intent> destinationLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -138,6 +151,7 @@ public class ConsoleCreateFragment extends Fragment {
         labelShipmentCodeError = view.findViewById(R.id.labelSTTCodeError);
         totalGrossWeight = view.findViewById(R.id.totalGrossWeight);
         totalGrossWeightLayout = view.findViewById(R.id.totalGrossWeightLayout);
+        scanBarcodeBtn = view.findViewById(R.id.scanBarcodeBtn);
 
         buttonGetDestination.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -313,6 +327,18 @@ public class ConsoleCreateFragment extends Fragment {
                 totalGrossWeight.setText(String.valueOf(shipmentModels.stream().mapToDouble(ShipmentModel::getGrossWeight).sum()));
             }
         });
+
+        scanBarcodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleScan();
+            }
+        });
+    }
+
+    private void handleScan() {
+        Intent intent = new Intent(getActivity(), ScanBarcodeActivity.class);
+        scanBarcode.launch(intent);
     }
 
     private void handleButtonClick() {
