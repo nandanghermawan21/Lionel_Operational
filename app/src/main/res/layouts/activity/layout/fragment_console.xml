@@ -335,7 +335,7 @@
                     android:padding="8dp"
                     android:background="@drawable/rounded_corner"
                     android:src="@drawable/ic_icon_scanner"
-                    app:tint="?android:attr/textColor" />
+                    app:tint="@color/white" />
 
                 <Button
                     android:id="@+id/buttonSubmit"
