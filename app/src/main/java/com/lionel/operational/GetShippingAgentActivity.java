@@ -96,7 +96,7 @@ public class GetShippingAgentActivity extends AppCompatActivity {
         String json = sharedPreferences.getString(USERDATA, "");
         AccountModel account = new Gson().fromJson(json, AccountModel.class);
 
-        Call<ApiResponse<List<ShippingAgentModel>>> call = apiService.getShippingAgent("get-shipping-agent", account.getBranchId());
+        Call<ApiResponse<List<ShippingAgentModel>>> call = apiService.getShippingAgent("get-shipping-agent", account.getBranchId(), "VENDOR");
 
         call.enqueue(new Callback<ApiResponse<List<ShippingAgentModel>>>() {
 

@@ -8,4 +8,5 @@
     <string name="the_total_weight_exceeds_the_maximum_limit">The total weight exceeds the maximum limit</string>
     <string name="the_total_coli_exceeds_the_maximum_limit">The total shipment exceeds the maximum limit</string>
     <string name="originDashMethod">Origin - Method</string>
+    <string name="please_select_shipping_method_first">Please select shipping method first</string>
 </resources>

@@ -77,7 +77,9 @@ public interface ApiService {
     @GET("operation_shipping_agent.php")
     Call<ApiResponse<List<ShippingAgentModel>>> getShippingAgent(
             @Query("action") String action,
-            @Query("recordUserBranchId") String recordUserBranchId
+            @Query("recordUserBranchId") String recordUserBranchId,
+            @Query("recordAgentType") String recordAgentType
+
     );
 
     @GET("operation_waybill.php")
@@ -87,7 +89,8 @@ public interface ApiService {
 
     @GET("operation_waybill.php")
     Call<ApiResponse<List<ServiceModel>>> getService(
-            @Query("action") String action
+            @Query("action") String action,
+            @Query("recordShippingMethod") String recordShippingMethod
     );
 
     @GET("operation_waybill.php")

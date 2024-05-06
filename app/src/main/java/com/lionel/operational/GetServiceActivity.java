@@ -1,15 +1,18 @@
 package com.lionel.operational;
 
 import static com.lionel.operational.model.Constant.GET_SHIPPING_LINER;
+import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_SERVICE;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
 import static com.lionel.operational.model.Constant.USERDATA;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -92,7 +95,7 @@ public class GetServiceActivity extends AppCompatActivity {
 
         ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
-        Call<ApiResponse<List<ServiceModel>>> call = apiService.getService("get-service-select");
+        Call<ApiResponse<List<ServiceModel>>> call = apiService.getService("get-service-select", getIntent().getStringExtra(GET_SHIPPING_METHOD));
 
         call.enqueue(new Callback<ApiResponse<List<ServiceModel>>>() {
 
