@@ -88,7 +88,7 @@ public class GetCityActivity extends AppCompatActivity {
 
     private void getDataFromAPi() {
 
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
         Call<ApiResponse<List<CityModel>>> call = apiService.getCity("get-branch");
 

@@ -33,6 +33,7 @@ import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
 import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ShipmentModel;
+import com.lionel.operational.util.SoundPlayer;
 
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class AcceptanceFragment extends Fragment {
     private TextInputEditText editTextHeight;
     private TextView labelSearchError;
     private ImageView scanBarcodeBtn;
+    private SoundPlayer soundPlayer;
 
     private final ActivityResultLauncher<Intent> scanBarcode = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -91,6 +93,8 @@ public class AcceptanceFragment extends Fragment {
         editTextHeight = view.findViewById(R.id.editTextHeight);
         labelSearchError = view.findViewById(R.id.labelSearchError);
         scanBarcodeBtn = view.findViewById(R.id.scanBarcodeBtn);
+
+        soundPlayer = new SoundPlayer();
 
         //focuse to search
         editTextSearch.requestFocus();
@@ -212,7 +216,7 @@ public class AcceptanceFragment extends Fragment {
     }
 
     private void doGetShipment() {
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         Call<ApiResponse<ShipmentModel>> call = apiService.getShipment(editTextSearch.getText().toString().trim(), "get-shipment");
 
@@ -232,6 +236,9 @@ public class AcceptanceFragment extends Fragment {
                             //focuse to search
                             editTextSearch.requestFocus();
                         } else {
+                            //play sound
+                            soundPlayer.playSound(getContext(), R.raw.error);
+
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
                             //focuse to search
                             editTextSearch.requestFocus();
@@ -263,7 +270,7 @@ public class AcceptanceFragment extends Fragment {
     }
 
     private void doSubmit() {
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         Call<ApiResponse> call = apiService.acceptShipment(
                 "submit-acceptance",

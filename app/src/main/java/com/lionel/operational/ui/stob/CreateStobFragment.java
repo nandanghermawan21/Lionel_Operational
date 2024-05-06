@@ -173,7 +173,7 @@ public class CreateStobFragment extends Fragment {
     }
 
     private void getDataWayBillFromAPi() {
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         Call<ApiResponse<List<WayBillModel>>> call = apiService.getStobWayBill("get-shipment", viewModel.getShippingMethod().getValue().getId());
 
@@ -358,7 +358,7 @@ public class CreateStobFragment extends Fragment {
     }
 
     private void doSubmit(){
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         //get data user from shared preferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);

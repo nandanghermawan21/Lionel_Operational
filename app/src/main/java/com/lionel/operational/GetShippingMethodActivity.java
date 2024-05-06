@@ -81,7 +81,7 @@ public class GetShippingMethodActivity extends AppCompatActivity {
 
     private void getDataFromAPi() {
 
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
         Call<ApiResponse<List<ShippingMethodModel>>> call = apiService.getShippingMethod("get-shipping-method");
 

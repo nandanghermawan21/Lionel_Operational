@@ -90,7 +90,7 @@ public class GetServiceActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
         AccountModel account = new Gson().fromJson(sharedPreferences.getString(USERDATA, "{}"), AccountModel.class);
 
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
         Call<ApiResponse<List<ServiceModel>>> call = apiService.getService("get-service-select");
 

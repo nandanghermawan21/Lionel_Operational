@@ -89,7 +89,7 @@ public class GetShippingAgentActivity extends AppCompatActivity {
 
     private void getDataFromAPi() {
 
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
         //get data user from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);

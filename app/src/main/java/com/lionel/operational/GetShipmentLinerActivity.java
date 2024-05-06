@@ -91,7 +91,7 @@ public class GetShipmentLinerActivity extends AppCompatActivity {
 
     private void getDataFromAPi() {
 
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
         Call<ApiResponse<List<ShippingLinerModel>>> call = apiService.getShippingLiner("get-liner");
 
