@@ -1,5 +1,6 @@
 package com.lionel.operational;
 
+import static com.lionel.operational.model.Constant.GET_AGENT_TYPE;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
@@ -96,13 +97,17 @@ public class GetShippingAgentActivity extends AppCompatActivity {
         String json = sharedPreferences.getString(USERDATA, "");
         AccountModel account = new Gson().fromJson(json, AccountModel.class);
 
-        Call<ApiResponse<List<ShippingAgentModel>>> call = apiService.getShippingAgent("get-shipping-agent", account.getBranchId(), "VENDOR");
+        Call<ApiResponse<List<ShippingAgentModel>>> call = apiService.getShippingAgent("get-shipping-agent", account.getBranchId(), getIntent().getStringExtra(GET_AGENT_TYPE));
 
         call.enqueue(new Callback<ApiResponse<List<ShippingAgentModel>>>() {
 
             @Override
             public void onResponse(Call<ApiResponse<List<ShippingAgentModel>>> call, Response<ApiResponse<List<ShippingAgentModel>>> response) {
                 if(response.body().isSuccess()) {
+                    if (response.body().getData() == null) {
+                        Toast.makeText(getApplicationContext(), "Data is empty", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     shippingAgents = response.body().getData();
                     adapter = new ShippingAgentRecycleViewAdapter(shippingAgents);
                     recyclerView.setAdapter(adapter);

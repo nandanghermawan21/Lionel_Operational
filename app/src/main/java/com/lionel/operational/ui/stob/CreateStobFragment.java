@@ -1,5 +1,6 @@
 package com.lionel.operational.ui.stob;
 
+import static com.lionel.operational.model.Constant.GET_AGENT_TYPE;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_SERVICE;
@@ -349,6 +350,7 @@ public class CreateStobFragment extends Fragment {
 
     void selectShippingAgent(){
         Intent intent = new Intent(getContext(), GetShippingAgentActivity.class);
+        intent.putExtra(GET_AGENT_TYPE, "VENDOR");
         shippingAgentLauncher.launch(intent);
     }
 
