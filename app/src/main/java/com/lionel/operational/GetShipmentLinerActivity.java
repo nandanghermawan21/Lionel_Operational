@@ -2,6 +2,7 @@ package com.lionel.operational;
 
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_LINER;
+import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
 import static com.lionel.operational.model.Constant.PREFERENCES_KEY;
 import static com.lionel.operational.model.Constant.USERDATA;
 
@@ -93,7 +94,7 @@ public class GetShipmentLinerActivity extends AppCompatActivity {
 
         ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
-        Call<ApiResponse<List<ShippingLinerModel>>> call = apiService.getShippingLiner("get-liner");
+        Call<ApiResponse<List<ShippingLinerModel>>> call = apiService.getShippingLiner("get-liner", getIntent().getStringExtra(GET_SHIPPING_METHOD));
 
         call.enqueue(new Callback<ApiResponse<List<ShippingLinerModel>>>() {
 

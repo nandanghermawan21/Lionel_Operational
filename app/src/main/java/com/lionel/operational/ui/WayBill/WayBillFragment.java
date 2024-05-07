@@ -606,7 +606,13 @@ public class WayBillFragment extends Fragment {
 
     private void openSelectShippingLiner() {
         Intent intent = new Intent(getActivity(), GetShipmentLinerActivity.class);
-        shippingLinerLauncher.launch(intent);
+        if(viewModel.getShippingMethod().getValue() != null){
+            intent.putExtra(GET_SHIPPING_METHOD, viewModel.getShippingMethod().getValue().getId());
+            serviceLauncher.launch(intent);
+        }
+        else{
+            Toast.makeText(getContext(), getString(R.string.please_select_shipping_method_first), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void openSelectShippingService() {

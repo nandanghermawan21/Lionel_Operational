@@ -84,7 +84,8 @@ public interface ApiService {
 
     @GET("operation_waybill.php")
     Call<ApiResponse<List<ShippingLinerModel>>> getShippingLiner(
-            @Query("action") String action
+            @Query("action") String action,
+            @Query("recordShippingMethod") String recordShippingMethod
     );
 
     @GET("operation_waybill.php")
