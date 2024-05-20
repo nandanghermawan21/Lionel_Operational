@@ -124,6 +124,9 @@ public class WayBillFragment extends Fragment {
                     ShippingMethodModel shippingMethodModel = new Gson().fromJson(shippingMethod, ShippingMethodModel.class);
                     // set data ke dalam view model
                     viewModel.setShippingMethod(shippingMethodModel);
+                    //kosongkan data liner dan service
+                    viewModel.setLiner(null);
+                    viewModel.setService(null);
                 }
             });
 
@@ -608,7 +611,7 @@ public class WayBillFragment extends Fragment {
         Intent intent = new Intent(getActivity(), GetShipmentLinerActivity.class);
         if(viewModel.getShippingMethod().getValue() != null){
             intent.putExtra(GET_SHIPPING_METHOD, viewModel.getShippingMethod().getValue().getId());
-            serviceLauncher.launch(intent);
+            shippingLinerLauncher.launch(intent);
         }
         else{
             Toast.makeText(getContext(), getString(R.string.please_select_shipping_method_first), Toast.LENGTH_SHORT).show();
