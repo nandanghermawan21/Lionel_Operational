@@ -50,6 +50,7 @@ public class WayBillRecycleViewAdapter extends RecyclerView.Adapter<WayBillRecyc
         holder.type.setVisibility(View.GONE);
         holder.date.setText(item.getDate());
         holder.shippingAgent.setText(item.getShippingAgentId());
+        holder.serviceSelect.setText(item.getServiceSelect());
         holder.liner.setText(item.getLinerId());
         holder.branch.setText(item.getBranchId()+" - "+item.getWaybillType());
         holder.destBranch.setText(item.getDestBranchId());
@@ -78,6 +79,7 @@ public class WayBillRecycleViewAdapter extends RecyclerView.Adapter<WayBillRecyc
         TextView code;
         TextView type;
         TextView date;
+        TextView serviceSelect;
         TextView shippingAgent;
         TextView liner;
         TextView branch;
@@ -91,6 +93,7 @@ public class WayBillRecycleViewAdapter extends RecyclerView.Adapter<WayBillRecyc
             code = itemView.findViewById(R.id.textCode);
             type = itemView.findViewById(R.id.textType);
             date = itemView.findViewById(R.id.textDate);
+            serviceSelect = itemView.findViewById(R.id.textServiceSelect);
             shippingAgent = itemView.findViewById(R.id.valueShippingAgent);
             liner = itemView.findViewById(R.id.valueLiner);
             branch = itemView.findViewById(R.id.valueBranchId);

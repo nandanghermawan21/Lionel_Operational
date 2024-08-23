@@ -1,9 +1,11 @@
 package com.lionel.operational.ui.stob;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.lionel.operational.model.CityModel;
+import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingMethodModel;
 import com.lionel.operational.model.WayBillModel;
@@ -15,6 +17,7 @@ public class CreateStobViewModel extends ViewModel {
     private MutableLiveData<String> state;
     private MutableLiveData<ShippingAgentModel> shippingAgent;
     private MutableLiveData<ShippingMethodModel> shippingMethode;
+    private MutableLiveData<CityModel> cityModel;
     private MutableLiveData<List<WayBillModel>> wayBillList;
 
 
@@ -23,6 +26,7 @@ public class CreateStobViewModel extends ViewModel {
         state = new MutableLiveData<>();
         shippingAgent = new MutableLiveData<>();
         shippingMethode = new MutableLiveData<>();
+        cityModel = new MutableLiveData<>();
         wayBillList = new MutableLiveData<>();
         setStateAsNew();
     }
@@ -53,6 +57,14 @@ public class CreateStobViewModel extends ViewModel {
 
     public void setShippingAgent(ShippingAgentModel shippingAgent) {
         this.shippingAgent.setValue(shippingAgent);
+    }
+
+    public LiveData<CityModel> getCityModel() {
+        return cityModel;
+    }
+
+    public void setCityModel(CityModel cityModel) {
+        this.cityModel.setValue(cityModel);
     }
 
     public MutableLiveData<ShippingMethodModel> getShippingMethod() {
