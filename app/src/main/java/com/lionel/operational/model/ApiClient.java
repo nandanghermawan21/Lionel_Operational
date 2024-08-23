@@ -2,6 +2,7 @@ package com.lionel.operational.model;
 import static com.lionel.operational.model.Constant.BASE_URL;
 import static com.lionel.operational.model.Constant.SECRET;
 
+import android.content.Context;
 import android.util.Log;
 
 import okhttp3.OkHttpClient;
@@ -14,7 +15,7 @@ import java.util.Base64;
 public class ApiClient {
     private static Retrofit retrofit;
 
-    public static Retrofit getInstant() {
+    public static Retrofit getInstant(Context context) {
             //ambil time saat ini
             long time = System.currentTimeMillis();
             //create X-Auth-Token header
@@ -26,6 +27,7 @@ public class ApiClient {
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(new HeaderInterceptor("X-Authorization", token))
                     .addInterceptor(new HeaderInterceptor("X-Nonce", String.valueOf(time)))
+                    .addInterceptor(new ErrorHandlingInterceptor(context))
                     .build();
 
             retrofit = new Retrofit.Builder()

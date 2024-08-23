@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     //get menu item from api
     private void getMenu() {
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
         //get data from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);

@@ -4,6 +4,7 @@ public class Constant {
     public static final int REQUEST_CODE = 100;
 //    public static final String BASE_URL = "http://demo1023406.mockable.io/";
     public static final String BASE_URL = "http://lionel-online.net/vinws/";
+//    public static final String BASE_URL = "https://dev.lionel-online.net/vinws/";
     public static final String SECRET = "APiiMdFc6CpSqDZJXWutOg76tXO0aQfm";
 
     //KEY FOR SHARED PREFERENCES
@@ -20,6 +21,7 @@ public class Constant {
     public static final String GET_SHIPPING_LINER = "GET_SHIPPING_LINER";
     public static final String GET_SHIPPING_SERVICE = "GET_SHIPPING_SERVICE";
     public static final String GET_BARCODE = "GET_BARCODE";
+    public static final String GET_AGENT_TYPE = "GET_AGENT_TYPE";
 
 
 }

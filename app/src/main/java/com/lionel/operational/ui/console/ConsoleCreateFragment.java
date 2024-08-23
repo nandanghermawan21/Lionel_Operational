@@ -44,6 +44,7 @@ import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
 import com.lionel.operational.model.DestinationModel;
 import com.lionel.operational.model.ShipmentModel;
+import com.lionel.operational.util.SoundPlayer;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -373,7 +374,7 @@ public class ConsoleCreateFragment extends Fragment {
 
     private void doAddShipment() {
         //ambil shipment dari api
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         Call<ApiResponse<ShipmentModel>> call = apiService.getShipmentConsole(inputShipmentCode.getText().toString().trim(), "get-shipment", viewModel.getDestinationModel().getValue().getId());
 
@@ -385,6 +386,10 @@ public class ConsoleCreateFragment extends Fragment {
                         ShipmentModel shipmentModel = response.body().getData();
                         //check jika shipment bernilai null maka tampilkan pesan error
                         if (shipmentModel == null) {
+                            //play sound error
+                            SoundPlayer soundPlayer = new SoundPlayer();
+                            soundPlayer.playSound(getContext(), R.raw.error);
+
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
                             //clear input
                             inputShipmentCode.setText("");
@@ -436,7 +441,7 @@ public class ConsoleCreateFragment extends Fragment {
     }
 
     private void doSubmit() {
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         //get data user from shared preferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);

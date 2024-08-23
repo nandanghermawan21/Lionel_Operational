@@ -77,17 +77,21 @@ public interface ApiService {
     @GET("operation_shipping_agent.php")
     Call<ApiResponse<List<ShippingAgentModel>>> getShippingAgent(
             @Query("action") String action,
-            @Query("recordUserBranchId") String recordUserBranchId
+            @Query("recordUserBranchId") String recordUserBranchId,
+            @Query("recordAgentType") String recordAgentType
+
     );
 
     @GET("operation_waybill.php")
     Call<ApiResponse<List<ShippingLinerModel>>> getShippingLiner(
-            @Query("action") String action
+            @Query("action") String action,
+            @Query("recordShippingMethod") String recordShippingMethod
     );
 
     @GET("operation_waybill.php")
     Call<ApiResponse<List<ServiceModel>>> getService(
-            @Query("action") String action
+            @Query("action") String action,
+            @Query("recordShippingMethod") String recordShippingMethod
     );
 
     @GET("operation_waybill.php")
@@ -113,7 +117,10 @@ public interface ApiService {
     @GET("operation_stob.php")
     Call<ApiResponse<List<WayBillModel>>> getStobWayBill(
             @Query("action") String action,
-            @Query("recordShippingMethod") String method
+            @Query("recordShippingMethod") String method,
+            @Query("recordShippingAgentId") String agentId,
+            @Query("recordDestBranchId") String destBranchId,
+            @Query("recordStobEco") String isEco
     );
 
     @FormUrlEncoded
@@ -127,6 +134,8 @@ public interface ApiService {
             @Field("recordCarLicenseNo") String recordCarLicenseNo,
             @Field("recordSealNo") String recordSealNo,
             @Field("recordEmployeeName") String recordEmployeeName,
-            @Field("recordWaybillNo[]") List<String> recordWaybillNo
+            @Field("recordWaybillNo[]") List<String> recordWaybillNo,
+            @Field("recordStobEco") String recordStobEco,
+            @Field("recordDestBranchId") String recordDestBranchId
     );
 }

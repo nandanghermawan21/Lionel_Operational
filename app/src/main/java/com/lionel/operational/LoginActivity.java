@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void postLogin() {
         //post api login
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getApplicationContext()).create(ApiService.class);
 
         Call<ApiResponse<AccountModel>> call = apiService.login(inputEmail.getText().toString(), inputPassword.getText().toString());
 

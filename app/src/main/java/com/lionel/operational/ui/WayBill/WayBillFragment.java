@@ -55,6 +55,7 @@ import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingLinerModel;
 import com.lionel.operational.model.ShippingMethodModel;
 import com.lionel.operational.model.WaybillShipmentItem;
+import com.lionel.operational.util.SoundPlayer;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,6 +124,9 @@ public class WayBillFragment extends Fragment {
                     ShippingMethodModel shippingMethodModel = new Gson().fromJson(shippingMethod, ShippingMethodModel.class);
                     // set data ke dalam view model
                     viewModel.setShippingMethod(shippingMethodModel);
+                    //kosongkan data liner dan service
+                    viewModel.setLiner(null);
+                    viewModel.setService(null);
                 }
             });
 
@@ -467,7 +471,7 @@ public class WayBillFragment extends Fragment {
 
     private void doAddShipment() {
         //ambil shipment dari api
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         Call<ApiResponse<List<ShipmentModel>>> call = apiService.getWayBillShipment("get-shipment", inputShipmentCode.getText().toString().trim(),  viewModel.getDestination().getValue().getId());
 
@@ -479,6 +483,10 @@ public class WayBillFragment extends Fragment {
                         List<ShipmentModel> shipmentModels = response.body().getData();
                         //jika shipmentmodels null kosong maka tampilkan pesan error
                         if(shipmentModels == null || shipmentModels.size() == 0) {
+                            //play sound error
+                            SoundPlayer soundPlayer = new SoundPlayer();
+                            soundPlayer.playSound(getContext(), R.raw.error);
+
                             Toast.makeText(getContext(), getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
                             //clear input shipment code
                             inputShipmentCode.setText("");
@@ -536,7 +544,7 @@ public class WayBillFragment extends Fragment {
     }
 
     private void doSubmit() {
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         //get data user from shared preferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
@@ -601,12 +609,25 @@ public class WayBillFragment extends Fragment {
 
     private void openSelectShippingLiner() {
         Intent intent = new Intent(getActivity(), GetShipmentLinerActivity.class);
-        shippingLinerLauncher.launch(intent);
+        if(viewModel.getShippingMethod().getValue() != null){
+            intent.putExtra(GET_SHIPPING_METHOD, viewModel.getShippingMethod().getValue().getId());
+            shippingLinerLauncher.launch(intent);
+        }
+        else{
+            Toast.makeText(getContext(), getString(R.string.please_select_shipping_method_first), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void openSelectShippingService() {
         Intent intent = new Intent(getActivity(), GetServiceActivity.class);
-        serviceLauncher.launch(intent);
+        if(viewModel.getShippingMethod().getValue() != null){
+            intent.putExtra(GET_SHIPPING_METHOD, viewModel.getShippingMethod().getValue().getId());
+            serviceLauncher.launch(intent);
+        }
+        else{
+            Toast.makeText(getContext(), getString(R.string.please_select_shipping_method_first), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

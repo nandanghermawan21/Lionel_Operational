@@ -22,6 +22,9 @@ public class WayBillModel {
     @SerializedName("ttl_chargeable_weight")
     private String ttlChargeableWeight;
 
+    @SerializedName("service_select")
+    private String serviceSelect;
+
     public String getCode() {
         return code;
     }
@@ -92,6 +95,14 @@ public class WayBillModel {
 
     public void setTtlChargeableWeight(String ttlChargeableWeight) {
         this.ttlChargeableWeight = ttlChargeableWeight;
+    }
+
+    public String getServiceSelect() {
+        return serviceSelect;
+    }
+
+    public void setServiceSelect(String serviceSelect) {
+        this.serviceSelect = serviceSelect;
     }
 
     public String toJson() {

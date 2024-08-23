@@ -1,5 +1,7 @@
 package com.lionel.operational.ui.stob;
 
+import static com.lionel.operational.model.Constant.GET_AGENT_TYPE;
+import static com.lionel.operational.model.Constant.GET_CITY;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_AGENT;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_METHOD;
 import static com.lionel.operational.model.Constant.GET_SHIPPING_SERVICE;
@@ -35,26 +37,23 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+import com.lionel.operational.GetCityActivity;
 import com.lionel.operational.GetShippingAgentActivity;
 import com.lionel.operational.GetShippingMethodActivity;
 import com.lionel.operational.R;
-import com.lionel.operational.adapter.ServiceRecycleViewAdapter;
-import com.lionel.operational.adapter.ShipmentRecycleViewAdapter;
 import com.lionel.operational.adapter.WayBillRecycleViewAdapter;
 import com.lionel.operational.model.AccountModel;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
-import com.lionel.operational.model.DestinationModel;
-import com.lionel.operational.model.ServiceModel;
-import com.lionel.operational.model.ShipmentModel;
+import com.lionel.operational.model.CityModel;
 import com.lionel.operational.model.ShippingAgentModel;
 import com.lionel.operational.model.ShippingMethodModel;
 import com.lionel.operational.model.WayBillModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,6 +83,12 @@ public class CreateStobFragment extends Fragment {
     TextView detailShippingMethod;
     TextView detailCarLicense;
     TextView detailSealNo;
+    LinearLayout destinationLayout;
+    TextView labelDestinationError;
+    Button buttonGetDestination;
+    MaterialCheckBox checkboxECO;
+
+
     private RecyclerView recyclerViewWaybill;
     private WayBillRecycleViewAdapter waybillAdapter;
     private CheckBox selectAll;
@@ -110,6 +115,18 @@ public class CreateStobFragment extends Fragment {
                     ShippingAgentModel shippingAgentModel = new Gson().fromJson(shippingAgent, ShippingAgentModel.class);
                     // set data ke dalam view model
                     viewModel.setShippingAgent(shippingAgentModel);
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> cityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    String city = data.getStringExtra(GET_CITY);
+                    //ubah data ke dalam bentuk object
+                    CityModel destinationModel = new Gson().fromJson(city, CityModel.class);
+                    // set data ke dalam view model
+                    viewModel.setCityModel(destinationModel);
                 }
             });
 
@@ -173,9 +190,13 @@ public class CreateStobFragment extends Fragment {
     }
 
     private void getDataWayBillFromAPi() {
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
-        Call<ApiResponse<List<WayBillModel>>> call = apiService.getStobWayBill("get-shipment", viewModel.getShippingMethod().getValue().getId());
+        Call<ApiResponse<List<WayBillModel>>> call = apiService.getStobWayBill(
+                "get-shipment", viewModel.getShippingMethod().getValue().getId(),
+                viewModel.getShippingAgent().getValue().getId(),
+                viewModel.getCityModel().getValue() != null ? viewModel.getCityModel().getValue().getId() : "",
+                checkboxECO.isChecked() ? "1" : "0");
 
         call.enqueue(new Callback<ApiResponse<List<WayBillModel>>>() {
 
@@ -233,6 +254,11 @@ public class CreateStobFragment extends Fragment {
         detailShippingMethod = view.findViewById(R.id.detailShippingMethod);
         detailCarLicense = view.findViewById(R.id.detailLicenseNo);
         detailSealNo = view.findViewById(R.id.detailSealNo);
+        destinationLayout = view.findViewById(R.id.destinationLayout);
+        labelDestinationError = view.findViewById(R.id.labelDestinationError);
+        buttonGetDestination = view.findViewById(R.id.buttonSelectDestination);
+        checkboxECO = view.findViewById(R.id.checkboxEco);
+
 
         //set values
         editTextOrigin.setText(account.getBranchId());
@@ -285,6 +311,13 @@ public class CreateStobFragment extends Fragment {
                     labelSealNoError.setText(getString(R.string.seal_no_required));
                 }else{
                     labelSealNoError.setText("");
+                }
+                //validate destination
+                if (checkboxECO.isChecked() && viewModel.getCityModel().getValue() == null) {
+                    isValid = false;
+                    labelDestinationError.setText(getString(R.string.destination_required));
+                }else{
+                    labelDestinationError.setText("");
                 }
 
                 if(isValid) {
@@ -345,10 +378,45 @@ public class CreateStobFragment extends Fragment {
                 selectShippingAgent();
             }
         });
+
+        //watch checkbox eco
+        checkboxECO.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                destinationLayout.setVisibility(View.VISIBLE);
+                //clear destination
+                viewModel.setCityModel(null);
+                //clear shipping agent and shipping method
+                viewModel.setShippingAgent(null);
+                viewModel.setShippingMethod(null);
+            }else{
+                destinationLayout.setVisibility(View.GONE);
+            }
+        });
+
+        buttonGetDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectDestination();
+            }
+        });
+
+        //watch destination data
+        viewModel.getCityModel().observe(getViewLifecycleOwner(), destinationModel -> {
+            if(destinationModel != null){
+                buttonGetDestination.setText(destinationModel.getId());
+                labelDestinationError.setText("");
+                //clear shiping agent and shipping method
+                viewModel.setShippingAgent(null);
+                viewModel.setShippingMethod(null);
+            }else{
+                buttonGetDestination.setText(getString(R.string.select_destination));
+            }
+        });
     }
 
     void selectShippingAgent(){
         Intent intent = new Intent(getContext(), GetShippingAgentActivity.class);
+        intent.putExtra(GET_AGENT_TYPE, "VENDOR");
         shippingAgentLauncher.launch(intent);
     }
 
@@ -357,8 +425,13 @@ public class CreateStobFragment extends Fragment {
         shippingMethodLauncher.launch(intent);
     }
 
+    void  selectDestination(){
+        Intent intent = new Intent(getContext(), GetCityActivity.class);
+        cityLauncher.launch(intent);
+    }
+
     private void doSubmit(){
-        ApiService apiService = ApiClient.getInstant().create(ApiService.class);
+        ApiService apiService = ApiClient.getInstant(getContext()).create(ApiService.class);
 
         //get data user from shared preferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
@@ -373,7 +446,9 @@ public class CreateStobFragment extends Fragment {
                 inputCarLicense.getText().toString(),
                 inputSealNo.getText().toString(),
                 account.getName(),
-                waybillAdapter.getSelectedList().stream().map(WayBillModel::getCode).collect(Collectors.toList())
+                waybillAdapter.getSelectedList().stream().map(WayBillModel::getCode).collect(Collectors.toList()),
+                checkboxECO.isChecked() ? "1" : "0",
+                viewModel.getCityModel().getValue() != null ? viewModel.getCityModel().getValue().getId() : ""
                 );
 
         call.enqueue(new retrofit2.Callback<ApiResponse>() {
