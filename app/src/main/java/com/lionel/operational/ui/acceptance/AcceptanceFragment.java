@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,13 +22,18 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.lionel.operational.GetDestinationActivity;
 import com.lionel.operational.R;
 import com.lionel.operational.ScanBarcodeActivity;
+import com.lionel.operational.adapter.ShipmentItemListRecycleViewAdapter;
+import com.lionel.operational.adapter.ShipmentRecycleViewAdapter;
 import com.lionel.operational.model.ApiClient;
 import com.lionel.operational.model.ApiResponse;
 import com.lionel.operational.model.ApiService;
@@ -54,9 +60,13 @@ public class AcceptanceFragment extends Fragment {
     private TextInputEditText editTextLength;
     private TextInputEditText editTextWidth;
     private TextInputEditText editTextHeight;
+    private TextView summaryLabel;
     private TextView labelSearchError;
-    private ImageView scanBarcodeBtn;
+    RecyclerView recyclerShipmentView;
+    ShipmentItemListRecycleViewAdapter shipmentReceicleViewAdapter;
     private SoundPlayer soundPlayer;
+    private ImageView scanBarcodeBtn;
+    LinearLayout shipmentItemListLayout;
 
     private final ActivityResultLauncher<Intent> scanBarcode = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -75,7 +85,15 @@ public class AcceptanceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_acceptance, container, false);
+        View view = inflater.inflate(R.layout.fragment_acceptance, container, false);
+
+        recyclerShipmentView = view.findViewById(R.id.shipmentItemListRecyclerView);
+        recyclerShipmentView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        shipmentReceicleViewAdapter = new ShipmentItemListRecycleViewAdapter(viewModel.getShipmentItemList());
+        recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
+
+        return view;
     }
 
     @Override
@@ -91,8 +109,10 @@ public class AcceptanceFragment extends Fragment {
         editTextLength = view.findViewById(R.id.editTextLength);
         editTextWidth = view.findViewById(R.id.editTextWidth);
         editTextHeight = view.findViewById(R.id.editTextHeight);
+        summaryLabel = view.findViewById(R.id.summaryLabel);
         labelSearchError = view.findViewById(R.id.labelSearchError);
         scanBarcodeBtn = view.findViewById(R.id.scanBarcodeBtn);
+        shipmentItemListLayout = view.findViewById(R.id.shipmentItemListLayout);
 
         soundPlayer = new SoundPlayer();
 
@@ -112,21 +132,26 @@ public class AcceptanceFragment extends Fragment {
                 editTextSearch.setEnabled(true);
                 //enable button next
                 buttonNext.setVisibility(View.VISIBLE);
+                //hide recycler view
+                shipmentItemListLayout.setVisibility(View.GONE);
                 //focus to search
                 editTextSearch.requestFocus();
             } else if (viewModel.isStateCreated()) {
                 buttonCancel.setVisibility(View.VISIBLE);
                 buttonSubmit.setVisibility(View.VISIBLE);
                 //enable all input text in layout input
-                editTextGW.setEnabled(true);
-                editTextLength.setEnabled(true);
-                editTextWidth.setEnabled(true);
-                editTextHeight.setEnabled(true);
+                editTextGW.setEnabled(!viewModel.isShipmentAccepted());
+                editTextLength.setEnabled(!viewModel.isShipmentAccepted());
+                editTextWidth.setEnabled(!viewModel.isShipmentAccepted());
+                editTextHeight.setEnabled(!viewModel.isShipmentAccepted());
                 //disable textsearch
                 editTextSearch.setEnabled(false);
                 //disable button next
                 buttonNext.setVisibility(View.GONE);
+                //tampilkan list view
+                shipmentItemListLayout.setVisibility(View.VISIBLE);
             }
+            //reresh recycler view
         });
 
         buttonNext.setOnClickListener(v -> {
@@ -145,6 +170,7 @@ public class AcceptanceFragment extends Fragment {
             editTextLength.setText("");
             editTextWidth.setText("");
             editTextHeight.setText("");
+            summaryLabel.setText("");
         });
 
         buttonSubmit.setOnClickListener(v -> {
@@ -165,6 +191,7 @@ public class AcceptanceFragment extends Fragment {
                 editTextHeight.setError(getString(R.string.height_required));
                 isValid = false;
             }
+
 
             //check format input apakah seudah merupakan angka double
             if (isValid) {
@@ -213,6 +240,14 @@ public class AcceptanceFragment extends Fragment {
         scanBarcodeBtn.setOnClickListener(v -> {
             handleScan();
         });
+
+        //wath shipment list
+        viewModel.getShipment().observe(getViewLifecycleOwner(), shipmentModel -> {
+            summaryLabel.setText(shipmentModel.getDetail().getSummary());
+            shipmentReceicleViewAdapter = new ShipmentItemListRecycleViewAdapter(viewModel.getShipmentItemList());
+            recyclerShipmentView.setAdapter(shipmentReceicleViewAdapter);
+        });
+
     }
 
     private void doGetShipment() {

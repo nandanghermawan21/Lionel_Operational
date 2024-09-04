@@ -10,4 +10,6 @@
     <color name="gray">#e8e4e4</color>
     <color name="red">#E10404</color>
     <color name="control">#e0e0e0</color>
+    <color name="green_ancent">#2C562D</color>
+    <color name="reed_ancent">#80332F</color>
 </resources>

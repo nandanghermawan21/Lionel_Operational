@@ -30,6 +30,9 @@ public class ShipmentModel {
     private String parentCode;
     @SerializedName("shipping_factor")
     private double shippingFactor;
+    @SerializedName("accepted")
+    private String accepted;
+    private ShipmentDetailModel detail;
 
     public ShipmentModel() {
     }
@@ -177,5 +180,21 @@ public class ShipmentModel {
 
     public void setDestBranchId(String destBranchId) {
         this.destBranchId = destBranchId;
+    }
+
+    public String getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(String accepted) {
+        this.accepted = accepted;
+    }
+
+    public ShipmentDetailModel getDetail() {
+        return detail;
+    }
+
+    public void setDetail(ShipmentDetailModel detail) {
+        this.detail = detail;
     }
 }
