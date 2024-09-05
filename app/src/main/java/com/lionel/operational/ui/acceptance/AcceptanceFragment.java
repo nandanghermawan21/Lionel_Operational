@@ -328,6 +328,7 @@ public class AcceptanceFragment extends Fragment {
                         editTextLength.setText("");
                         editTextWidth.setText("");
                         editTextHeight.setText("");
+                        summaryLabel.setText("");
                     } else {
                         Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
