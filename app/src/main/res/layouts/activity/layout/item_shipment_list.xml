@@ -30,7 +30,7 @@
             android:textSize="12sp"
             android:textStyle="bold"
             android:textAlignment="textStart"
-            android:textColor="?android:attr/textColor"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/itemStatus"
@@ -40,7 +40,7 @@
             android:textSize="12sp"
             android:textStyle="bold"
             android:textAlignment="textEnd"
-            android:textColor="?android:attr/textColor"/>
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 
