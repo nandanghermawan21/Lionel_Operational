@@ -17,7 +17,7 @@
             android:id="@+id/itemNo"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:textAlignment="textStart"
             android:textColor="@color/white"/>
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:textAlignment="textStart"
             android:textColor="@color/white"/>
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:textAlignment="textEnd"
             android:textColor="@color/white"/>
